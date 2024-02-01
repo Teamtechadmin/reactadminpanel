@@ -6,8 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "pretty": "prettier . --write",
+    "lint": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
+    "pretty": "prettier . --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "postinstall": "husky",
     "prepack": "pinst --disable",
     "postpack": "pinst --enable"
@@ -23,10 +23,12 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "eslint": "^8",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0",
+    "eslint": "^8.56.0",
     "eslint-config-next": "14.1.0",
     "husky": "^9.0.7",
     "prettier": "3.2.4",
-    "typescript": "^5"
+    "typescript": "^5.3.3"
   }
 }
