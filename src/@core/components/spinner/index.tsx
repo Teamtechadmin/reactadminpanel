@@ -12,8 +12,6 @@ const FallbackSpinner = ({ sx }: { sx?: BoxProps["sx"] }) => {
         flexDirection: "column",
         justifyContent: "center",
 
-
-        
         ...sx,
       }}
     >
