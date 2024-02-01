@@ -86,9 +86,10 @@ const LoginPage = () => {
                 <Box display={'flex'} flexDirection={'column'} gap={3} justifyContent={'space-between'} sx={{ width: '100%', maxWidth: 400 }}>
                     <Grid display={'flex'} flexDirection={'column'} >
                         <Typography display={'flex'} justifyContent={'center'} sx={{ mb: 1.5, fontWeight: 500, fontSize: '1.625rem', lineHeight: 1.385 }}>
-                            {`${themeConfig.name}`}
+                            {`Welcome to ${themeConfig.name}👋`}
                         </Typography>
-                        <Typography fontWeight={450} fontSize={24} >SignIn</Typography>
+                        <Typography sx={{ color: 'text.secondary' }}>Please sign-in to your account</Typography>
+
                     </Grid>
                     <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
                         <Grid display={'flex'} flexDirection={'column'} gap={2}  >
@@ -163,8 +164,8 @@ const LoginPage = () => {
                                 />
                                 <LinkStyled href='/forgot-password'>Forgot Password?</LinkStyled>
                             </Box>
-                            <Button size='large' type='submit' variant='contained' sx={{ width: '35%' }}>
-                                Sign-In
+                            <Button size='large' type='submit' variant='contained' >
+                                Login
                             </Button>
                         </Grid>
 
