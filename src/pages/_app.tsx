@@ -6,6 +6,7 @@ import type { AppProps } from "next/app";
 import { ReactNode } from "react";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { theme } from "@/configs/theme/mui";
+import { Toaster } from "react-hot-toast";
 
 type ExtendedAppProps = AppProps & {
   Component: NextPage;
@@ -37,6 +38,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <AuthProvider>
           <Component {...pageProps} />
         </AuthProvider>
+        <Toaster />
       </FontWrapper>
     </ThemeProvider>
   );

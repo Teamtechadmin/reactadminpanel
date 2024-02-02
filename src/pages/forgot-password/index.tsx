@@ -37,7 +37,7 @@ const ForgotPassword = () => {
   }
 
   return (
-    <CenteredGrid sx={{ height: "100%", width: "100%" }}>
+    <CenteredGrid sx={{ minHeight: "100%", width: "100%" }}>
       <Grid
         display={"flex"}
         flexDirection={"column"}

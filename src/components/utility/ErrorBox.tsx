@@ -1,6 +1,6 @@
 import React from "react";
 import { FormHelperText } from "@mui/material";
-import { errorMessageParser } from "@/utility/error";
+import { errorMessageParser } from "@/utils/error";
 
 function ErrorBox({ error }: { error: any }) {
   const errorMessage = errorMessageParser(error);

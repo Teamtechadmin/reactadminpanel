@@ -1,4 +1,5 @@
 import PasswordField from "@/components/inputfields/PasswordFormField";
+import useCustomToast from "@/utils/toast";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
 import {
@@ -37,6 +38,8 @@ const schema = yup.object().shape({
 });
 
 function ResetPassword() {
+  const toast = useCustomToast();
+
   const {
     control,
     handleSubmit,
@@ -49,6 +52,7 @@ function ResetPassword() {
 
   function onSubmit() {
     console.log("submitted");
+    toast.success("Password Reseted Successfully");
   }
 
   return (
