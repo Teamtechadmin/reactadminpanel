@@ -25,7 +25,7 @@ const TextFormField = ({
   required?: boolean;
   multiline?: boolean;
   rows?: number;
-  type?: string;
+  type?: "email" | "tel" | string;
   handleTextChange?: (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
     i?: number,

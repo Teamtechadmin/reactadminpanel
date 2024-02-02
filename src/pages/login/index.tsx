@@ -89,20 +89,19 @@ const LoginPage = () => {
       minHeight={"100%"}
     >
       <Box
-        sx={{
-          p: [6, 12],
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          minWidth: '100%'
-        }}
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
+        minWidth={"100%"}
+        padding={[6, 12]}
       >
         <Box
           display={"flex"}
           flexDirection={"column"}
           gap={3}
           justifyContent={"space-between"}
-          sx={{ width: "100%", maxWidth: 400 }}
+          maxWidth={400}
+          width={"100%"}
         >
           <Grid display={"flex"} flexDirection={"column"}>
             <Typography
