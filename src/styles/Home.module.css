@@ -4,7 +4,6 @@
   justify-content: space-between;
   align-items: center;
   padding: 6rem;
-  min-height: 100vh;
 }
 
 .description {
@@ -228,4 +227,10 @@
   to {
     transform: rotate(0deg);
   }
+}
+
+.__next {
+  height: 100vh;
+  min-height: 100vh;
+  background-color: red;
 }

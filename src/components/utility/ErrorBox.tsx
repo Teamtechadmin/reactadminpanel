@@ -1,15 +1,17 @@
-import React from 'react'
-import { FormHelperText } from '@mui/material'
-import { errorMessageParser } from '@/utility/error'
+import React from "react";
+import { FormHelperText } from "@mui/material";
+import { errorMessageParser } from "@/utility/error";
 
 function ErrorBox({ error }: { error: any }) {
-  const errorMessage = errorMessageParser(error)
+  const errorMessage = errorMessageParser(error);
 
   return (
     <>
-      <FormHelperText sx={{ color: 'error.main' }}>{errorMessage}</FormHelperText>
+      <FormHelperText sx={{ color: "error.main" }}>
+        {errorMessage}
+      </FormHelperText>
     </>
-  )
+  );
 }
 
-export default ErrorBox
+export default ErrorBox;

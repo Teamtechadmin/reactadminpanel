@@ -1,9 +1,9 @@
 type ThemeConfig = {
-    name: string
-}
+  name: string;
+};
 
-const themeConfig:ThemeConfig = {
-    name: 'KeraCars'
-}
+const themeConfig: ThemeConfig = {
+  name: "KeraCars",
+};
 
-export default themeConfig
+export default themeConfig;
