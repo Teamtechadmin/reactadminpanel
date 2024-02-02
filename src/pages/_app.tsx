@@ -3,24 +3,19 @@ import { AuthProvider } from "@/context/AuthContext";
 import "@/styles/globals.css";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
-import { Roboto } from 'next/font/google'
 import { ReactNode } from "react";
-import Spinner from '../components/spinner'
-
-const roboto = Roboto({
-  weight: '400',
-  subsets: ['latin'],
-})
+import { ThemeProvider, createTheme } from "@mui/material";
+import { theme } from "@/configs/theme/mui";
 
 type ExtendedAppProps = AppProps & {
-  Component: NextPage
-}
+  Component: NextPage;
+};
 
 type GuardProps = {
-  authGuard: boolean
-  guestGuard: boolean
-  children: ReactNode
-}
+  authGuard: boolean;
+  guestGuard: boolean;
+  children: ReactNode;
+};
 
 // const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
 //   if (guestGuard) {
@@ -33,15 +28,16 @@ type GuardProps = {
 // }
 
 export default function App({ Component, pageProps }: AppProps) {
-
   //  const authGuard = Component.authGuard ?? true
   // const guestGuard = Component.guestGuard ?? false
 
   return (
-    <FontWrapper>
-      <AuthProvider>
-        <Component  {...pageProps} />
-      </AuthProvider>
-    </FontWrapper>
+    <ThemeProvider theme={theme}>
+      <FontWrapper>
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
+      </FontWrapper>
+    </ThemeProvider>
   );
 }
