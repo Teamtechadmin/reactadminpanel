@@ -47,7 +47,7 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(
       fontSize: "0.875rem",
       color: theme.palette.text.secondary,
     },
-  }),
+  })
 );
 
 const schema = yup.object().shape({
@@ -119,7 +119,6 @@ const LoginPage = () => {
       onError: () => handleLoginError(),
     });
   };
-
 
   return (
     <Box

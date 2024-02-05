@@ -65,7 +65,7 @@ export default function App({ Component, pageProps }: ExtendedAppProps) {
         | ReactPortal
         | PromiseLikeOfReactNode
         | null
-        | undefined,
+        | undefined
     ) => (
       <UserLayout contentHeightFixed={contentHeightFixed}>{page}</UserLayout>
     ));
