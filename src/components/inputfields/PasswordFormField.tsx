@@ -7,7 +7,7 @@ import {
   OutlinedInput,
 } from "@mui/material";
 import React, { useState } from "react";
-import { Control, Controller, FieldError, FieldErrors } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import ErrorBox from "../utility/ErrorBox";
 
 type PasswordProps = {

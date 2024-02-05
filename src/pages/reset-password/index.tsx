@@ -1,22 +1,8 @@
 import PasswordField from "@/components/inputfields/PasswordFormField";
 import useCustomToast from "@/utils/toast";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormHelperText,
-  Grid,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-  Typography,
-} from "@mui/material";
-import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 const defaultValues = {
