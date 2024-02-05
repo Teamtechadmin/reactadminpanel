@@ -23,13 +23,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import themeConfig from "@/configs/theme/themeConfig";
 import BlankLayout from "@/layouts/BlankLayout";
 import { Grid } from "@mui/material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
-  Visibility,
-  VisibilityOff,
   VisibilityOffOutlined,
   VisibilityOutlined,
 } from "@mui/icons-material";
+import { useLogin } from "@/services/auth/login/post";
 
 const LinkStyled = styled(Link)(({ theme }) => ({
   fontSize: "0.875rem",
@@ -48,18 +46,18 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(
 );
 
 const schema = yup.object().shape({
-  email: yup.string().email().required(),
+  userId: yup.string().required(),
   password: yup.string().min(6).required(),
 });
 
 interface FormData {
-  email: string;
+  userId: string;
   password: string;
 }
 
 const defaultValues: FormData = {
   password: "",
-  email: "",
+  userId: "",
 };
 
 const LoginPage = () => {
@@ -77,9 +75,21 @@ const LoginPage = () => {
     resolver: yupResolver(schema),
   });
 
+  const login = useLogin()
+
+
   const onSubmit = () => {
-    router.push("/home");
+    // router.push("/home");
+    const authLogin = {
+      "role": "SUPERADMIN",
+      "userId": "53FI46",
+      "password": "abcd"
+  }
+    login.mutate(authLogin, {
+      onSuccess: (res) => console.log(res, 'responseCheck')
+    })
   };
+
 
   return (
     <Box
