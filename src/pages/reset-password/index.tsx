@@ -1,4 +1,4 @@
-import PasswordField from "@/components/inputfields/PasswordFormField";
+import PasswordField from "@/components/ui/inputfields/PasswordFormField";
 import useCustomToast from "@/utils/toast";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Box, Button, Grid, Typography } from "@mui/material";
