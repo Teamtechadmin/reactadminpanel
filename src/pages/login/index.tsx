@@ -127,7 +127,7 @@ const LoginPage = () => {
               {`Welcome to ${themeConfig.name}👋`}
             </Typography>
             <Typography sx={{ color: "text.secondary" }}>
-              Please sign-in to your account
+              Please sign-in to your accounts
             </Typography>
           </Grid>
           <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
