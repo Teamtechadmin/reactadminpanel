@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/useAuth";
-import Spinner from "@/components/spinner";
+import Spinner from "@/components/ui/spinner";
 
 export const getHomeRoute = (role: string) => {
   if (role === "client") return "/login";

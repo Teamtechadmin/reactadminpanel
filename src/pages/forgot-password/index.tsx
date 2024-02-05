@@ -1,5 +1,5 @@
-import CenteredGrid from "@/components/containers/CenteredGrid";
-import TextFormField from "@/components/inputfields/TextFormField";
+import CenteredGrid from "@/components/ui/containers/CenteredGrid";
+import TextFormField from "@/components/ui/inputfields/TextFormField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Grid, Typography } from "@mui/material";
 import { useRouter } from "next/router";
