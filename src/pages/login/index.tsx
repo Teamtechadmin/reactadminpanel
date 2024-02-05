@@ -6,11 +6,10 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
 import IconButton from "@mui/material/IconButton";
-import Box, { BoxProps } from "@mui/material/Box";
+import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import FormHelperText from "@mui/material/FormHelperText";
 import InputAdornment from "@mui/material/InputAdornment";
 import MuiFormControlLabel, {
@@ -18,15 +17,11 @@ import MuiFormControlLabel, {
 } from "@mui/material/FormControlLabel";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
-import { useRouter } from "next/router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import themeConfig from "@/configs/theme/themeConfig";
 import BlankLayout from "@/layouts/BlankLayout";
 import { Grid } from "@mui/material";
-import {
-  VisibilityOffOutlined,
-  VisibilityOutlined,
-} from "@mui/icons-material";
+import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
 import { useLogin } from "@/services/auth/login/post";
 
 const LinkStyled = styled(Link)(({ theme }) => ({
@@ -63,7 +58,6 @@ const defaultValues: FormData = {
 const LoginPage = () => {
   const [rememberMe, setRememberMe] = useState<boolean>(true);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const router = useRouter();
 
   const {
     control,
@@ -75,21 +69,19 @@ const LoginPage = () => {
     resolver: yupResolver(schema),
   });
 
-  const login = useLogin()
-
+  const login = useLogin();
 
   const onSubmit = () => {
     // router.push("/home");
     const authLogin = {
-      "role": "SUPERADMIN",
-      "userId": "53FI46",
-      "password": "abcd"
-  }
+      role: "SUPERADMIN",
+      userId: "53FI46",
+      password: "abcd",
+    };
     login.mutate(authLogin, {
-      onSuccess: (res) => console.log(res, 'responseCheck')
-    })
+      onSuccess: (res) => console.log(res, "responseCheck"),
+    });
   };
-
 
   return (
     <Box
@@ -134,24 +126,24 @@ const LoginPage = () => {
             <Grid display={"flex"} flexDirection={"column"} gap={2}>
               <FormControl fullWidth>
                 <Controller
-                  name="email"
+                  name="userId"
                   control={control}
                   rules={{ required: true }}
                   render={({ field: { value, onChange, onBlur } }) => (
                     <TextField
                       autoFocus
-                      label="Email"
+                      label="User Id"
                       value={value}
                       onBlur={onBlur}
                       onChange={onChange}
-                      error={Boolean(errors.email)}
-                      placeholder="example@mail.com"
+                      error={Boolean(errors.userId)}
+                      placeholder="Enter Your User Id"
                     />
                   )}
                 />
-                {errors.email && (
+                {errors.userId && (
                   <FormHelperText sx={{ color: "error.main" }}>
-                    {errors.email.message}
+                    {errors.userId.message}
                   </FormHelperText>
                 )}
               </FormControl>
@@ -173,6 +165,7 @@ const LoginPage = () => {
                       label="Password"
                       onChange={onChange}
                       id="auth-login-v2-password"
+                      placeholder="Enter Your Password"
                       error={Boolean(errors.password)}
                       type={showPassword ? "text" : "password"}
                       endAdornment={
