@@ -7,6 +7,7 @@ import { ReactNode } from "react";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { theme } from "@/configs/theme/mui";
 import { Toaster } from "react-hot-toast";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 type ExtendedAppProps = AppProps & {
   Component: NextPage;
@@ -17,6 +18,9 @@ type GuardProps = {
   guestGuard: boolean;
   children: ReactNode;
 };
+
+const queryClient = new QueryClient()
+
 
 // const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
 //   if (guestGuard) {
@@ -32,7 +36,9 @@ export default function App({ Component, pageProps }: AppProps) {
   //  const authGuard = Component.authGuard ?? true
   // const guestGuard = Component.guestGuard ?? false
 
+
   return (
+    <QueryClientProvider client={queryClient} >
     <ThemeProvider theme={theme}>
       <FontWrapper>
         <AuthProvider>
@@ -41,5 +47,6 @@ export default function App({ Component, pageProps }: AppProps) {
         <Toaster />
       </FontWrapper>
     </ThemeProvider>
+    </QueryClientProvider>
   );
 }
