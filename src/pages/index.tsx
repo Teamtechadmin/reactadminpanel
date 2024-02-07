@@ -1,30 +1,33 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useAuth } from "@/hooks/useAuth";
-import Spinner from "@/components/ui/spinner";
+import Spinner from "@/components/ui/spinner/fallback";
+import { verifyUser } from "@/functions/auth/verify-user";
+import { useAuthStore } from "@/store/store";
+import { RoleType } from "@/types/auth/role";
 
-export const getHomeRoute = (role: string) => {
-  if (role === "client") return "/login";
+export const getHomeRoute = (role: RoleType) => {
+  if (role === "SUPERADMIN") return "/home";
   else return "/login";
 };
 
 const Home = () => {
-  const auth = useAuth();
+  const { auth } = useAuthStore();
   const router = useRouter();
+  const isVerifiedUser = verifyUser(auth.user.role);
 
   useEffect(() => {
     if (!router.isReady) {
       return;
     }
 
-    if (auth.user && auth.user.role) {
+    if (isVerifiedUser) {
       const homeRoute = getHomeRoute(auth.user.role);
 
       // Redirect user to Home URL
       router.replace(homeRoute);
     } else {
-      const homeRoute = getHomeRoute("client");
-      router.replace(homeRoute);
+      const redirectionLink = "/";
+      router.replace(redirectionLink);
     }
   }, []);
 

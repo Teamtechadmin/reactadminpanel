@@ -19,10 +19,20 @@ import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import themeConfig from "@/configs/theme/themeConfig";
-import BlankLayout from "@/layouts/BlankLayout";
+import BlankLayout from "@/layouts/components/BlankLayout";
 import { Grid } from "@mui/material";
 import { VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
 import { useLogin } from "@/services/auth/login/post";
+import {
+  LoginData,
+  LoginMeta,
+  LoginSuccessResponse,
+} from "@/services/auth/types";
+import useCustomToast from "@/utils/toast";
+import { useAuthStore } from "@/store/store";
+import ErrorBox from "@/components/ui/utility/ErrorBox";
+import ButtonSpinner from "@/components/ui/spinner/button";
+import { useRouter } from "next/router";
 
 const LinkStyled = styled(Link)(({ theme }) => ({
   fontSize: "0.875rem",
@@ -70,16 +80,43 @@ const LoginPage = () => {
   });
 
   const login = useLogin();
+  const toast = useCustomToast();
+  const { setAuth } = useAuthStore();
+  const router = useRouter();
+
+  function saveToken(meta: LoginMeta) {
+    localStorage.setItem("accessToken", meta.access);
+  }
+
+  function saveUser(user: LoginData[]) {
+    console.log(user, "userData");
+    setAuth({
+      user: user?.[0],
+      loading: false,
+    });
+  }
+
+  function handleLoginSuccess(res: LoginSuccessResponse) {
+    toast.success("Login Success");
+    saveToken(res.data.meta);
+    saveUser(res.data.data);
+    router.push("/home");
+  }
+
+  function handleLoginError() {
+    toast.error("Login Failed");
+  }
 
   const onSubmit = () => {
-    // router.push("/home");
+    // handleLoading();
     const authLogin = {
       role: "SUPERADMIN",
       userId: "53FI46",
       password: "abcd",
     };
     login.mutate(authLogin, {
-      onSuccess: (res) => console.log(res, "responseCheck"),
+      onSuccess: (res) => handleLoginSuccess(res),
+      onError: () => handleLoginError(),
     });
   };
 
@@ -214,8 +251,15 @@ const LoginPage = () => {
                   Forgot Password?
                 </LinkStyled>
               </Box>
-              <Button size="large" type="submit" variant="contained">
+              {login.error && <ErrorBox error={login.error} />}
+              <Button
+                disabled={login.isPending}
+                size="large"
+                type="submit"
+                variant="contained"
+              >
                 Login
+                {login.isPending && <ButtonSpinner />}
               </Button>
             </Grid>
           </form>
@@ -226,5 +270,7 @@ const LoginPage = () => {
 };
 
 LoginPage.getLayout = (page: ReactNode) => <BlankLayout>{page}</BlankLayout>;
+LoginPage.guestGuard = true;
+LoginPage.authGuard = false;
 
 export default LoginPage;
