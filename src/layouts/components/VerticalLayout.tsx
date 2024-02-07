@@ -45,7 +45,6 @@ const VerticalLayout = (props: LayoutProps) => {
 
   // ** Toggle Functions
   const toggleNavVisibility = () => setNavVisible(!navVisible);
-  console.log(verticalLayoutProps, "VLPP");
   const collapsedNavWidth = 100;
 
   return (
