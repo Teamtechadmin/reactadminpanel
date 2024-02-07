@@ -16,7 +16,6 @@ const AuthGuard = (props: AuthGuardProps) => {
   const router = useRouter();
   const { auth } = useAuthStore();
   const isVerifiedUser = verifyUser(auth.user.role);
-
   useEffect(
     () => {
       if (!router.isReady) {
@@ -34,7 +33,7 @@ const AuthGuard = (props: AuthGuardProps) => {
     [router.route, auth],
   );
 
-  if (auth.loading) {
+  if (!isVerifiedUser) {
     return fallback;
   }
 
