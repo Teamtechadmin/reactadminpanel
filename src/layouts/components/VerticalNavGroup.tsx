@@ -20,7 +20,7 @@ import VerticalNavItems from "./VerticalNavItems";
 import themeConfig from "@/configs/theme/themeConfig";
 import { MenuIcon } from "@/components/ui/icon/menu";
 import IconifyIcon from "../../components/ui/icon";
-// import CanViewNavGroup from "@/components/acl/CanViewNavGroup";
+import CanViewNavGroup from "@/components/acl/CanViewNavGroup";
 
 interface Props {
   item: NavGroup;
@@ -172,137 +172,137 @@ const VerticalNavGroup = (props: Props) => {
   };
 
   return (
-    // <CanViewNavGroup navGroup={item}>
-    <Fragment>
-      <ListItem
-        disablePadding
-        className="nav-group"
-        onClick={handleGroupClick}
-        sx={{ mt: 1, px: "0 !important", flexDirection: "column" }}
-      >
-        <ListItemButton
-          // className={{
-          //   "Mui-selected":
-          //     groupActive.includes(item.title) ||
-          //     currentActiveGroup.includes(item.title),
-          // }}
-          sx={{
-            py: 2,
-            mx: 3.5,
-            borderRadius: 1,
-            ...conditionalColors(),
-            width: `calc(100% - ${theme.spacing(3.5 * 2)})`,
-            transition:
-              "padding-left .25s ease-in-out, padding-right .25s ease-in-out",
-            px: 4,
-            "&.Mui-selected.Mui-focusVisible": {
-              backgroundColor: "action.focus",
-              "&:hover": {
-                backgroundColor: "action.focus",
-              },
-            },
-          }}
+    <CanViewNavGroup navGroup={item}>
+      <Fragment>
+        <ListItem
+          disablePadding
+          className="nav-group"
+          onClick={handleGroupClick}
+          sx={{ mt: 1, px: "0 !important", flexDirection: "column" }}
         >
-          <ListItemIcon
+          <ListItemButton
+            // className={{
+            //   "Mui-selected":
+            //     groupActive.includes(item.title) ||
+            //     currentActiveGroup.includes(item.title),
+            // }}
             sx={{
-              transition: "margin .25s ease-in-out",
-              // ...(parent && navCollapsed && !navHover ? {} : { mr: 2 }),
-              // ...(navCollapsed && !navHover ? { mr: 0 } : {}), // this condition should come after (parent && navCollapsed && !navHover) condition for proper styling
-              ...(parent && item.children ? { ml: 1.5, mr: 3.5 } : {}),
-            }}
-          >
-            {/* {navCollapsed && !navHover && ( */}
-            {/* <UserIcon icon={icon as string} {...(parent && { fontSize: '0.625rem' })} /> */}
-            {/* )} */}
-            {/* <HomeIcon /> */}
-
-            {typeof item.icon === "string" ? (
-              <IconifyIcon
-                icon={icon as string}
-                {...(parent && { fontSize: "0.625rem" })}
-              />
-            ) : (
-              <MenuIcon
-                width={26}
-                height={26}
-                className={
-                  groupActive.includes(item.title) ||
-                  currentActiveGroup.includes(item.title)
-                    ? "active"
-                    : ""
-                }
-              >
-                {item.icon}
-              </MenuIcon>
-            )}
-          </ListItemIcon>
-          <MenuItemTextWrapper
-            sx={{
-              ...menuGroupCollapsedStyles,
-              ...(isSubToSub ? { ml: 2 } : {}),
-            }}
-          >
-            <Typography noWrap fontWeight={600} fontSize={14}>
-              {item.title}
-            </Typography>
-            <Box
-              className="menu-item-meta"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                "& svg": {
-                  transition: "transform .25s ease-in-out",
-                  color:
-                    // mode === "semi-dark"
-                    //   ? `rgba(${theme.palette.customColors.dark}, 0.38)`
-                    "text.disabled",
-                  ...(groupActive.includes(item.title) && {
-                    transform: "rotate(90deg)",
-                  }),
+              py: 2,
+              mx: 3.5,
+              borderRadius: 1,
+              ...conditionalColors(),
+              width: `calc(100% - ${theme.spacing(3.5 * 2)})`,
+              transition:
+                "padding-left .25s ease-in-out, padding-right .25s ease-in-out",
+              px: 4,
+              "&.Mui-selected.Mui-focusVisible": {
+                backgroundColor: "action.focus",
+                "&:hover": {
+                  backgroundColor: "action.focus",
                 },
+              },
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                transition: "margin .25s ease-in-out",
+                // ...(parent && navCollapsed && !navHover ? {} : { mr: 2 }),
+                // ...(navCollapsed && !navHover ? { mr: 0 } : {}), // this condition should come after (parent && navCollapsed && !navHover) condition for proper styling
+                ...(parent && item.children ? { ml: 1.5, mr: 3.5 } : {}),
               }}
             >
-              {item.badgeContent ? (
-                <Chip
-                  label={item.badgeContent}
-                  color={item.badgeColor || "primary"}
-                  sx={{
-                    mr: 1.5,
-                    height: 20,
-                    fontWeight: 500,
-                    "& .MuiChip-label": {
-                      px: 1.5,
-                      textTransform: "capitalize",
-                    },
-                  }}
+              {/* {navCollapsed && !navHover && ( */}
+              {/* <UserIcon icon={icon as string} {...(parent && { fontSize: '0.625rem' })} /> */}
+              {/* )} */}
+              {/* <HomeIcon /> */}
+
+              {typeof item.icon === "string" ? (
+                <IconifyIcon
+                  icon={icon as string}
+                  {...(parent && { fontSize: "0.625rem" })}
                 />
-              ) : null}
-              <Icon fontSize="1.125rem" icon={"tabler:chevron-right"} />
-            </Box>
-          </MenuItemTextWrapper>
-        </ListItemButton>
-        <Collapse
-          component="ul"
-          onClick={(e) => e.stopPropagation()}
-          in={groupActive.includes(item.title)}
-          sx={{
-            pl: 0,
-            width: "100%",
-            ...menuGroupCollapsedStyles,
-            transition: "all 0.25s ease-in-out",
-          }}
-        >
-          <VerticalNavItems
-            {...props}
-            parent={item}
-            navVisible={navVisible}
-            verticalNavItems={item.children}
-            isSubToSub={parent && item.children ? item : undefined}
-          />
-        </Collapse>
-      </ListItem>
-    </Fragment>
-    // {/* </CanViewNavGroup> */}
+              ) : (
+                <MenuIcon
+                  width={26}
+                  height={26}
+                  className={
+                    groupActive.includes(item.title) ||
+                    currentActiveGroup.includes(item.title)
+                      ? "active"
+                      : ""
+                  }
+                >
+                  {item.icon}
+                </MenuIcon>
+              )}
+            </ListItemIcon>
+            <MenuItemTextWrapper
+              sx={{
+                ...menuGroupCollapsedStyles,
+                ...(isSubToSub ? { ml: 2 } : {}),
+              }}
+            >
+              <Typography noWrap fontWeight={600} fontSize={14}>
+                {item.title}
+              </Typography>
+              <Box
+                className="menu-item-meta"
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  "& svg": {
+                    transition: "transform .25s ease-in-out",
+                    color:
+                      // mode === "semi-dark"
+                      //   ? `rgba(${theme.palette.customColors.dark}, 0.38)`
+                      "text.disabled",
+                    ...(groupActive.includes(item.title) && {
+                      transform: "rotate(90deg)",
+                    }),
+                  },
+                }}
+              >
+                {item.badgeContent ? (
+                  <Chip
+                    label={item.badgeContent}
+                    color={item.badgeColor || "primary"}
+                    sx={{
+                      mr: 1.5,
+                      height: 20,
+                      fontWeight: 500,
+                      "& .MuiChip-label": {
+                        px: 1.5,
+                        textTransform: "capitalize",
+                      },
+                    }}
+                  />
+                ) : null}
+                <Icon fontSize="1.125rem" icon={"tabler:chevron-right"} />
+              </Box>
+            </MenuItemTextWrapper>
+          </ListItemButton>
+          <Collapse
+            component="ul"
+            onClick={(e) => e.stopPropagation()}
+            in={groupActive.includes(item.title)}
+            sx={{
+              pl: 0,
+              width: "100%",
+              ...menuGroupCollapsedStyles,
+              transition: "all 0.25s ease-in-out",
+            }}
+          >
+            <VerticalNavItems
+              {...props}
+              parent={item}
+              navVisible={navVisible}
+              verticalNavItems={item.children}
+              isSubToSub={parent && item.children ? item : undefined}
+            />
+          </Collapse>
+        </ListItem>
+      </Fragment>
+    </CanViewNavGroup>
   );
 };
 

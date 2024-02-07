@@ -11,6 +11,7 @@ import ListItemButton, {
 import { NavLink, NavGroup } from "../types";
 import { handleURLQueries } from "../utils";
 import Tooltip from "@mui/material/Tooltip";
+import CanViewNavLink from "@/components/acl/CanViewNavLink";
 
 interface Props {
   parent?: boolean;
@@ -25,27 +26,14 @@ interface Props {
 
 // ** Styled Components
 const MenuNavLink = styled(ListItemButton)<ListItemButtonProps>(() => ({
-  // ListItemButtonProps & { component?: ElementType; href: string; target?: '_blank' | undefined }
   width: "100%",
   transition: "padding-left .25s ease-in-out, padding-right .25s ease-in-out",
   height: "49px",
   "&.active": {
     "&, &:hover": {
       background: "#E6F7FF",
-      // background: `linear-gradient(72.47deg, ${
-      //   theme.direction === 'ltr' ? theme.palette.primary.main : hexToRGBA(theme.palette.primary.main, 0.7)
-      // } 22.16%, ${
-      //   theme.direction === 'ltr' ? hexToRGBA(theme.palette.primary.main, 0.7) : theme.palette.primary.main
-      // } 76.47%)`,
-      // '&.Mui-focusVisible': {
-      //   background: `linear-gradient(72.47deg, ${theme.palette.primary.dark} 22.16%, ${hexToRGBA(
-      //     theme.palette.primary.dark,
-      //     0.7
-      //   )} 76.47%)`
-      // }
     },
     "& .MuiTypography-root, & svg": {
-      // color: `${theme.palette.common.white} !important`
       color: "#000000D9",
     },
   },
@@ -106,11 +94,7 @@ const VerticalNavLink = ({
   };
 
   const isNavLinkActive = () => {
-    if (
-      router.pathname === item.path ||
-      router.pathname === item.path + "/add" ||
-      handleURLQueries(router, item.path)
-    ) {
+    if (router.pathname === item.path || handleURLQueries(router, item.path)) {
       return true;
     } else {
       return false;
@@ -123,56 +107,56 @@ const VerticalNavLink = ({
 
   return (
     <>
-      {/* <CanViewNavLink navLink={item}> */}
-      <Tooltip
-        title={item.title}
-        placement="right"
-        open={toolTipOpen}
-        onClose={handleToolTipClose}
-        onOpen={handleToolTipOpen}
-        arrow
-      >
-        <ListItem
-          disablePadding
-          className="nav-link"
-          disabled={item.disabled || false}
-          sx={{ px: "0 !important" }}
+      <CanViewNavLink navLink={item}>
+        <Tooltip
+          title={item.title}
+          placement="right"
+          open={toolTipOpen}
+          onClose={handleToolTipClose}
+          onOpen={handleToolTipOpen}
+          arrow
         >
-          <MenuNavLink
-            {...(item.disabled && { tabIndex: -1 })}
-            className={isNavLinkActive() ? "active" : ""}
-            {...(item.openInNewTab ? { target: "_blank" } : null)}
-            onClick={(e) => {
-              if (item.path === undefined) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                return null;
-              }
-              if (navVisible) {
-                toggleNavVisibility();
-              }
-              changeRoute(item.path);
-            }}
-            sx={{
-              py: 2,
-              ...conditionalColors(),
-              ...(item.disabled
-                ? { pointerEvents: "none" }
-                : { cursor: "pointer" }),
-              px: 4,
-            }}
+          <ListItem
+            disablePadding
+            className="nav-link"
+            disabled={item.disabled || false}
+            sx={{ px: "0 !important" }}
           >
-            <MenuItemTextMetaWrapper>
-              <Typography fontWeight={400} lineHeight={22} fontSize={14}>
-                {item.title}
-              </Typography>
-            </MenuItemTextMetaWrapper>
-          </MenuNavLink>
-          {isNavLinkActive() && <ActiveStrip></ActiveStrip>}
-        </ListItem>
-      </Tooltip>
-      {/* </CanViewNavLink>  */}
+            <MenuNavLink
+              {...(item.disabled && { tabIndex: -1 })}
+              className={isNavLinkActive() ? "active" : ""}
+              {...(item.openInNewTab ? { target: "_blank" } : null)}
+              onClick={(e) => {
+                if (item.path === undefined) {
+                  e.preventDefault();
+                  e.stopPropagation();
+
+                  return null;
+                }
+                if (navVisible) {
+                  toggleNavVisibility();
+                }
+                changeRoute(item.path);
+              }}
+              sx={{
+                py: 2,
+                ...conditionalColors(),
+                ...(item.disabled
+                  ? { pointerEvents: "none" }
+                  : { cursor: "pointer" }),
+                px: 4,
+              }}
+            >
+              <MenuItemTextMetaWrapper>
+                <Typography fontWeight={400} lineHeight={22} fontSize={14}>
+                  {item.title}
+                </Typography>
+              </MenuItemTextMetaWrapper>
+            </MenuNavLink>
+            {isNavLinkActive() && <ActiveStrip></ActiveStrip>}
+          </ListItem>
+        </Tooltip>
+      </CanViewNavLink>
     </>
   );
 };
