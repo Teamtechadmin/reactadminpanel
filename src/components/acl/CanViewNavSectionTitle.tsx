@@ -15,7 +15,6 @@ interface Props {
 const CanViewNavSectionTitle = (props: Props) => {
   // ** Props
   const { children, navTitle } = props;
-
   // ** Hook
   const ability = useContext(AbilityContext);
 

@@ -5,7 +5,6 @@ import MuiListSubheader, {
   ListSubheaderProps,
 } from "@mui/material/ListSubheader";
 import { NavSectionTitle } from "../types";
-import CanViewNavSectionTitle from "@/components/acl/CanViewNavSectionTitle";
 
 interface Props {
   navHover: boolean;
@@ -41,24 +40,24 @@ const VerticalNavSectionTitle = (props: Props) => {
   const navCollapsed = true;
 
   return (
-    <CanViewNavSectionTitle navTitle={item}>
-      <ListSubheader
-        className="nav-section-title"
-        sx={{
-          ...(navCollapsed
-            ? {
-                py: 0.5,
-                px: (collapsedNavWidth - navigationBorderWidth - 22) / 8,
-              }
-            : { px: 7.5 }),
-          "& .MuiTypography-root, & svg": {
-            color: () => "text.disabled",
-          },
-        }}
-      >
-        <TypographyHeaderText noWrap>{item.sectionTitle}</TypographyHeaderText>
-      </ListSubheader>
-    </CanViewNavSectionTitle>
+    // <CanViewNavSectionTitle navTitle={item}>
+    <ListSubheader
+      className="nav-section-title"
+      sx={{
+        ...(navCollapsed
+          ? {
+              py: 0.5,
+              px: (collapsedNavWidth - navigationBorderWidth - 22) / 8,
+            }
+          : { px: 7.5 }),
+        "& .MuiTypography-root, & svg": {
+          color: () => "text.disabled",
+        },
+      }}
+    >
+      <TypographyHeaderText noWrap>{item.sectionTitle}</TypographyHeaderText>
+    </ListSubheader>
+    // </CanViewNavSectionTitle>
   );
 };
 

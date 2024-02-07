@@ -1,11 +1,11 @@
 // ** React Imports
-import { ReactNode, useContext } from "react";
-
-// ** Component Imports
-import { AbilityContext } from "./Can";
+import { ReactNode } from "react";
 
 // ** Types
 import { NavLink } from "../../layouts/types";
+import { useAuthStore } from "@/store/store";
+import { defineAbilitiesFor } from "@/configs/acl/acl";
+import { AnyAbility } from "@casl/ability";
 
 interface Props {
   navLink?: NavLink;
@@ -17,7 +17,8 @@ const CanViewNavLink = (props: Props) => {
   const { children, navLink } = props;
 
   // ** Hook
-  const ability = useContext(AbilityContext);
+  const { auth } = useAuthStore();
+  const ability: AnyAbility = defineAbilitiesFor(auth.user.role);
 
   return ability && ability.can(navLink?.action, navLink?.subject) ? (
     <>{children}</>
