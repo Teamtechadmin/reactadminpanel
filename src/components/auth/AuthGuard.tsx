@@ -4,6 +4,7 @@ import { ReactNode, ReactElement, useEffect } from "react";
 // ** Next Import
 import { useRouter } from "next/router";
 import { useAuthStore } from "@/store/store";
+import { verifyUser } from "@/functions/auth/verify-user";
 
 interface AuthGuardProps {
   children: ReactNode;
@@ -14,8 +15,7 @@ const AuthGuard = (props: AuthGuardProps) => {
   const { children, fallback } = props;
   const router = useRouter();
   const { auth } = useAuthStore();
-
-  console.log(auth, "usercheck");
+  const isVerifiedUser = verifyUser(auth.user.role);
 
   useEffect(
     () => {
@@ -23,22 +23,18 @@ const AuthGuard = (props: AuthGuardProps) => {
         return;
       }
 
-      if (auth.user) {
-        if (router.asPath !== "/") {
-          router.replace({
-            pathname: "/login",
-            query: { returnUrl: router.asPath },
-          });
-        } else {
-          router.replace("/login");
-        }
+      if (!isVerifiedUser || !auth) {
+        router.replace({
+          pathname: "/login",
+          query: { returnUrl: router.asPath },
+        });
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [router.route],
+    [router.route, auth],
   );
 
-  if (auth.loading || auth.user === null) {
+  if (auth.loading) {
     return fallback;
   }
 

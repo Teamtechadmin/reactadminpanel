@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import Box, { BoxProps } from "@mui/material/Box";
 
 // ** Types
-import { BlankLayoutProps } from "./types";
+import { BlankLayoutProps } from "../types";
 
 const BlankLayoutWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   height: "100vh",
