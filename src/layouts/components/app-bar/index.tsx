@@ -45,28 +45,6 @@ const LayoutAppBar = (props: Props) => {
   const appBar = "fixed";
   // ** Props
   const { appBarProps, appBarContent: userAppBarContent } = props;
-  // ** Vars
-
-  //   const appBarBlurEffect = appBarBlur && {
-  //     "&:after": {
-  //       top: 0,
-  //       left: 0,
-  //       zIndex: -1,
-  //       width: "100%",
-  //       content: '""',
-  //       position: "absolute",
-  //       backdropFilter: "blur(10px)",
-  //       height: (theme: Theme) =>
-  //         `calc(${theme.mixins.toolbar.minHeight as number}px + ${theme.spacing(4)})`,
-  //       mask: (theme: Theme) =>
-  //         `linear-gradient(${theme.palette.background.default}, ${theme.palette.background.default} 18%, transparent 100%)`,
-  //       background: (theme: Theme) =>
-  //         `linear-gradient(180deg,${hexToRGBA(theme.palette.background.default, 0.7)} 44%, ${hexToRGBA(
-  //           theme.palette.background.default,
-  //           0.43,
-  //         )} 73%, ${hexToRGBA(theme.palette.background.default, 0)})`,
-  //     },
-  //   };
 
   const userAppBarProps = Object.assign({}, appBarProps);
   delete userAppBarProps.sx;
