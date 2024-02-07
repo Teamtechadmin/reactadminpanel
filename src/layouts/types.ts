@@ -60,6 +60,7 @@ export type NavGroup = {
 };
 
 export type NavLink = {
+  [x: string]: any;
   icon?: string;
   path?: string;
   title: string;
@@ -104,15 +105,11 @@ export type VerticalLayoutProps = {
   };
 };
 
-export type HorizontalLayoutProps = {
-  appBar?: {
-    componentProps?: AppBarProps;
-    content?: (props?: any) => ReactNode;
-    branding?: (props?: any) => ReactNode;
-  };
-  navMenu?: {
-    sx?: SxProps<Theme>;
-    navItems?: HorizontalNavItemsType;
-    content?: (props?: any) => ReactNode;
-  };
+export type LayoutProps = {
+  hidden: boolean;
+  children: ReactNode;
+  footerProps?: FooterProps;
+  contentHeightFixed?: boolean;
+  scrollToTop?: (props?: any) => ReactNode;
+  verticalLayoutProps: VerticalLayoutProps;
 };
