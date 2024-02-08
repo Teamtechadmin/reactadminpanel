@@ -15,6 +15,12 @@ const navigation = (): VerticalNavItemsType => {
       subject: "customers",
     },
     {
+      title: "Cars",
+      path: "/cars",
+      action: "manage",
+      subject: "cars",
+    },
+    {
       title: "Auctions",
       path: "/auctions",
       action: "manage",

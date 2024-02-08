@@ -1,42 +1,40 @@
 import { BoxHover } from "@/components/ui/containers/BoxHover";
 import IconifyIcon from "@/components/ui/icon";
 import { Box, Chip, IconButton, Tooltip, Typography } from "@mui/material";
-import Link from "next/link";
 
-export type StatusType = "Blocked" | "Not Verified" | "Verified";
-
-export type DocStatus = "Not Submitted" | "Submitted";
-
-interface RowType {
-  status: StatusType;
-  documents: DocStatus;
-  location: string;
+type RowType = {
   id: string;
   name: string;
-  phone: string;
-}
+  qc: QCStatusType;
+  auction: AuctionStatusType;
+};
 
 type CellType = {
   row: RowType;
 };
 
-const statusColor = {
-  Verified: "success",
-  "Not Verified": "warning",
-  Blocked: "error",
+type AuctionStatusType = "Pending" | "Rejected";
+
+type QCStatusType = "Pending" | "Rejected";
+
+const auctionStatus = {
+  Pending: "warning",
+  Rejected: "error",
+  Approved: "success",
 };
 
-const docColor = {
-  Submitted: "success",
-  "Not Submitted": "warning",
+const qcStatus = {
+  Pending: "warning",
+  Rejected: "error",
+  Approved: "success",
 };
 
-function getStatusColor(status: StatusType) {
-  return statusColor[status] as any;
+function getAuctionColor(auctionStat: AuctionStatusType) {
+  return auctionStatus[auctionStat];
 }
 
-function getDocumentColor(documentStatus: DocStatus) {
-  return docColor[documentStatus];
+function getQCColor(qcStat: QCStatusType) {
+  return qcStatus[qcStat];
 }
 
 const useColumns = () => {
@@ -45,7 +43,7 @@ const useColumns = () => {
       flex: 0.012,
       field: "id",
       minWidth: 110,
-      headerName: "Customer ID",
+      headerName: "Car ID",
       headerClassName: "super-app-theme--header",
       renderCell: ({ row }: any) => {
         const { id } = row;
@@ -63,7 +61,7 @@ const useColumns = () => {
       flex: 0.03,
       field: "name",
       minWidth: 120,
-      headerName: "Customer Name",
+      headerName: "Car Name",
       renderCell: ({ row }: any) => {
         const { name } = row;
 
@@ -76,51 +74,40 @@ const useColumns = () => {
     },
     {
       flex: 0.03,
-      field: "phone",
+      field: "type",
       minWidth: 50,
-      headerName: "Phone No.",
+      headerName: "Fuel Type",
       renderCell: ({ row }: any) => {
-        const { phone } = row;
-        return <Typography noWrap>{phone}</Typography>;
-      },
-    },
-    {
-      flex: 0.022,
-      field: "location",
-      minWidth: 50,
-      headerName: "Location",
-      renderCell: ({ row }: any) => {
-        const { location } = row;
-        return <Typography noWrap>{location}</Typography>;
+        const { fuel } = row;
+        return <Typography noWrap>{fuel}</Typography>;
       },
     },
     {
       flex: 0.026,
-      field: "documents",
+      field: "qc",
       minWidth: 50,
-      headerName: "Documents",
+      headerName: "QC Status",
       renderCell: ({ row }: CellType) => {
         return (
           <Chip
-            label={row.documents}
+            label={row.qc}
             variant="outlined"
-            color={getDocumentColor(row.documents) as any}
+            color={getQCColor(row.qc) as any}
           />
         );
       },
     },
     {
-      flex: 0.025,
-      field: "status",
+      flex: 0.026,
+      field: "auction",
       minWidth: 50,
-      headerName: "Status",
-      renderCell: ({ row }: any) => {
-        const { status } = row;
+      headerName: "Auction Status",
+      renderCell: ({ row }: CellType) => {
         return (
           <Chip
-            label={status}
+            label={row.auction}
             variant="outlined"
-            color={getStatusColor(status)}
+            color={getAuctionColor(row.auction) as any}
           />
         );
       },
@@ -135,21 +122,25 @@ const useColumns = () => {
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Tooltip title="View">
-              <IconButton
-                size="small"
-                component={Link}
-                sx={{ color: "text.secondary" }}
-                href={`/`}
-              >
+              <IconButton size="small" sx={{ color: "text.secondary" }}>
                 <IconifyIcon icon={"tabler:eye"} fontSize={"1.5rem"} />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Verify">
+            <Tooltip title="Check QC">
               <IconButton
                 size="small"
-                component={Link}
                 sx={{ color: "text.secondary" }}
-                href={`/`}
+                disabled={
+                  status === "Verified" || documents === "Not Submitted"
+                }
+              >
+                <IconifyIcon icon={"tabler:checkup-list"} fontSize={"1.5rem"} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Approve Auction">
+              <IconButton
+                size="small"
+                sx={{ color: "text.secondary" }}
                 disabled={
                   status === "Verified" || documents === "Not Submitted"
                 }
