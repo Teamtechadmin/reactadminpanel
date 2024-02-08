@@ -17,8 +17,8 @@ const navigation = (): VerticalNavItemsType => {
       icon: "tabler:users",
     },
     {
-      title: "Cars",
-      path: "/cars",
+      title: "Customers",
+      path: "/customers",
       action: "manage",
       subject: "cars",
       icon: "tabler:car",
