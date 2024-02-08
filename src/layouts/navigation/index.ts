@@ -3,16 +3,40 @@ import { VerticalNavItemsType } from "../types";
 const navigation = (): VerticalNavItemsType => {
   return [
     {
-      title: "Customers",
+      title: "Dashboard",
       path: "/home",
       action: "manage",
       subject: "home",
     },
     {
-      title: "Cars",
-      path: "/cars",
+      title: "Customers",
+      path: "/customers",
       action: "manage",
-      subject: "home",
+      subject: "customers",
+    },
+    {
+      title: "Auctions",
+      path: "/auctions",
+      action: "manage",
+      subject: "auctions",
+    },
+    {
+      title: "Results",
+      path: "/results",
+      action: "manage",
+      subject: "results",
+    },
+    {
+      title: "OTB",
+      path: "/otb",
+      action: "manage",
+      subject: "otb",
+    },
+    {
+      title: "Evaluators",
+      path: "/evaluators",
+      action: "manage",
+      subject: "evaluators",
     },
   ];
 };

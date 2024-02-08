@@ -144,13 +144,20 @@ const VerticalNavLink = ({
                 ...(item.disabled
                   ? { pointerEvents: "none" }
                   : { cursor: "pointer" }),
-                px: 4,
+                px: 3,
               }}
             >
               <MenuItemTextMetaWrapper>
-                <Typography fontWeight={400} lineHeight={22} fontSize={14}>
-                  {item.title}
-                </Typography>
+                <Box>
+                  <Typography
+                    noWrap
+                    fontWeight={400}
+                    lineHeight={22}
+                    fontSize={14}
+                  >
+                    {item.title}
+                  </Typography>
+                </Box>
               </MenuItemTextMetaWrapper>
             </MenuNavLink>
             {isNavLinkActive() && <ActiveStrip></ActiveStrip>}
