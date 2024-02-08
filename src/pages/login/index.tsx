@@ -29,7 +29,7 @@ import {
   LoginSuccessResponse,
 } from "@/services/auth/types";
 import useCustomToast from "@/utils/toast";
-import { useAuthStore } from "@/store/store";
+import { useAuthStore } from "@/store/auth/store";
 import ErrorBox from "@/components/ui/utility/ErrorBox";
 import ButtonSpinner from "@/components/ui/spinner/button";
 import { useRouter } from "next/router";

@@ -6,6 +6,8 @@ import MuiSwipeableDrawer, {
 
 // ** Type Import
 import { LayoutProps } from "../../../../layouts/types";
+import { Theme, useMediaQuery } from "@mui/material";
+import { useThemeStore } from "@/store/theme/store";
 
 interface Props {
   navWidth: number;
@@ -41,14 +43,15 @@ const SwipeableDrawer = styled(MuiSwipeableDrawer)<SwipeableDrawerProps>({
 const Drawer = (props: Props) => {
   // ** Props
   const {
-    hidden,
     children,
     navWidth,
-    navVisible,
     navMenuProps,
     setNavVisible,
     navigationBorderWidth,
   } = props;
+
+  const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"));
+  const { navVisible } = useThemeStore();
 
   // ** Hook
   const theme = useTheme();

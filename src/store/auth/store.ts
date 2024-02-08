@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { AuthType } from "./types";
+import { AuthType } from "../types";
 import { defaultLogin } from "@/default/auth/login";
 
 interface StoreState {

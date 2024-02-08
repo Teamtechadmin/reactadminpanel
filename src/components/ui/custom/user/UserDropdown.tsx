@@ -16,7 +16,7 @@ import MenuItem, { MenuItemProps } from "@mui/material/MenuItem";
 
 // ** Icon Imports
 import Icon from "../../icon/index";
-import { useAuthStore } from "@/store/store";
+import { useAuthStore } from "@/store/auth/store";
 import { defaultLogin } from "@/default/auth/login";
 
 // ** Styled Components
@@ -31,6 +31,7 @@ const BadgeContentSpan = styled("span")(({ theme }) => ({
 const MenuItemStyled = styled(MenuItem)<MenuItemProps>(({ theme }) => ({
   "&:hover .MuiBox-root, &:hover .MuiBox-root svg": {
     color: theme.palette.primary.main,
+    paddingTop: 2,
   },
 }));
 
