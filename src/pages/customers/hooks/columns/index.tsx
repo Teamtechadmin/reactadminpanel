@@ -60,7 +60,7 @@ const useColumns = () => {
       },
     },
     {
-      flex: 0.046,
+      flex: 0.03,
       field: "name",
       minWidth: 120,
       headerName: "Customer Name",
