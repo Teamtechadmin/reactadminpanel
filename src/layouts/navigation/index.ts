@@ -24,6 +24,12 @@ const navigation = (): VerticalNavItemsType => {
       icon: "tabler:car",
     },
     {
+      title: "Cars",
+      path: "/cars",
+      action: "manage",
+      subject: "cars",
+    },
+    {
       title: "Auctions",
       path: "/auctions",
       action: "manage",
