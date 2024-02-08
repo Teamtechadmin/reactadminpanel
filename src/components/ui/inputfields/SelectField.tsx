@@ -22,6 +22,7 @@ const SelectFormField = ({
   renderMenuItems,
   data,
   isMultiple,
+  fillWhite,
 }: {
   id: string;
   control: Control<any>;
@@ -36,6 +37,7 @@ const SelectFormField = ({
   renderMenuItems: (obj: any) => void;
   data?: any;
   isMultiple?: boolean;
+  fillWhite?: boolean;
 }) => {
   return (
     <FormControl fullWidth>
@@ -69,6 +71,7 @@ const SelectFormField = ({
               "& .MuiInputBase-input.Mui-disabled": {
                 WebkitTextFillColor: "#000000",
               },
+              ...(fillWhite && { backgroundColor: "white" }),
             }}
             MenuProps={{
               autoFocus: false,

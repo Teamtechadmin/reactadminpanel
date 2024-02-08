@@ -1,4 +1,4 @@
-import { Card, CardHeader, Theme, useMediaQuery } from "@mui/material";
+import { Card, CardHeader, Grid, Theme, useMediaQuery } from "@mui/material";
 import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import useColumns from "../../hooks/columns";
@@ -23,23 +23,26 @@ const DataTable = () => {
         titleTypographyProps={{ variant: "h6" }}
         title={"Customers"}
       ></CardHeader>
-      <DataGrid
-        autoHeight
-        pagination
-        getRowHeight={() => {
-          return isSmallScreen ? defaultRowHeight / 2 : defaultRowHeight;
-        }}
-        columnHeaderHeight={55}
-        disableRowSelectionOnClick
-        columns={columns}
-        rows={customers}
-        paginationMode="server"
-        paginationModel={params}
-        onPaginationModelChange={setParams}
-        initialState={{
-          pagination: { paginationModel: { page: 0, pageSize: 15 } },
-        }}
-      />
+      <Grid padding={2}>
+        <DataGrid
+          autoHeight
+          pagination
+          getRowHeight={() => {
+            return isSmallScreen ? defaultRowHeight / 2 : defaultRowHeight;
+          }}
+          columnHeaderHeight={55}
+          disableRowSelectionOnClick
+          disableColumnSelector
+          columns={columns}
+          rows={customers}
+          paginationMode="server"
+          paginationModel={params}
+          onPaginationModelChange={setParams}
+          initialState={{
+            pagination: { paginationModel: { page: 0, pageSize: 15 } },
+          }}
+        />
+      </Grid>
     </Card>
   );
 };

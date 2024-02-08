@@ -19,6 +19,7 @@ const TextFormField = ({
   isDisabled,
   error,
   InputProps,
+  fillWhite,
 }: {
   id: string;
   control: any;
@@ -37,6 +38,7 @@ const TextFormField = ({
   isDisabled?: boolean;
   error?: FieldError;
   InputProps?: InputProps;
+  fillWhite?: boolean;
 }) => {
   return (
     <Grid width={"100%"}>
@@ -64,6 +66,7 @@ const TextFormField = ({
               "& .MuiInputBase-input.Mui-disabled": {
                 WebkitTextFillColor: "#000000",
               },
+              ...(fillWhite && { backgroundColor: "white" }),
             }}
             InputProps={InputProps && InputProps}
             onBlur={onBlur}
