@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Spinner from "@/components/ui/spinner/fallback";
 import { verifyUser } from "@/functions/auth/verify-user";
-import { useAuthStore } from "@/store/store";
+import { useAuthStore } from "@/store/auth/store";
 import { RoleType } from "@/types/auth/role";
 
 export const getHomeRoute = (role: RoleType) => {

@@ -1,8 +1,18 @@
 // ** MUI Imports
 import UserDropdown from "@/components/ui/custom/user/UserDropdown";
+import Icon from "@/components/ui/icon";
+import { IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
+import React from "react";
 
-const AppBarContent = () => {
+export type AppBarContentProps = {
+  hidden: boolean;
+  toggleNavVisibility: () => void;
+};
+
+const AppBarContent = (props: AppBarContentProps) => {
+  const { hidden, toggleNavVisibility } = props;
+
   return (
     <Box
       className="appBar"
@@ -10,15 +20,18 @@ const AppBarContent = () => {
         width: "100%",
         display: "flex",
         alignItems: "center",
-        justifyContent: "end",
+        justifyContent: hidden ? "space-between" : "end",
       }}
     >
-      {/* <Breadcrumbs aria-label="breadcrumb">
-        <Link underline="hover" color="inherit" href="/">
-          Home{" "}
-        </Link>
-        <Typography color="text.primary">Breadcrumbs</Typography>
-      </Breadcrumbs> */}
+      {hidden ? (
+        <IconButton
+          color="inherit"
+          sx={{ ml: -2.75 }}
+          onClick={toggleNavVisibility}
+        >
+          <Icon fontSize="1.5rem" icon="tabler:menu-2" />
+        </IconButton>
+      ) : null}
       <UserDropdown />
     </Box>
   );

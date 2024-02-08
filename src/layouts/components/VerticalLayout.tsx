@@ -33,15 +33,20 @@ const ContentWrapper = styled("main")(({ theme }) => ({
 
 const VerticalLayout = (props: LayoutProps) => {
   // ** Props
-  const { children, scrollToTop, contentHeightFixed, verticalLayoutProps } =
-    props;
+  const {
+    children,
+    scrollToTop,
+    contentHeightFixed,
+    verticalLayoutProps,
+    hidden,
+  } = props;
   // ** Vars
   const navigationBorderWidth = 0;
   const { navigationSize } = themeConfig;
   const navWidth = navigationSize;
 
   // ** States
-  const [navVisible, setNavVisible] = useState<boolean>(false);
+  const [navVisible, setNavVisible] = useState<boolean>(hidden ? false : true);
 
   // ** Toggle Functions
   const toggleNavVisibility = () => setNavVisible(!navVisible);
@@ -50,25 +55,27 @@ const VerticalLayout = (props: LayoutProps) => {
   return (
     <>
       <VerticalLayoutWrapper className="layout-wrapper">
-        <Navigation
-          navWidth={navWidth}
-          navVisible={navVisible}
-          setNavVisible={setNavVisible}
-          collapsedNavWidth={collapsedNavWidth}
-          toggleNavVisibility={toggleNavVisibility}
-          navigationBorderWidth={navigationBorderWidth}
-          navMenuContent={verticalLayoutProps.navMenu.content}
-          navMenuBranding={verticalLayoutProps.navMenu.branding}
-          menuLockedIcon={null}
-          // menuLockedIcon={verticalLayoutProps.navMenu.lockedIcon}
-          verticalNavItems={verticalLayoutProps.navMenu.navItems}
-          navMenuProps={verticalLayoutProps.navMenu.componentProps}
-          menuUnlockedIcon={null}
-          // menuUnlockedIcon={verticalLayoutProps.navMenu.unlockedIcon}
-          afterNavMenuContent={verticalLayoutProps.navMenu.afterContent}
-          beforeNavMenuContent={verticalLayoutProps.navMenu.beforeContent}
-          {...props}
-        />
+        {navVisible && (
+          <Navigation
+            navWidth={navWidth}
+            navVisible={navVisible}
+            setNavVisible={setNavVisible}
+            collapsedNavWidth={collapsedNavWidth}
+            toggleNavVisibility={toggleNavVisibility}
+            navigationBorderWidth={navigationBorderWidth}
+            navMenuContent={verticalLayoutProps.navMenu.content}
+            navMenuBranding={verticalLayoutProps.navMenu.branding}
+            menuLockedIcon={null}
+            // menuLockedIcon={verticalLayoutProps.navMenu.lockedIcon}
+            verticalNavItems={verticalLayoutProps.navMenu.navItems}
+            navMenuProps={verticalLayoutProps.navMenu.componentProps}
+            menuUnlockedIcon={null}
+            // menuUnlockedIcon={verticalLayoutProps.navMenu.unlockedIcon}
+            afterNavMenuContent={verticalLayoutProps.navMenu.afterContent}
+            beforeNavMenuContent={verticalLayoutProps.navMenu.beforeContent}
+            {...props}
+          />
+        )}
 
         <MainContentWrapper
           className="layout-content-wrapper"

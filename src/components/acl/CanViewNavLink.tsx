@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 // ** Types
 import { NavLink } from "../../layouts/types";
-import { useAuthStore } from "@/store/store";
+import { useAuthStore } from "@/store/auth/store";
 import { defineAbilitiesFor } from "@/configs/acl/acl";
 import { AnyAbility } from "@casl/ability";
 

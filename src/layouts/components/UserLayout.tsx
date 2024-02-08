@@ -33,7 +33,12 @@ const UserLayout = ({ children, contentHeightFixed }: Props) => {
           navItems: VerticalNavItems(),
         },
         appBar: {
-          content: () => <VerticalAppBarContent />,
+          content: (props) => (
+            <VerticalAppBarContent
+              hidden={hidden}
+              toggleNavVisibility={props.toggleNavVisibility}
+            />
+          ),
         },
       }}
     >
