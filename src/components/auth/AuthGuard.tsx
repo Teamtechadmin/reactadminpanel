@@ -3,7 +3,7 @@ import { ReactNode, ReactElement, useEffect } from "react";
 
 // ** Next Import
 import { useRouter } from "next/router";
-import { useAuthStore } from "@/store/store";
+import { useAuthStore } from "@/store/auth/store";
 import { verifyUser } from "@/functions/auth/verify-user";
 
 interface AuthGuardProps {

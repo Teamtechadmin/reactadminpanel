@@ -39,7 +39,7 @@ const AppBar = styled(MuiAppBar)<AppBarProps>(({ theme }) => ({
 const Toolbar = styled(MuiToolbar)<ToolbarProps>(() => ({
   width: "100%",
   backgroundColor: "#FFFFFF",
-  minHeight: 59,
+  minHeight: "56px !important",
 }));
 
 const LayoutAppBar = (props: Props) => {

@@ -141,7 +141,6 @@ const Navigation = (props: Props) => {
         : null}
       {(beforeVerticalNavMenuContentPosition === "static" ||
         !beforeNavMenuContent) && (
-        // display: 'none' , This is not wanted
         <StyledBoxForShadow
           ref={shadowRef}
           sx={{ background: shadowBgColor(), display: "none" }}
