@@ -1,10 +1,11 @@
+import { Grid } from "@mui/material";
 import React from "react";
 
-const index = () => {
-  return <div>index</div>;
+const Home = () => {
+  return <Grid></Grid>;
 };
 
-index.authGuard = true;
-index.guestGuard = false;
+Home.authGuard = true;
+Home.guestGuard = false;
 
-export default index;
+export default Home;

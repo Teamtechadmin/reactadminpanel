@@ -55,28 +55,25 @@ const VerticalLayout = (props: LayoutProps) => {
   return (
     <>
       <VerticalLayoutWrapper className="layout-wrapper">
-        {navVisible && (
-          <Navigation
-            navWidth={navWidth}
-            navVisible={navVisible}
-            setNavVisible={setNavVisible}
-            collapsedNavWidth={collapsedNavWidth}
-            toggleNavVisibility={toggleNavVisibility}
-            navigationBorderWidth={navigationBorderWidth}
-            navMenuContent={verticalLayoutProps.navMenu.content}
-            navMenuBranding={verticalLayoutProps.navMenu.branding}
-            menuLockedIcon={null}
-            // menuLockedIcon={verticalLayoutProps.navMenu.lockedIcon}
-            verticalNavItems={verticalLayoutProps.navMenu.navItems}
-            navMenuProps={verticalLayoutProps.navMenu.componentProps}
-            menuUnlockedIcon={null}
-            // menuUnlockedIcon={verticalLayoutProps.navMenu.unlockedIcon}
-            afterNavMenuContent={verticalLayoutProps.navMenu.afterContent}
-            beforeNavMenuContent={verticalLayoutProps.navMenu.beforeContent}
-            {...props}
-          />
-        )}
-
+        <Navigation
+          navWidth={navWidth}
+          navVisible={navVisible}
+          setNavVisible={setNavVisible}
+          collapsedNavWidth={collapsedNavWidth}
+          toggleNavVisibility={toggleNavVisibility}
+          navigationBorderWidth={navigationBorderWidth}
+          navMenuContent={verticalLayoutProps.navMenu.content}
+          navMenuBranding={verticalLayoutProps.navMenu.branding}
+          menuLockedIcon={null}
+          // menuLockedIcon={verticalLayoutProps.navMenu.lockedIcon}
+          verticalNavItems={verticalLayoutProps.navMenu.navItems}
+          navMenuProps={verticalLayoutProps.navMenu.componentProps}
+          menuUnlockedIcon={null}
+          // menuUnlockedIcon={verticalLayoutProps.navMenu.unlockedIcon}
+          afterNavMenuContent={verticalLayoutProps.navMenu.afterContent}
+          beforeNavMenuContent={verticalLayoutProps.navMenu.beforeContent}
+          {...props}
+        />
         <MainContentWrapper
           className="layout-content-wrapper"
           sx={{ ...(contentHeightFixed && { maxHeight: "100vh" }) }}
