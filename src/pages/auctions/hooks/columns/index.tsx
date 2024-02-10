@@ -1,4 +1,5 @@
-import { BoxHover } from "@/components/ui/containers/BoxHover";
+import { AmountTypography } from "@/components/ui/containers/AmountTypography";
+import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
 import IconifyIcon from "@/components/ui/icon";
 import { Box, Chip, IconButton, Tooltip, Typography } from "@mui/material";
 
@@ -7,37 +8,30 @@ type RowType = {
   name: string;
   qc: QCStatusType;
   auction: AuctionStatusType;
-  fuel: FuelType;
+  duration: string;
+  time_remaining: string;
+  win_or_lead: string;
+  total_bidder: number;
+  highest_price: string;
+  status: AuctionStatusType;
 };
 
 type CellType = {
   row: RowType;
 };
 
-type FuelType = "Petrol" | "Diesel" | "Hybrid";
-
-type AuctionStatusType = "Pending" | "Rejected";
+type AuctionStatusType = "Live" | "Completed" | "Scheduled";
 
 type QCStatusType = "Pending" | "Rejected";
 
 const auctionStatus = {
-  Pending: "warning",
-  Rejected: "error",
-  Approved: "success",
+  Scheduled: "warning",
+  Completed: "info",
+  Live: "success",
 };
 
-const qcStatus = {
-  Pending: "warning",
-  Rejected: "error",
-  Approved: "success",
-};
-
-function getAuctionColor(auctionStat: AuctionStatusType) {
+function getAuctionStat(auctionStat: AuctionStatusType) {
   return auctionStatus[auctionStat];
-}
-
-function getQCColor(qcStat: QCStatusType) {
-  return qcStatus[qcStat];
 }
 
 const useColumns = () => {
@@ -51,72 +45,85 @@ const useColumns = () => {
       renderCell: ({ row }: CellType) => {
         const { id } = row;
 
-        return (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Typography noWrap>
-              <BoxHover>{id}</BoxHover>
-            </Typography>
-          </Box>
-        );
+        return <ClickableTypography name={id} />;
       },
     },
     {
-      flex: 0.03,
+      flex: 0.05,
       field: "name",
       minWidth: 120,
       headerName: "Car Name",
       renderCell: ({ row }: CellType) => {
         const { name } = row;
 
-        return (
-          <BoxHover sx={{ display: "flex", alignItems: "center" }}>
-            <Typography noWrap>{name}</Typography>
-          </BoxHover>
-        );
+        return <ClickableTypography name={name} />;
       },
     },
     {
-      flex: 0.03,
-      field: "type",
+      flex: 0.02,
+      field: "duration",
       minWidth: 50,
-      headerName: "Fuel Type",
+      headerName: "Duration",
       renderCell: ({ row }: CellType) => {
-        const { fuel } = row;
-        return <Typography noWrap>{fuel}</Typography>;
+        const { duration } = row;
+        return <Typography noWrap>{duration}</Typography>;
       },
     },
     {
       flex: 0.026,
-      field: "qc",
+      field: "time_remaining",
       minWidth: 50,
-      headerName: "QC Status",
+      headerName: "Time Remaining",
       renderCell: ({ row }: CellType) => {
-        return (
-          <Chip
-            label={row.qc}
-            variant="outlined"
-            color={getQCColor(row.qc) as any}
-          />
-        );
+        const { time_remaining } = row;
+        return <Typography noWrap>{time_remaining}</Typography>;
       },
     },
     {
       flex: 0.026,
-      field: "auction",
+      field: "win_and_lead",
+      minWidth: 50,
+      headerName: "Win/Lead",
+      renderCell: ({ row }: CellType) => {
+        const { win_or_lead } = row;
+        return <ClickableTypography name={win_or_lead} />;
+      },
+    },
+    {
+      flex: 0.02,
+      field: "total_bidders",
+      minWidth: 50,
+      headerName: "Total Bidders",
+      renderCell: ({ row }: CellType) => {
+        return <Typography noWrap>{row.total_bidder}</Typography>;
+      },
+    },
+    {
+      flex: 0.026,
+      field: "highest_price",
+      minWidth: 50,
+      headerName: "Highest Price",
+      renderCell: ({ row }: CellType) => {
+        return <AmountTypography text={row.highest_price} />;
+      },
+    },
+    {
+      flex: 0.026,
+      field: "auction_status",
       minWidth: 50,
       headerName: "Auction Status",
       renderCell: ({ row }: CellType) => {
         return (
           <Chip
-            label={row.auction}
+            label={row.status}
             variant="outlined"
-            color={getAuctionColor(row.auction) as any}
+            color={getAuctionStat(row.status) as any}
           />
         );
       },
     },
     {
-      flex: 0.02,
+      flex: 0.03,
       field: "action",
       minWidth: 30,
       headerName: "Actions",
@@ -124,9 +131,12 @@ const useColumns = () => {
         const { qc, auction } = row;
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Tooltip title="View">
+            <Tooltip title="Stop">
               <IconButton size="small" sx={{ color: "text.secondary" }}>
-                <IconifyIcon icon={"tabler:eye"} fontSize={"1.5rem"} />
+                <IconifyIcon
+                  icon={"tabler:circle-rectangle"}
+                  fontSize={"1.5rem"}
+                />
               </IconButton>
             </Tooltip>
             <Tooltip title="Check QC">
@@ -135,7 +145,7 @@ const useColumns = () => {
                 sx={{ color: "text.secondary" }}
                 disabled={qc === "Approved" || qc === "Not Submitted"}
               >
-                <IconifyIcon icon={"tabler:checkup-list"} fontSize={"1.5rem"} />
+                <IconifyIcon icon={"tabler:hand-click"} fontSize={"1.5rem"} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Approve Auction">
