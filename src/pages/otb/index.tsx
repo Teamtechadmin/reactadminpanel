@@ -1,10 +1,10 @@
+import { Grid } from "@mui/material";
 import React from "react";
 import SearchHeaders from "../customers/components/search/SearchHeaders";
-import DataTable from "../cars/components/table/DataTable";
-import { Grid } from "@mui/material";
 import { useForm } from "react-hook-form";
+import DataTable from "./components/table/DataTable";
 
-const Cars = () => {
+const OtbPage = () => {
   const { control } = useForm();
   return (
     <Grid>
@@ -14,7 +14,7 @@ const Cars = () => {
   );
 };
 
-Cars.authGuard = true;
-Cars.guestGuard = false;
+OtbPage.authGuard = true;
+OtbPage.guestGuard = false;
 
-export default Cars;
+export default OtbPage;
