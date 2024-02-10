@@ -12,6 +12,8 @@ import { NavLink, NavGroup } from "../types";
 import { handleURLQueries } from "../utils";
 import Tooltip from "@mui/material/Tooltip";
 import CanViewNavLink from "@/components/acl/CanViewNavLink";
+import IconifyIcon from "@/components/ui/icon";
+import { ListItemIcon } from "@mui/material";
 
 interface Props {
   parent?: boolean;
@@ -50,7 +52,7 @@ const MenuItemTextMetaWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   gap: theme.spacing(2),
-  justifyContent: "center",
+  justifyContent: "start",
   transition: "opacity .25s ease-in-out",
   color: "#3C79F5",
   overflow: "hidden",
@@ -118,7 +120,6 @@ const VerticalNavLink = ({
         >
           <ListItem
             disablePadding
-            className="nav-link"
             disabled={item.disabled || false}
             sx={{ px: "0 !important" }}
           >
@@ -139,21 +140,33 @@ const VerticalNavLink = ({
                 changeRoute(item.path);
               }}
               sx={{
-                py: 2,
                 ...conditionalColors(),
                 ...(item.disabled
                   ? { pointerEvents: "none" }
                   : { cursor: "pointer" }),
-                px: 3,
+                display: "flex",
+                gap: 1,
               }}
             >
+              <ListItemIcon
+                sx={{
+                  minWidth: "auto",
+                  transition: "margin .25s ease-in-out",
+                  // ...(navCollapsed && !navHover ? { mr: 0 } : { mr: 2 }),
+                  "& svg": {
+                    fontSize: "1.4rem !important",
+                  },
+                }}
+              >
+                <IconifyIcon icon={item.icon as string | any} fontSize={26} />
+              </ListItemIcon>
               <MenuItemTextMetaWrapper>
-                <Box>
+                <Box display={"flex"} alignItems={"center"}>
                   <Typography
                     noWrap
                     fontWeight={400}
                     lineHeight={22}
-                    fontSize={14}
+                    fontSize={16}
                   >
                     {item.title}
                   </Typography>
