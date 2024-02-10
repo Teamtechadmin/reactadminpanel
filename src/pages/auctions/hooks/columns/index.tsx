@@ -131,7 +131,7 @@ const useColumns = () => {
         const { qc, auction } = row;
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Tooltip title="Stop">
+            <Tooltip title="Stop Auction">
               <IconButton size="small" sx={{ color: "text.secondary" }}>
                 <IconifyIcon
                   icon={"tabler:circle-rectangle"}
@@ -139,7 +139,7 @@ const useColumns = () => {
                 />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Check QC">
+            <Tooltip title="One Touch Buy">
               <IconButton
                 size="small"
                 sx={{ color: "text.secondary" }}
