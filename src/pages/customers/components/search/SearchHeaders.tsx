@@ -42,6 +42,7 @@ const SearchHeaders = (props: SearchHeaderProps) => {
           id="search"
           label="Search"
           placeholder="Input Search Text"
+          fillWhite
         />
       </Grid>
       <Grid item xl={2}>
@@ -52,6 +53,7 @@ const SearchHeaders = (props: SearchHeaderProps) => {
           data={statusData}
           label="Status"
           labelSize="small"
+          fillWhite
         />
       </Grid>
     </Grid>

@@ -1,7 +1,7 @@
 export const customers: any = [
   {
     id: "CID0000001",
-    name: "Customer 1",
+    name: "Ananthakrishnan A",
     phone: "91-9400012666",
     location: "Kozhikode",
     documents: "Submitted",

@@ -1,4 +1,4 @@
-import { BoxHover } from "@/components/ui/containers/BoxHover";
+import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
 import IconifyIcon from "@/components/ui/icon";
 import { Box, Chip, IconButton, Tooltip, Typography } from "@mui/material";
 import Link from "next/link";
@@ -50,28 +50,18 @@ const useColumns = () => {
       renderCell: ({ row }: any) => {
         const { id } = row;
 
-        return (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Typography noWrap>
-              <BoxHover>{id}</BoxHover>
-            </Typography>
-          </Box>
-        );
+        return <ClickableTypography name={id} />;
       },
     },
     {
-      flex: 0.046,
+      flex: 0.03,
       field: "name",
       minWidth: 120,
       headerName: "Customer Name",
       renderCell: ({ row }: any) => {
         const { name } = row;
 
-        return (
-          <BoxHover sx={{ display: "flex", alignItems: "center" }}>
-            <Typography noWrap>{name}</Typography>
-          </BoxHover>
-        );
+        return <ClickableTypography name={name} />;
       },
     },
     {
@@ -144,7 +134,7 @@ const useColumns = () => {
                 <IconifyIcon icon={"tabler:eye"} fontSize={"1.5rem"} />
               </IconButton>
             </Tooltip>
-            <Tooltip title="View">
+            <Tooltip title="Verify">
               <IconButton
                 size="small"
                 component={Link}

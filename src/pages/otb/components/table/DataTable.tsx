@@ -1,8 +1,8 @@
 import { Card, CardHeader, Grid, Theme, useMediaQuery } from "@mui/material";
 import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import useColumns from "../../hooks/columns";
-import { customers } from "@/dummy/customers";
+import useColumns from "../../hooks/column";
+import { otb } from "@/dummy/otb";
 
 const DataTable = () => {
   const isSmallScreen = useMediaQuery((theme: Theme) =>
@@ -21,7 +21,7 @@ const DataTable = () => {
       <CardHeader
         sx={{ p: 2 }}
         titleTypographyProps={{ variant: "h6" }}
-        title={"Customers"}
+        title={"OTB"}
       ></CardHeader>
       <Grid padding={2}>
         <DataGrid
@@ -34,7 +34,7 @@ const DataTable = () => {
           disableRowSelectionOnClick
           disableColumnSelector
           columns={columns}
-          rows={customers}
+          rows={otb as any}
           paginationMode="server"
           paginationModel={params}
           onPaginationModelChange={setParams}
