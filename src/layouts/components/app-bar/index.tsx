@@ -43,7 +43,6 @@ const Toolbar = styled(MuiToolbar)<ToolbarProps>(() => ({
 }));
 
 const LayoutAppBar = (props: Props) => {
-  const appBar = "fixed";
   // ** Props
   const { appBarProps, appBarContent: userAppBarContent } = props;
 
@@ -56,8 +55,7 @@ const LayoutAppBar = (props: Props) => {
         elevation={0}
         color="default"
         className="layout-navbar"
-        position={appBar === "fixed" ? "sticky" : "static"}
-        sx={{ maxHeight: 10 }}
+        position={"static"}
       >
         {(userAppBarContent && userAppBarContent(props)) || null}
       </AppBar>
