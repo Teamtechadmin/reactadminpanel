@@ -26,6 +26,7 @@ import { useLogin } from "@/services/auth/login/post";
 import {
   LoginData,
   LoginMeta,
+  LoginParamType,
   LoginSuccessResponse,
 } from "@/services/auth/types";
 import useCustomToast from "@/utils/toast";
@@ -52,7 +53,7 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(
 
 const schema = yup.object().shape({
   userId: yup.string().required(),
-  password: yup.string().min(6).required(),
+  password: yup.string().min(4).required(),
 });
 
 interface FormData {
@@ -93,6 +94,8 @@ const LoginPage = () => {
       user: user?.[0],
       loading: false,
     });
+    const stringifiedUser = JSON.stringify(user?.[0]);
+    localStorage.setItem("userData", stringifiedUser);
   }
 
   function handleLoginSuccess(res: LoginSuccessResponse) {
@@ -106,12 +109,10 @@ const LoginPage = () => {
     toast.error("Login Failed");
   }
 
-  const onSubmit = () => {
-    // handleLoading();
+  const onSubmit = (values: LoginParamType) => {
     const authLogin = {
-      role: "SUPERADMIN",
-      userId: "53FI46",
-      password: "abcd",
+      userId: values.userId,
+      password: values.password,
     };
     login.mutate(authLogin, {
       onSuccess: (res) => handleLoginSuccess(res),

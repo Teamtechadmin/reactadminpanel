@@ -6,6 +6,11 @@ export type LoginType = {
   password: string;
 };
 
+export type LoginParamType = {
+  userId: string;
+  password: string;
+};
+
 export interface LoginSuccessResponse {
   data: LoginSuccess;
   status: number;
@@ -28,7 +33,7 @@ export interface LoginData {
   _id: string;
   userId: string;
   isBlocked: boolean;
-  role: RoleType;
+  role: RoleType | "";
   createdAt: string;
   updatedAt: string;
   email: string;
