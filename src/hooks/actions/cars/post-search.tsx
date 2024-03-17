@@ -1,4 +1,5 @@
 import { CarData, CarDataSearchParams } from "@/services/cars/list/types";
+import { localiseDate } from "@/utils/localise-date";
 import { UseMutationResult } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 import { SetStateAction, useDeferredValue, useEffect } from "react";
@@ -12,17 +13,22 @@ interface PostSearchCars {
     CarDataSearchParams,
     unknown
   >;
+  createdAt?: Date | null;
 }
 
 const usePostSearchCars = (props: PostSearchCars) => {
-  const { search, setCarPostData, postSearch } = props;
+  const { search, setCarPostData, postSearch, createdAt } = props;
   const deferredSearch = useDeferredValue<string>(search);
 
   useEffect(() => {
-    if (deferredSearch !== undefined && search) {
+    if (
+      (deferredSearch !== undefined && search) ||
+      (createdAt !== undefined && createdAt)
+    ) {
       postSearch.mutate(
         {
           lastFourDigits: deferredSearch,
+          createdAt: localiseDate(createdAt),
         },
         {
           onSuccess: (res: { data: { data: CarData[] } }) => {
@@ -31,7 +37,7 @@ const usePostSearchCars = (props: PostSearchCars) => {
         },
       );
     }
-  }, [deferredSearch]);
+  }, [deferredSearch, createdAt]);
 };
 
 export default usePostSearchCars;
