@@ -1,23 +1,14 @@
 import { ButtonIcon } from "@/components/ui/buttons/ButtonIcon";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
+import { Evaluator } from "@/services/evaluators/list/types";
 import { capitaliseFirstLetter } from "@/utils/capitalise-firstletter";
 import { Box, Chip, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 
 export type StatusType = "Active" | "Blocked";
 
-interface RowType {
-  status: StatusType;
-  location: string;
-  userId: string;
-  fullname: string;
-  contactNo: string;
-  id: string;
-  isBlocked: boolean;
-}
-
 type CellType = {
-  row: RowType;
+  row: any;
 };
 
 const statusColor = {
@@ -31,10 +22,11 @@ function getStatusColor(status: StatusType) {
 
 interface ColProps {
   handleAction: (isBlock: boolean, id: string) => void;
+  handleEdit: (evaluator: Evaluator) => void;
 }
 
 const useColumns = (props: ColProps) => {
-  const { handleAction } = props;
+  const { handleAction, handleEdit } = props;
   const router = useRouter();
   function handleView(id: string) {
     router.push(`/evaluators/${id}`);
@@ -118,6 +110,11 @@ const useColumns = (props: ColProps) => {
             <ButtonIcon
               onClick={() => handleView(id)}
               icon="tabler:eye"
+              title="View"
+            />
+            <ButtonIcon
+              onClick={() => handleEdit(row)}
+              icon="tabler:edit"
               title="View"
             />
             <ButtonIcon

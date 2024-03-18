@@ -75,7 +75,8 @@ interface Data2 {
 
 export interface CarData {
   _id: string;
-  uniqueId: number;
+  id: string;
+  userId: string;
   make: string;
   model: string;
   variant: string;
@@ -89,6 +90,7 @@ export interface CarData {
   createdAt: Date;
   updatedAt: string;
   vehicleLocation: string;
+  uniqueId: string;
 }
 
 export interface CarParams {

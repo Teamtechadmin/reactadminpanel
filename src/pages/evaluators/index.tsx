@@ -11,6 +11,13 @@ import { useFormSchema } from "@/hooks/schema/evaluators";
 import { EvaluatorsCreateResponseData } from "@/services/evaluators/create/types";
 import { useAddEvaluators } from "@/services/evaluators/create/post";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  Evaluator,
+  EvaluatorActionMode,
+} from "@/services/evaluators/list/types";
+import { useUpdateEvaluator } from "@/services/evaluators/update/patch";
+import evaluatorSubmit from "@/functions/evaluators/submit-evaluator";
+import useCustomToast from "@/utils/toast";
 
 const defaultValues = {
   name: "",
@@ -29,7 +36,6 @@ const Evaluators = () => {
     defaultValues,
   });
   const schema = useFormSchema();
-
   const {
     control: controlEvaluator,
     reset,
@@ -43,39 +49,65 @@ const Evaluators = () => {
   const [open, setOpen] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [successMsg, setSuccessMsg] = useState({});
-
+  const [mode, setMode] = useState<EvaluatorActionMode>("add");
+  const [data, setData] = useState<Evaluator>();
   const addEvaluator = useAddEvaluators();
+  const updateEvaluator = useUpdateEvaluator();
   const queryClient = useQueryClient();
+  const toast = useCustomToast();
+  const isEdit = mode === "edit";
 
   function handleClick() {
     setOpen(!open);
-    reset();
+    reset(defaultEvalValues);
     setSuccessMsg({});
+    setMode("add");
   }
 
   function onSubmit(val: EvaluatorAddFormType) {
-    const body = {
-      ...val,
-      role: "EVALUATOR",
-    };
-    addEvaluator.mutate(body, {
-      onSuccess: (res) => handleSuccess(res.data.data?.[0]),
+    evaluatorSubmit({
+      isEdit,
+      value: val,
+      add: addEvaluator,
+      update: updateEvaluator,
+      handleSuccess,
+      id: data?.id,
     });
   }
 
-  function handleSuccess(res: EvaluatorsCreateResponseData) {
+  function handleSuccess(
+    res: EvaluatorsCreateResponseData,
+    isEditMode: boolean,
+  ) {
     handleClick();
     queryClient.invalidateQueries({
       queryKey: ["evaluators"],
     });
-    setSuccessMsg(res);
-    setOpenSuccess(!openSuccess);
+    if (!isEditMode) {
+      setSuccessMsg(res);
+      setOpenSuccess(!openSuccess);
+    } else {
+      toast.success("Evaluator Updated Successfully");
+    }
+  }
+
+  function handleEdit(evaluator: Evaluator) {
+    setOpen(!open);
+    setMode("edit");
+    setSuccessMsg({});
+    setData(evaluator);
+    reset({
+      contactNo: evaluator.contactNo,
+      email: evaluator.email,
+      fullname: evaluator.fullname,
+      location: evaluator.location,
+    });
   }
 
   return (
     <Grid>
       <SearchHeaders control={control} />
-      <DataTable handleAdd={handleClick} />
+      <DataTable handleAdd={handleClick} handleEdit={handleEdit} />
       <EvaluatorDrawer
         open={open}
         handleClick={handleClick}

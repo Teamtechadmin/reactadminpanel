@@ -3,18 +3,22 @@ import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import useColumns from "../../../hooks/columns/evaluators";
 import { useGetEvaluators } from "@/services/evaluators/list/get";
-import { EvaluatorsGetParams } from "@/services/evaluators/list/types";
 import { addKey } from "@/utils/add-key";
 import { useUpdateEvaluator } from "@/services/evaluators/update/patch";
 import useCustomToast from "@/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  Evaluator,
+  EvaluatorsGetParams,
+} from "@/services/evaluators/list/types";
 
 interface DataTableProps {
   handleAdd: () => void;
+  handleEdit: (evaluator: Evaluator) => void;
 }
 
 const DataTable = (props: DataTableProps) => {
-  const { handleAdd } = props;
+  const { handleAdd, handleEdit } = props;
   const [params, setParams] = useState<EvaluatorsGetParams>({
     page: 0,
     pageSize: 10,
@@ -24,6 +28,7 @@ const DataTable = (props: DataTableProps) => {
 
   const columns = useColumns({
     handleAction,
+    handleEdit,
   });
 
   const update = useUpdateEvaluator();
