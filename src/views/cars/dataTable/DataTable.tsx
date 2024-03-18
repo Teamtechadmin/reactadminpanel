@@ -21,9 +21,7 @@ const DataTable = (carDataTableProps: CarDataTableProps) => {
   const isPost =
     (Boolean(search) && search !== "") ||
     (Boolean(createdAt) && createdAt !== null);
-  const columns = useColumns({
-    handleSort,
-  });
+  const columns = useColumns();
   const [params, setParams] = useState({
     page: 0,
     pageSize: 10,
@@ -44,13 +42,6 @@ const DataTable = (carDataTableProps: CarDataTableProps) => {
     setCarPostData,
     postSearch,
   });
-
-  function handleSort() {
-    setParams(() => ({
-      ...params,
-      sortKey: "createdAt",
-    }));
-  }
 
   return (
     <Card>

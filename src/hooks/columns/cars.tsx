@@ -25,12 +25,7 @@ type FuelType = "Petrol" | "Diesel" | "Hybrid";
 
 type AuctionStatusType = "Pending" | "Rejected";
 
-interface CarColProps {
-  handleSort: () => void;
-}
-
-const useColumns = (props: CarColProps) => {
-  const { handleSort } = props;
+const useColumns = () => {
   const router = useRouter();
   function handleView(id: string) {
     router.push(`/cars/${id}`);
@@ -39,7 +34,7 @@ const useColumns = (props: CarColProps) => {
   const columns = [
     {
       flex: 0.012,
-      field: "id",
+      field: "uniqueId",
       minWidth: 120,
       headerName: "Unique ID",
       headerClassName: "super-app-theme--header",
@@ -52,7 +47,7 @@ const useColumns = (props: CarColProps) => {
     },
     {
       flex: 0.03,
-      field: "date",
+      field: "createdAt",
       minWidth: 120,
       headerName: "Evaluated On",
       valueGetter: (params: RowType) => {
@@ -64,11 +59,10 @@ const useColumns = (props: CarColProps) => {
 
         return <Typography noWrap>{formatDateAndTime(createdAt)}</Typography>;
       },
-      sortComparator: () => handleSort(),
     },
     {
       flex: 0.03,
-      field: "name",
+      field: "model",
       minWidth: 120,
       headerName: "Car Name",
       renderCell: ({ row }: CellType) => {
@@ -81,7 +75,7 @@ const useColumns = (props: CarColProps) => {
     },
     {
       flex: 0.03,
-      field: "type",
+      field: "fuelType",
       minWidth: 50,
       headerName: "Fuel Type",
       renderCell: ({ row }: CellType) => {
@@ -93,7 +87,7 @@ const useColumns = (props: CarColProps) => {
     },
     {
       flex: 0.026,
-      field: "qc",
+      field: "qcStatus",
       minWidth: 50,
       headerName: "QC Status",
       renderCell: ({ row }: CellType) => {
