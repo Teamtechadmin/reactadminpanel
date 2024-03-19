@@ -14,14 +14,12 @@ import { tabs } from "@/data/cars/tabs";
 import CarEngine from "@/views/cars/tabContents/CarEngine";
 import CarInterior from "@/views/cars/tabContents/CarInterior";
 import CarOther from "@/views/cars/tabContents/CarOther";
-import { ButtonIcon } from "@/components/ui/buttons/ButtonIcon";
 import generateCarPdf from "@/functions/cars/export/generate-pdf";
 import { useGetCarDocs } from "@/services/cars/documents/get";
-import useCustomToast from "@/utils/toast";
-import { useQueryClient } from "@tanstack/react-query";
 import AuctionDialogue from "@/views/cars/dailogue/AuctionDialogue";
-import useUpdateCarById from "@/hooks/actions/cars/update-car";
 import CarViewBottomActions from "@/views/cars/actions/CarViewBottomActions";
+import CarViewTopActions from "@/views/cars/actions/CarViewTopActions";
+import useCarActions from "@/hooks/actions/cars/car-actions";
 
 const CarsView = () => {
   const [value, setValue] = useState(tabs[0].value);
@@ -34,41 +32,14 @@ const CarsView = () => {
     id as string,
   );
   const carDocs = carDocsData?.data.data;
-
   const { data: carReports } = useGetCarReport(id as string);
   const carReportsData = carReports?.data.data;
-  const toast = useCustomToast();
-  const queryClient = useQueryClient();
-
-  const updateCar = useUpdateCarById();
+  const { approveQC, rejectQC } = useCarActions({
+    id,
+  });
 
   function handleApprove() {
     setOpenApprove(!openApprove);
-  }
-
-  function handleApproveQC() {
-    updateCar({
-      body: {
-        qcStatus: "VERIFIED",
-      },
-      id,
-      handleSuccess: () => handleSuccess("QC Approved Successfully"),
-    });
-  }
-
-  function handleSuccess(successMessage: string) {
-    toast.success(successMessage);
-    queryClient.invalidateQueries({ queryKey: ["car"] });
-  }
-
-  function handleRejectQC() {
-    updateCar({
-      body: {
-        qcStatus: "REJECTED",
-      },
-      id,
-      handleSuccess: () => handleSuccess("QC Rejected Successfully"),
-    });
   }
 
   const tabComponents = {
@@ -115,27 +86,18 @@ const CarsView = () => {
         <Grid>
           <Grid paddingY={4} display={"flex"} justifyContent={"space-between"}>
             <TabList tabOptions={tabs} value={value} setValue={setValue} />
-            <Grid>
-              <ButtonIcon
-                icon="tabler:printer"
-                onClick={handleOpen}
-                title="Print as PDF"
-                disabled={isPending}
-              />
-              <ButtonIcon
-                icon="tabler:download"
-                onClick={handleDownload}
-                title="Export as PDF"
-                disabled={isPending}
-              />
-            </Grid>
+            <CarViewTopActions
+              isPending={isPending}
+              handleDownload={handleDownload}
+              handleOpen={handleOpen}
+            />
           </Grid>
           <Grid mt={1}>{tabComponents[value as CarTabTypes]}</Grid>
           <CarViewBottomActions
             handleApprove={handleApprove}
             handleNext={handleNext}
-            handleApproveQC={handleApproveQC}
-            handleRejectQC={handleRejectQC}
+            handleApproveQC={approveQC}
+            handleRejectQC={rejectQC}
             isVerified={isVerified}
             showNext={showNext}
           />

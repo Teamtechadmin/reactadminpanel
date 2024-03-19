@@ -47,7 +47,7 @@ function AuctionDialogue(props: AuctionDialogueProps) {
         toast.success("Auction Approved Successfully!!");
         setOpen(!open);
         queryClient.invalidateQueries({
-          queryKey: ["car", "car-reports"],
+          queryKey: ["car"],
         });
       },
     });
