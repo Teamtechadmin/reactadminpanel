@@ -6,6 +6,7 @@ import { capitaliseFirstLetter } from "@/utils/capitalise-firstletter";
 import { formatDateAndTime } from "@/utils/format-date-and-time";
 import { Box, Chip, IconButton, Tooltip, Typography } from "@mui/material";
 import { useRouter } from "next/router";
+import useCarActions from "../actions/cars/car-actions";
 
 type RowType = {
   id: string;
@@ -25,8 +26,15 @@ type FuelType = "Petrol" | "Diesel" | "Hybrid";
 
 type AuctionStatusType = "Pending" | "Rejected";
 
-const useColumns = () => {
+interface CarColumnProps {
+  handleAuction: (id: string) => void;
+}
+
+const useColumns = (props: CarColumnProps) => {
+  const { handleAuction } = props;
   const router = useRouter();
+  const { approveQC } = useCarActions();
+
   function handleView(id: string) {
     router.push(`/cars/${id}`);
   }
@@ -106,7 +114,9 @@ const useColumns = () => {
       minWidth: 30,
       headerName: "Actions",
       renderCell: ({ row }: any) => {
-        const { qc, auction, id } = row;
+        const { qcStatus, status, id } = row;
+        const isQcChecked = qcStatus === "VERIFIED";
+        const isAuction = status === "SCHEDULED" || status === "LIVE";
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <ButtonIcon
@@ -118,7 +128,8 @@ const useColumns = () => {
               <IconButton
                 size="small"
                 sx={{ color: "text.secondary" }}
-                disabled={qc === "Approved" || qc === "Not Submitted"}
+                disabled={isQcChecked}
+                onClick={() => approveQC(id)}
               >
                 <IconifyIcon icon={"tabler:checkup-list"} fontSize={"1.5rem"} />
               </IconButton>
@@ -127,7 +138,8 @@ const useColumns = () => {
               <IconButton
                 size="small"
                 sx={{ color: "text.secondary" }}
-                disabled={auction === "Approved"}
+                disabled={isAuction}
+                onClick={() => handleAuction(id)}
               >
                 <IconifyIcon
                   icon={"tabler:discount-check"}

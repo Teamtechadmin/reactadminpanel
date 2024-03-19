@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useFormSchema from "@/hooks/schema/cars/approve-auction/schema";
 import { ApproveCar } from "@/types/cars/approve";
-import { useRouter } from "next/router";
 import useUpdateCarById from "@/hooks/actions/cars/update-car";
 import { useQueryClient } from "@tanstack/react-query";
 import useCustomToast from "@/utils/toast";
@@ -13,6 +12,8 @@ import useCustomToast from "@/utils/toast";
 interface AuctionDialogueProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
+  id: string;
+  isList?: boolean;
 }
 
 const defaultValues = {
@@ -22,9 +23,8 @@ const defaultValues = {
 };
 
 function AuctionDialogue(props: AuctionDialogueProps) {
-  const { open, setOpen } = props;
+  const { open, setOpen, id, isList } = props;
   const schema = useFormSchema();
-  const router = useRouter();
   const approveAuction = useUpdateCarById();
   const queryClient = useQueryClient();
   const toast = useCustomToast();
@@ -39,15 +39,14 @@ function AuctionDialogue(props: AuctionDialogueProps) {
   });
 
   function onSubmit(val: ApproveCar) {
-    const id = String(router.query.id);
     approveAuction({
       body: { ...val, status: "SCHEDULED" },
       id,
       handleSuccess: () => {
         toast.success("Auction Approved Successfully!!");
-        setOpen(!open);
+        handleClose();
         queryClient.invalidateQueries({
-          queryKey: ["car"],
+          queryKey: [isList ? "cars" : "car"],
         });
       },
     });

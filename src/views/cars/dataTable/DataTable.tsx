@@ -9,6 +9,7 @@ import { Control } from "react-hook-form";
 import { CarData, CarDataSearchParams } from "@/services/cars/list/types";
 import usePostSearchCars from "@/hooks/actions/cars/post-search";
 import { useSearchCars } from "@/services/cars/list/post";
+import AuctionDialogue from "../dailogue/AuctionDialogue";
 
 interface CarDataTableProps {
   control: Control<CarDataSearchParams>;
@@ -21,7 +22,9 @@ const DataTable = (carDataTableProps: CarDataTableProps) => {
   const isPost =
     (Boolean(search) && search !== "") ||
     (Boolean(createdAt) && createdAt !== null);
-  const columns = useColumns();
+  const columns = useColumns({
+    handleAuction,
+  });
   const [params, setParams] = useState({
     page: 0,
     pageSize: 10,
@@ -44,6 +47,14 @@ const DataTable = (carDataTableProps: CarDataTableProps) => {
     postSearch,
     setCount,
   });
+
+  const [openApprove, setOpenApprove] = useState(false);
+  const [id, setId] = useState("");
+
+  function handleAuction(carId: string) {
+    setId(carId);
+    setOpenApprove(!openApprove);
+  }
 
   return (
     <Card>
@@ -68,6 +79,12 @@ const DataTable = (carDataTableProps: CarDataTableProps) => {
           onPaginationModelChange={setParams}
         />
       </Grid>
+      <AuctionDialogue
+        open={openApprove}
+        setOpen={setOpenApprove}
+        id={id}
+        isList
+      />
     </Card>
   );
 };

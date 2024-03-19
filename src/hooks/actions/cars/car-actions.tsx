@@ -4,28 +4,23 @@ import { useUpdateCar } from "@/services/cars/update/patch";
 import useCustomToast from "@/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
 
-interface CarActionsProps {
-  id: string;
-}
-
-const useCarActions = (props: CarActionsProps) => {
-  const { id } = props;
+const useCarActions = () => {
   const updateCar = useUpdateCar();
   const toast = useCustomToast();
   const queryClient = useQueryClient();
 
-  function approveQC() {
-    handleApproveQC({ handleSuccess, id, updateCar });
+  function approveQC(id: string, isList?: boolean) {
+    handleApproveQC({ handleSuccess, id, updateCar, isList });
   }
 
-  function rejectQC() {
+  function rejectQC(id: string) {
     handleRejectQC({ handleSuccess, id, updateCar });
   }
 
-  function handleSuccess(successMessage: string) {
+  function handleSuccess(successMessage: string, isList?: boolean) {
     toast.success(successMessage);
     queryClient.invalidateQueries({
-      queryKey: ["car"],
+      queryKey: [isList ? "car" : "cars"],
     });
   }
 

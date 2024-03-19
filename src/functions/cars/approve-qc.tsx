@@ -1,11 +1,12 @@
 interface ApproveQCAction {
   id: string;
   updateCar: any;
-  handleSuccess: (message: string) => void;
+  handleSuccess: (message: string, isList?: boolean) => void;
+  isList?: boolean;
 }
 
 export function handleApproveQC(props: ApproveQCAction) {
-  const { handleSuccess, id, updateCar } = props;
+  const { handleSuccess, id, updateCar, isList } = props;
   updateCar.mutate(
     {
       body: {
@@ -14,7 +15,9 @@ export function handleApproveQC(props: ApproveQCAction) {
       id,
     },
     {
-      onSuccess: () => handleSuccess("QC Approved Successfully"),
+      onSuccess: () => {
+        handleSuccess("QC Approved Successfully", isList);
+      },
     },
   );
 }

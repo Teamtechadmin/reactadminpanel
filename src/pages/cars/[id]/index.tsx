@@ -34,9 +34,7 @@ const CarsView = () => {
   const carDocs = carDocsData?.data.data;
   const { data: carReports } = useGetCarReport(id as string);
   const carReportsData = carReports?.data.data;
-  const { approveQC, rejectQC } = useCarActions({
-    id,
-  });
+  const { approveQC, rejectQC } = useCarActions();
 
   function handleApprove() {
     setOpenApprove(!openApprove);
@@ -96,13 +94,17 @@ const CarsView = () => {
           <CarViewBottomActions
             handleApprove={handleApprove}
             handleNext={handleNext}
-            handleApproveQC={approveQC}
-            handleRejectQC={rejectQC}
+            handleApproveQC={() => approveQC(id)}
+            handleRejectQC={() => rejectQC(id)}
             isVerified={isVerified}
             showNext={showNext}
           />
         </Grid>
-        <AuctionDialogue open={openApprove} setOpen={setOpenApprove} />
+        <AuctionDialogue
+          open={openApprove}
+          setOpen={setOpenApprove}
+          id={String(router.query.id)}
+        />
       </>
     );
   }
