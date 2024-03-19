@@ -100,6 +100,6 @@ export interface CarParams {
 }
 
 export interface CarDataSearchParams {
-  lastFourDigits?: string;
+  lastFourDigits?: string | null;
   createdAt?: Date | null;
 }

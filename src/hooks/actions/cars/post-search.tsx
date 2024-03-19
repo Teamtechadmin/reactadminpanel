@@ -27,7 +27,7 @@ const usePostSearchCars = (props: PostSearchCars) => {
     ) {
       postSearch.mutate(
         {
-          lastFourDigits: deferredSearch,
+          lastFourDigits: deferredSearch || null,
           createdAt: localiseDate(createdAt),
         },
         {
