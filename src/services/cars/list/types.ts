@@ -3,6 +3,7 @@ export interface RootObject {
   message: string;
   data: (CarData | Data2 | Data3 | Data4 | Data5 | number)[];
   meta: Meta;
+  count: number;
 }
 
 interface Meta {

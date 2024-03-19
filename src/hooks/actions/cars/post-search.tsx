@@ -13,11 +13,12 @@ interface PostSearchCars {
     CarDataSearchParams,
     unknown
   >;
+  setCount: React.Dispatch<SetStateAction<number>>;
   createdAt?: Date | null;
 }
 
 const usePostSearchCars = (props: PostSearchCars) => {
-  const { search, setCarPostData, postSearch, createdAt } = props;
+  const { search, setCarPostData, postSearch, createdAt, setCount } = props;
   const deferredSearch = useDeferredValue<string>(search);
 
   useEffect(() => {
@@ -31,8 +32,9 @@ const usePostSearchCars = (props: PostSearchCars) => {
           createdAt: localiseDate(createdAt),
         },
         {
-          onSuccess: (res: { data: { data: CarData[] } }) => {
+          onSuccess: (res: { data: { data: CarData[]; count: number } }) => {
             setCarPostData(res.data.data);
+            setCount(res.data.count);
           },
         },
       );

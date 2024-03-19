@@ -30,6 +30,7 @@ const DataTable = (carDataTableProps: CarDataTableProps) => {
   const { data: carsData, isLoading } = useGetCars({
     params,
   });
+  const [count, setCount] = useState<number>(0);
   const carWithoutId = carsData?.data?.data;
   const filteredCars = filterObjects(carWithoutId);
   const cars = addKey(filteredCars, "id", "_id");
@@ -41,6 +42,7 @@ const DataTable = (carDataTableProps: CarDataTableProps) => {
     createdAt,
     setCarPostData,
     postSearch,
+    setCount,
   });
 
   return (
@@ -60,7 +62,7 @@ const DataTable = (carDataTableProps: CarDataTableProps) => {
           columns={(columns as any) ?? []}
           loading={isLoading || postSearch.isPending}
           rows={isPost ? carsPostData : (cars as any) ?? []}
-          rowCount={carsData?.data.count ?? 0}
+          rowCount={isPost ? count : carsData?.data.count ?? 0}
           paginationMode="server"
           paginationModel={params}
           onPaginationModelChange={setParams}
