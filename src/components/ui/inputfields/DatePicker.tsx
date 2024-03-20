@@ -15,6 +15,7 @@ interface DatePickerProps {
   maxDate?: Date;
   handleChange?: (e: any) => void;
   fillWhite?: boolean;
+  size?: "small" | "medium";
 }
 
 const DatePickerForm = (props: DatePickerProps) => {
@@ -29,6 +30,7 @@ const DatePickerForm = (props: DatePickerProps) => {
     maxDate,
     handleChange,
     fillWhite,
+    size,
   } = props;
   const today = new Date();
   return (
@@ -55,6 +57,7 @@ const DatePickerForm = (props: DatePickerProps) => {
               width: "100%",
               bgcolor: fillWhite ? "#fff" : "",
             }}
+            slotProps={{ textField: { size: size ?? "small" } }}
           />
         )}
       />
