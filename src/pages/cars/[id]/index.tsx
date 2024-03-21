@@ -20,6 +20,8 @@ import AuctionDialogue from "@/views/cars/dailogue/AuctionDialogue";
 import CarViewBottomActions from "@/views/cars/actions/CarViewBottomActions";
 import CarViewTopActions from "@/views/cars/actions/CarViewTopActions";
 import useCarActions from "@/hooks/actions/cars/car-actions";
+import { readImage } from "@/utils/get-image-as-base64";
+import headerLogo from "../../../../public/assets/pdfLogo.png";
 
 const CarsView = () => {
   const [value, setValue] = useState(tabs[0].value);
@@ -63,11 +65,15 @@ const CarsView = () => {
   }
 
   function handleDownload() {
-    generateCarPdf("download", carReportsData, carData, carDocs);
+    readImage(headerLogo.src, function (headerLogo: string | undefined) {
+      generateCarPdf("download", carReportsData, carData, carDocs, headerLogo);
+    });
   }
 
   function handleOpen() {
-    generateCarPdf("print", carReportsData, carData, carDocs);
+    readImage(headerLogo.src, function (headerLogo: string | undefined) {
+      generateCarPdf("print", carReportsData, carData, carDocs, headerLogo);
+    });
   }
 
   if (isLoading) {

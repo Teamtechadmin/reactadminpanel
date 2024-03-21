@@ -1,13 +1,8 @@
 import { CarData } from "@/services/cars/list/types";
-import { CarReportData } from "@/services/cars/report/types";
 import { PdfColors } from "@/types/cars/pdf";
 import { formatDate } from "@/utils/format-date";
 
-const getHeader = (
-  colors: PdfColors,
-  carReportsData?: CarReportData,
-  carData?: CarData,
-) => {
+const getHeader = (colors: PdfColors, carData?: CarData, logo?: string) => {
   return [
     {
       canvas: [
@@ -23,13 +18,13 @@ const getHeader = (
       margin: [10, 10, 10, 10],
     },
     {
-      text: "Mera Cars",
-      absolutePosition: { x: 25, y: 24 },
-      color: colors.white,
+      image: logo,
+      fit: [100, 100],
+      absolutePosition: { x: 25, y: 19 },
     },
     {
       text: `Car No. ${carData?.uniqueId}`,
-      absolutePosition: { x: 515, y: 21 },
+      absolutePosition: { x: 503, y: 21 },
       fontSize: 10,
       color: colors.white,
       bold: true,

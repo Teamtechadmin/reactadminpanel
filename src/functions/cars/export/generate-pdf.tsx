@@ -31,9 +31,10 @@ const generateCarPdf = async (
   carReportsData?: CarReportData,
   carData?: CarData,
   carDocs?: CarDocs,
+  headerLogo?: string,
 ) => {
   const colors = getPdfColors();
-  const header = getHeader(colors, carReportsData, carData);
+  const header = getHeader(colors, carData, headerLogo);
   const footer = getFooter();
   const basicCar = getCarBasic(colors, carData, carReportsData, carDocs);
   const carDetails = getCarDetails(carReportsData, carDocs, colors, carData);
