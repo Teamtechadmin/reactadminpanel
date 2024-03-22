@@ -38,6 +38,27 @@ export function getEngineTransmission(
             formatArrayString(allCarInfo?.engineOil?.condition),
           ],
           [{ text: "Coolant" }, "", formatString(allCarInfo?.coolant)],
+          [
+            { text: "Engine Mounting" },
+            "",
+            formatArrayString(allCarInfo?.mount?.condition),
+          ],
+          [{ text: "Engine Sound" }, "", formatString(allCarInfo?.engineSound)],
+          [
+            { text: "Engine Permissible Blow by" },
+            "",
+            formatArrayString(allCarInfo?.blowBy?.condition),
+          ],
+          [
+            { text: "Clutch" },
+            "",
+            formatArrayString(allCarInfo?.clutch?.condition),
+          ],
+          [
+            { text: "Gear Shifting" },
+            "",
+            formatString(allCarInfo?.transmission),
+          ],
         ],
       },
       layout: {

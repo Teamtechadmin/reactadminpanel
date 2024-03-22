@@ -8,7 +8,6 @@ import getCarExteriorTyre from "./get-car-exterior-tyre";
 import getCarExteriorTyreMore from "./get-car-exterior-more-pdf";
 import { getFooter } from "./get-footer";
 import getEngineTransmission from "./get-engine-transmission-pdf";
-import getEngineTransmissionMore from "./get-engine-transmission-more-pdf";
 import getSteeringBrakesAC from "./get-steering-brakes-ac-pdf";
 import { CarReportData } from "@/services/cars/report/types";
 import { CarData } from "@/services/cars/list/types";
@@ -46,10 +45,6 @@ const generateCarPdf = async (
     colors,
   );
   const engineTransmission = getEngineTransmission(carReportsData, colors);
-  const engineTransmissionMore = getEngineTransmissionMore(
-    carReportsData,
-    colors,
-  );
   const steeringBrakesAC = getSteeringBrakesAC(carReportsData, colors);
   // For Images
   const { engineImgs, exteriorImgs, interiorImgs } =
@@ -85,7 +80,6 @@ const generateCarPdf = async (
       ...carExteriorMore,
       ...carElectricalInterior,
       ...engineTransmission,
-      ...engineTransmissionMore,
       ...steeringBrakesAC,
       ...pdfImagesExt,
       ...pdfImagesEng,
