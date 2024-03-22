@@ -15,6 +15,7 @@ import { CarData } from "@/services/cars/list/types";
 import { CarDocs } from "@/services/cars/documents/types";
 import getAllPdfImages from "./get-all-pdf-images";
 import getCarsImagesPdf from "./get-cars-images-pdf";
+import getCarElectricalInterior from "./get-car-electrical-and-interior";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 pdfMake.fonts = {
@@ -40,6 +41,10 @@ const generateCarPdf = async (
   const carDetails = getCarDetails(carReportsData, carDocs, colors, carData);
   const carExterior = getCarExteriorTyre(carReportsData, colors);
   const carExteriorMore = getCarExteriorTyreMore(carReportsData, colors);
+  const carElectricalInterior = getCarElectricalInterior(
+    carReportsData,
+    colors,
+  );
   const engineTransmission = getEngineTransmission(carReportsData, colors);
   const engineTransmissionMore = getEngineTransmissionMore(
     carReportsData,
@@ -78,6 +83,7 @@ const generateCarPdf = async (
       ...carDetails,
       ...carExterior,
       ...carExteriorMore,
+      ...carElectricalInterior,
       ...engineTransmission,
       ...engineTransmissionMore,
       ...steeringBrakesAC,
