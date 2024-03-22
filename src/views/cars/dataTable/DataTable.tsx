@@ -6,19 +6,23 @@ import { useGetCars } from "@/services/cars/list/get";
 import { filterObjects } from "@/utils/filter-objects";
 import { addKey } from "@/utils/add-key";
 import { Control } from "react-hook-form";
-import { CarData, CarDataSearchParams } from "@/services/cars/list/types";
+import { CarData } from "@/services/cars/list/types";
 import usePostSearchCars from "@/hooks/actions/cars/post-search";
 import { useSearchCars } from "@/services/cars/list/post";
 import AuctionDialogue from "../dailogue/AuctionDialogue";
 
 interface CarDataTableProps {
-  control: Control<CarDataSearchParams>;
-  postQueryParams: { search: string; createdAt?: Date | null };
+  control: Control<{ searchBy: string; search: string }>;
+  postQueryParams: {
+    search: string;
+    createdAt?: Date | null;
+    searchBy?: string;
+  };
 }
 
 const DataTable = (carDataTableProps: CarDataTableProps) => {
   const { postQueryParams } = carDataTableProps;
-  const { search, createdAt } = postQueryParams;
+  const { search, createdAt, searchBy } = postQueryParams;
   const isPost =
     (Boolean(search) && search !== "") ||
     (Boolean(createdAt) && createdAt !== null);
@@ -43,6 +47,7 @@ const DataTable = (carDataTableProps: CarDataTableProps) => {
   usePostSearchCars({
     search,
     createdAt,
+    searchBy,
     setCarPostData,
     postSearch,
     setCount,

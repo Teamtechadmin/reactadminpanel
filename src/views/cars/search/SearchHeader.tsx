@@ -2,12 +2,14 @@ import { Grid, MenuItem } from "@mui/material";
 import React, { SetStateAction } from "react";
 import TextFormField from "../../../components/ui/inputfields/TextFormField";
 import SelectFormField from "../../../components/ui/inputfields/SelectField";
-import { Control } from "react-hook-form";
+import { Control, UseFormSetValue } from "react-hook-form";
 import DatePickerForm from "@/components/ui/inputfields/DatePicker";
+import SearchByDropDown from "./SearchByDropDown";
 
 interface SearchHeaderProps {
   control: Control<any>;
   setDate: React.Dispatch<SetStateAction<Date | null>>;
+  setValue: UseFormSetValue<{ searchBy: string; search: string }>;
 }
 
 const statusData = [
@@ -30,7 +32,7 @@ function renderItem(obj: { id: string; name: string }) {
 }
 
 const SearchHeaders = (props: SearchHeaderProps) => {
-  const { control, setDate } = props;
+  const { control, setDate, setValue } = props;
   return (
     <Grid
       container
@@ -38,13 +40,18 @@ const SearchHeaders = (props: SearchHeaderProps) => {
       justifyContent={"space-between"}
       paddingY={4}
     >
-      <Grid display={"flex"} gap={2} item xl={5}>
+      <Grid display={"flex"} gap={2} item xl={7}>
         <TextFormField
           control={control}
           id="search"
           label="Search"
           placeholder="Input Search Text"
           fillWhite
+          InputProps={{
+            endAdornment: (
+              <SearchByDropDown control={control} setValue={setValue} />
+            ),
+          }}
         />
         <DatePickerForm
           control={control}

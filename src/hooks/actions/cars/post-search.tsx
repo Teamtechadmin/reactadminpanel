@@ -15,10 +15,12 @@ interface PostSearchCars {
   >;
   setCount: React.Dispatch<SetStateAction<number>>;
   createdAt?: Date | null;
+  searchBy?: string;
 }
 
 const usePostSearchCars = (props: PostSearchCars) => {
-  const { search, setCarPostData, postSearch, createdAt, setCount } = props;
+  const { search, setCarPostData, postSearch, createdAt, setCount, searchBy } =
+    props;
   const deferredSearch = useDeferredValue<string>(search);
 
   useEffect(() => {
@@ -28,7 +30,9 @@ const usePostSearchCars = (props: PostSearchCars) => {
     ) {
       postSearch.mutate(
         {
-          lastFourDigits: deferredSearch || null,
+          ...(searchBy === "regNum"
+            ? { lastFourDigits: deferredSearch || null }
+            : { uniqueId: Number(deferredSearch) || null }),
           createdAt: localiseDate(createdAt),
         },
         {
