@@ -48,6 +48,8 @@ const SearchHeaders = (props: SearchHeaderProps) => {
           placeholder="Input Search Text"
           fillWhite
           InputProps={{
+            style: { padding: 0 },
+            // disabled: false,
             endAdornment: (
               <SearchByDropDown control={control} setValue={setValue} />
             ),
