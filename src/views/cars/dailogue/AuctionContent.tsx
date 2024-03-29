@@ -17,7 +17,7 @@ export function AuctionContent(auctionContentProps: AuctionControlProps) {
     <Grid padding={3} container display={"flex"} gap={2} width={"100%"}>
       <Grid width={"100%"}>
         <TimePickerForm
-          id="startBidTime"
+          id="bidStartTime"
           control={control}
           error={errors?.startBidTime}
           label="Start Bid Time"
@@ -25,7 +25,7 @@ export function AuctionContent(auctionContentProps: AuctionControlProps) {
       </Grid>
       <Grid width={"100%"}>
         <TimePickerForm
-          id="endBidTime"
+          id="bidEndTime"
           control={control}
           error={errors?.endBidTime}
           label="End Bid Time"
