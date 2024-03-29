@@ -16,7 +16,11 @@ const formatCarData = (
         label: key,
         value: fieldValue,
       });
-    } else if (typeof value === "object" && value !== null) {
+    } else if (
+      typeof value === "object" &&
+      value !== null &&
+      !Array.isArray(value)
+    ) {
       fieldValue = Array.isArray(value.condition)
         ? capitaliseArray(value?.condition)
         : typeof value === "object"
@@ -36,7 +40,8 @@ const formatCarData = (
         url: value.url,
       });
     } else {
-      fieldValue = value;
+      fieldValue =
+        value && Array.isArray(value) ? capitaliseArray(value) : value;
       arr.push({
         label: key,
         value: fieldValue,
