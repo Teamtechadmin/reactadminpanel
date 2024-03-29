@@ -7,6 +7,7 @@ import { formatDateAndTime } from "@/utils/format-date-and-time";
 import { Box, Chip, IconButton, Tooltip, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import useCarActions from "../actions/cars/car-actions";
+import { StatusType, getStatusColor } from "@/functions/cars/get-status-color";
 
 type RowType = {
   id: string;
@@ -16,6 +17,7 @@ type RowType = {
   auction: AuctionStatusType;
   fuelType: FuelType;
   createdAt: Date;
+  status: StatusType;
 };
 
 type CellType = {
@@ -30,13 +32,25 @@ interface CarColumnProps {
   handleAuction: (id: string) => void;
 }
 
+const statusLabel: any = {
+  EVALUATED: "EVALUATED",
+  PENDING_EVALUATION: "PENDING",
+  LIVE: "LIVE",
+  SCHEDULED: "SCHEDULED",
+};
+
 const useColumns = (props: CarColumnProps) => {
   const { handleAuction } = props;
   const router = useRouter();
   const { approveQC } = useCarActions();
 
   function handleView(id: string) {
-    router.push(`/cars/${id}`);
+    const newTab = window.open(`/cars/${id}`, "_blank");
+    if (newTab) {
+      newTab.focus();
+    } else {
+      router.push(`/cars/${id}`);
+    }
   }
 
   const columns = [
@@ -104,6 +118,23 @@ const useColumns = (props: CarColumnProps) => {
             label={row.qcStatus}
             variant="outlined"
             color={getQCColor(row.qcStatus) as "error" | "success" | "warning"}
+          />
+        );
+      },
+    },
+    {
+      flex: 0.026,
+      field: "status",
+      minWidth: 50,
+      headerName: "Status",
+      renderCell: ({ row }: CellType) => {
+        return (
+          <Chip
+            label={statusLabel[row.status] as StatusType}
+            variant="outlined"
+            color={
+              getStatusColor(row.status) as "error" | "success" | "warning"
+            }
           />
         );
       },
