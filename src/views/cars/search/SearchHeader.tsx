@@ -14,12 +14,12 @@ interface SearchHeaderProps {
 
 const statusData = [
   {
-    name: "Active",
-    id: "active",
+    name: "SCHEDULED",
+    id: "SCHEDULED",
   },
   {
-    name: "In-active",
-    id: "in-active",
+    name: "LIVE",
+    id: "LIVE",
   },
 ];
 
