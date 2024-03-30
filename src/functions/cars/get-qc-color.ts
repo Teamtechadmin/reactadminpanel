@@ -1,8 +1,8 @@
-export type QCStatusType = "PENDING" | "Rejected" | "VERIFIED";
+export type QCStatusType = "PENDING" | "REJECTED" | "VERIFIED";
 
 export const qcStatus = {
   PENDING: "warning",
-  Rejected: "error",
+  REJECTED: "error",
   VERIFIED: "success",
 };
 

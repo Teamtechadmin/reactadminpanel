@@ -1,7 +1,7 @@
 export type StatusType = "LIVE" | "SCHEDULED" | "VERIFIED";
 
 export const statusColor: any = {
-  SCHEDULED: "default",
+  SCHEDULED: "primary",
   LIVE: "info",
   PENDING: "warning",
   EVALUATED: "success",
