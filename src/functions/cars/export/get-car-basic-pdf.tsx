@@ -17,7 +17,7 @@ export const getCarBasic = (
     },
     { label: "No. Of Owner(S)", value: carData?.ownershipNumber },
     { label: "Duplicate Key", value: carReportsData?.duplicateKey },
-    { label: "KM", value: String(carReportsData?.odometerReading) },
+    { label: "KM", value: String(carReportsData?.allCarInfo?.odometerReading) },
     { label: "Fuel Type", value: carData?.fuelType },
     { label: "Reg. State", value: carReportsData?.regState },
     { label: "RTO", value: carReportsData?.rto },
