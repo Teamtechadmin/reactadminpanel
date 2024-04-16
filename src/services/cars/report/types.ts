@@ -125,6 +125,7 @@ export interface AllCarInfo {
   leftImage: EngineCompartment;
   lowerCrossMember: StartVideo;
   missingParts: string;
+  odometerReading: string;
   quarterGlass: StartVideo;
   quarterPanelLeft: StartVideo;
   quarterPanelRight: StartVideo;

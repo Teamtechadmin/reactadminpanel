@@ -140,7 +140,7 @@ const getCarEvaluation = (data: CarReportData) => {
     },
     {
       label: "Odometer Reading",
-      value: data?.odometerReading,
+      value: data?.allCarInfo?.odometerReading,
     },
     {
       label: "Accidental",
