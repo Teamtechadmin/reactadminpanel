@@ -41,7 +41,6 @@ export interface CarReportData {
   rcOwnerMobileNumber: string;
   rcOwnerName: string;
   chasisNumber: string;
-  monthAndYearOfManufacture: string;
   regDate: string;
   rto: string;
   bodyType: string;
@@ -58,6 +57,7 @@ export interface CarReportData {
 }
 
 export interface AllCarInfo {
+  monthAndYearOfManufacture: string;
   engineCylinder: number;
   evaluationStatusForEngine: string;
   airbag: StartVideo;

@@ -40,7 +40,9 @@ const getCarDetails = (
           [
             { text: "Manufacturing month", alignment: "left" },
             {
-              text: formatString(carReportsData?.monthAndYearOfManufacture),
+              text: formatString(
+                carReportsData?.allCarInfo?.monthAndYearOfManufacture,
+              ),
               alignment: "right",
             },
           ],

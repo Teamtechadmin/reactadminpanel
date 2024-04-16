@@ -92,7 +92,7 @@ const getCarEvaluation = (data: CarReportData) => {
     },
     {
       label: "Month & Year of Manufacturing",
-      value: data?.monthAndYearOfManufacture,
+      value: data?.allCarInfo?.monthAndYearOfManufacture,
     },
     {
       label: "Car Maker's Name (Brand)",

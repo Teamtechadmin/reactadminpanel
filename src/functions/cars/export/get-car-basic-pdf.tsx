@@ -13,7 +13,7 @@ export const getCarBasic = (
   const basicData = [
     {
       label: "Month & Year of Manufacturing",
-      value: carReportsData?.monthAndYearOfManufacture,
+      value: carReportsData?.allCarInfo?.monthAndYearOfManufacture,
     },
     { label: "No. Of Owner(S)", value: carData?.ownershipNumber },
     { label: "Duplicate Key", value: carReportsData?.duplicateKey },
