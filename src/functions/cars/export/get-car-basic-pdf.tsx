@@ -12,12 +12,19 @@ export const getCarBasic = (
 ) => {
   const basicData = [
     {
+      label: "Variant",
+      value: formatString(carData?.variant),
+    },
+    {
       label: "Month & Year of Manufacturing",
       value: carReportsData?.allCarInfo?.monthAndYearOfManufacture,
     },
     { label: "No. Of Owner(S)", value: carData?.ownershipNumber },
     { label: "Duplicate Key", value: carReportsData?.duplicateKey },
-    { label: "KM", value: String(carReportsData?.allCarInfo?.odometerReading) },
+    {
+      label: "KM",
+      value: String(carReportsData?.allCarInfo?.odometerReading ?? "-"),
+    },
     { label: "Fuel Type", value: carData?.fuelType },
     { label: "Reg. State", value: carReportsData?.regState },
     { label: "RTO", value: carReportsData?.rto },
@@ -53,12 +60,6 @@ export const getCarBasic = (
                   opacity: 0.7,
                 },
                 {
-                  text: formatString(carData?.variant),
-                  fontSize: 10,
-                  margin: [0, 3, 0, 0],
-                  color: colors.labelGrey,
-                },
-                {
                   stack: [
                     basicData.map((data) => {
                       const columns = [
@@ -77,7 +78,7 @@ export const getCarBasic = (
                           width: 10,
                         },
                         {
-                          text: formatString(data.value),
+                          text: formatString(data.value) ?? "-",
                           margin: [0, 10, 0, 0],
                           fontSize: 10,
                           width: "*",
