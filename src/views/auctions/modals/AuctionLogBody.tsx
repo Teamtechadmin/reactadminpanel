@@ -5,14 +5,20 @@ import { Button, Grid } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import ActionsConfirmation from "./AuctionActionsConfirmation";
+import { useUpdateResult } from "@/services/result/auction/patch";
+import { useQueryClient } from "@tanstack/react-query";
+import useCustomToast from "@/utils/toast";
 
 interface LogBodyProps {
   leaderBoard: any[];
+  carID: string;
 }
 
 export type ActionData = {
   fullname: string;
   type: ModalAction;
+  id: string;
+  userId?: string;
 };
 
 export type ModalAction = "Choose" | "Reject" | "Unsold";
@@ -22,19 +28,31 @@ export default function AuctionLogBody(props: LogBodyProps) {
   const [action, setAction] = useState<ActionData>({
     type: "Choose",
     fullname: "",
+    id: "",
+    userId: "",
   });
-
-  const { leaderBoard } = props;
+  const isChoose = action.type === "Choose";
+  const toast = useCustomToast();
+  const queryClient = useQueryClient();
+  const { leaderBoard, carID } = props;
   const leaderData = addKey(leaderBoard, "id", "_id");
   const columns = useColumns({
     handleModal,
   });
+  const update = useUpdateResult();
 
-  function handleModal(type: ModalAction, fullname: string) {
+  function handleModal(
+    type: ModalAction,
+    fullname: string,
+    id: string,
+    userId: string,
+  ) {
     handleConfirmModal();
     setAction({
       fullname,
       type,
+      id,
+      userId,
     });
   }
 
@@ -43,11 +61,35 @@ export default function AuctionLogBody(props: LogBodyProps) {
     setAction({
       fullname: "",
       type: "Unsold",
+      id: carID,
     });
   }
 
   function handleConfirmModal() {
     setOpen(!open);
+  }
+
+  function handleConfirm() {
+    update.mutate(
+      {
+        id: carID,
+        body: {
+          status: isChoose ? "accept" : "reject",
+          userId: action.userId ?? "",
+        },
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: ["auction-result"],
+          });
+          handleConfirmModal();
+          toast.success(
+            isChoose ? `User Accepted as highest Bidder` : `Offer Rejected`,
+          );
+        },
+      },
+    );
   }
 
   return (
@@ -80,8 +122,8 @@ export default function AuctionLogBody(props: LogBodyProps) {
           <ActionsConfirmation
             fullname={action.fullname}
             type={action.type}
-            handleClose={() => console.log("Close")}
-            handleConfirm={() => console.log("Confirm")}
+            handleClose={handleConfirmModal}
+            handleConfirm={() => handleConfirm()}
           />
         }
         icon="tabler:info-hexagon"

@@ -5,15 +5,12 @@ import { AxiosResponse } from "axios";
 import { AuctionRoot } from "./types";
 
 async function getAuctionResult(): Promise<AxiosResponse<AuctionRoot>> {
-  //   const filterParams = {
-  //     page: params.page + 1,
-  //     limit: params.pageSize,
-  //     sortKey: "createdAt",
-  //     sortValue: -1,
-  //   };
+  const filterParams = {
+    status: "NEGOTIATION,DEAL_LOST",
+  };
 
   const response = await axiosInstance.get(GET_AUCTION_RESULT, {
-    // params: filterParams,
+    params: filterParams,
   });
 
   return response.data;

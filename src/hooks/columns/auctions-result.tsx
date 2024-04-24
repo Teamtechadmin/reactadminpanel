@@ -4,7 +4,12 @@ import { ModalAction } from "@/views/auctions/modals/AuctionLogBody";
 import { Box, Button, Typography } from "@mui/material";
 
 interface AuctionResultColsProps {
-  handleModal: (type: ModalAction, fullname: string) => void;
+  handleModal: (
+    type: ModalAction,
+    fullname: string,
+    id: string,
+    userId: string,
+  ) => void;
 }
 
 export default function useColumns(props: AuctionResultColsProps) {
@@ -17,9 +22,9 @@ export default function useColumns(props: AuctionResultColsProps) {
       headerName: "Dealer ID",
       headerClassName: "super-app-theme--header",
       renderCell: ({ row }: any) => {
-        const { id } = row;
+        const { userId } = row;
 
-        return <ClickableTypography name={id} />;
+        return <ClickableTypography name={userId} />;
       },
     },
     {
@@ -58,11 +63,12 @@ export default function useColumns(props: AuctionResultColsProps) {
       minWidth: 230,
       headerName: "Actions",
       renderCell: ({ row }: any) => {
-        const { isRejected, fullname } = row;
+        const { isRejected, fullname, id, userId } = row;
+        console.log(row, "rowCheck");
         return (
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <Button
-              onClick={() => handleModal("Choose", fullname)}
+              onClick={() => handleModal("Choose", fullname, id, userId)}
               disabled={isRejected}
               variant="contained"
               color="primary"
@@ -70,7 +76,7 @@ export default function useColumns(props: AuctionResultColsProps) {
               Choose
             </Button>
             <Button
-              onClick={() => handleModal("Reject", fullname)}
+              onClick={() => handleModal("Reject", fullname, id, userId)}
               disabled={isRejected}
               variant="contained"
               color="error"

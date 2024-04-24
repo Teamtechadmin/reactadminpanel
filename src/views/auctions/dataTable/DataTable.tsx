@@ -22,17 +22,18 @@ const DataTable = () => {
     pageSize: 10,
   });
   const [open, setOpen] = useState(false);
-  const [log, setLog] = useState({ leaderBoard: [{}], model: "" });
+  const [log, setLog] = useState({ leaderBoard: [{}], model: "", id: "" });
 
   const auctions = useGetAuctionResults();
   const auctionData: any = auctions?.data?.data;
   const auctionWithId = addKey(auctionData, "id", "_id") ?? [];
 
-  function handleLog(leaderBoard: LeaderBoard[], model: string) {
+  function handleLog(leaderBoard: LeaderBoard[], model: string, id: string) {
     handleModal();
     setLog({
       leaderBoard,
       model,
+      id,
     });
   }
 
@@ -72,7 +73,9 @@ const DataTable = () => {
       <LogModal
         open={open}
         dailogueTitle={log.model}
-        ContentComponent={<AuctionLogBody leaderBoard={log.leaderBoard} />}
+        ContentComponent={
+          <AuctionLogBody leaderBoard={log.leaderBoard} carID={log.id} />
+        }
         handleClose={handleModal}
         icon="tabler:article"
         titleFont={22}
