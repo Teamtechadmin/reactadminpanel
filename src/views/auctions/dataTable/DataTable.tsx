@@ -25,8 +25,8 @@ const DataTable = () => {
   const [log, setLog] = useState({ leaderBoard: [{}], model: "" });
 
   const auctions = useGetAuctionResults();
-  const auctionData = auctions?.data?.data;
-  const auctionWithId = addKey(auctionData ?? [], "id", "_id");
+  const auctionData: any = auctions?.data?.data;
+  const auctionWithId = addKey(auctionData, "id", "_id") ?? [];
 
   function handleLog(leaderBoard: LeaderBoard[], model: string) {
     handleModal();
@@ -40,7 +40,7 @@ const DataTable = () => {
     setOpen(!open);
   }
   return (
-    <>
+    <React.Fragment>
       <Card>
         <CardHeader
           sx={{ p: 2 }}
@@ -79,7 +79,7 @@ const DataTable = () => {
         iconSize={"1.65rem"}
         maxWidth="md"
       />
-    </>
+    </React.Fragment>
   );
 };
 
