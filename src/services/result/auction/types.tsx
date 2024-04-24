@@ -43,3 +43,16 @@ export interface LeaderBoard {
   isRejected: boolean;
   type: string;
 }
+
+export interface UpdateResultProps {
+  id: string;
+  body: {
+    status: "accept" | "reject";
+    userId: string;
+    startTime?: string;
+    endTime?: string;
+    gst?: string;
+    serviceFees?: string;
+    totalAmount?: string;
+  };
+}

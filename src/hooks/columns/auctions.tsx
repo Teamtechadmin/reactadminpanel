@@ -3,7 +3,7 @@ import { AuctionData, LeaderBoard } from "@/services/result/auction/types";
 import { Box, Button, Chip, Typography } from "@mui/material";
 
 interface Props {
-  handleLog: (leaderBoard: LeaderBoard[], model: string) => void;
+  handleLog: (leaderBoard: LeaderBoard[], model: string, id: string) => void;
 }
 
 type CellType = {
@@ -126,11 +126,11 @@ const useColumns = (props: Props) => {
       minWidth: 240,
       headerName: "Actions",
       renderCell: ({ row }: CellType) => {
-        const { model, leaderBoard } = row;
+        const { model, leaderBoard, _id } = row;
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Button
-              onClick={() => handleLog(leaderBoard, model)}
+              onClick={() => handleLog(leaderBoard, model, _id)}
               variant="contained"
             >
               Bid Log
