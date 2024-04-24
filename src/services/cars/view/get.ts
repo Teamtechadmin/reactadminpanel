@@ -12,7 +12,7 @@ export const useGetCar = (id: string) => {
   return useQuery({
     queryKey: ["car", id],
     queryFn: () => getCar(id),
-    enabled: !!id,
+    enabled: Boolean(id),
     staleTime: Infinity,
   });
 };

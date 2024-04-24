@@ -1,123 +1,121 @@
-import { AmountTypography } from "@/components/ui/containers/AmountTypography";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
-import IconifyIcon from "@/components/ui/icon";
-import { Box, Chip, IconButton, Tooltip, Typography } from "@mui/material";
+import { AuctionData, LeaderBoard } from "@/services/result/auction/types";
+import { Box, Button, Chip, Typography } from "@mui/material";
 
-type RowType = {
-  id: string;
-  name: string;
-  qc: QCStatusType;
-  auction: AuctionStatusType;
-  duration: string;
-  time_remaining: string;
-  win_or_lead: string;
-  total_bidder: number;
-  highest_price: string;
-  status: AuctionStatusType;
-};
+interface Props {
+  handleLog: (leaderBoard: LeaderBoard[], model: string) => void;
+}
 
 type CellType = {
-  row: RowType;
+  row: AuctionData;
 };
 
-type AuctionStatusType = "Live" | "Completed" | "Scheduled";
-
-type QCStatusType = "Pending" | "Rejected";
+type AuctionStatus = "DEAL_LOST" | "PROCUREMENT" | "NEGOTIATION";
 
 const auctionStatus = {
-  Scheduled: "warning",
-  Completed: "info",
-  Live: "success",
+  DEAL_LOST: {
+    title: "DEAL LOST",
+    color: "error",
+  },
+  PROCUREMENT: {
+    title: "PROCUREMENT",
+    color: "success",
+  },
+  NEGOTIATION: {
+    title: "NEGOTIATION",
+    color: "warning",
+  },
 };
 
-function getAuctionStat(auctionStat: AuctionStatusType) {
+function getAuctionStat(auctionStat: AuctionStatus) {
   return auctionStatus[auctionStat];
 }
 
-const useColumns = () => {
+function getWinner(leaderBoard: LeaderBoard[], winner: string) {
+  return leaderBoard && leaderBoard.find((item) => item.userId === winner);
+}
+
+const useColumns = (props: Props) => {
+  const { handleLog } = props;
   const columns = [
     {
       flex: 0.012,
       field: "id",
       minWidth: 110,
-      headerName: "Car ID",
+      headerName: "Dealer ID",
       headerClassName: "super-app-theme--header",
       renderCell: ({ row }: CellType) => {
-        const { id } = row;
+        const { winner, leaderBoard } = row;
+        const dealer = getWinner(leaderBoard, winner);
+        return <ClickableTypography name={dealer?.userId ?? "-"} />;
+      },
+    },
+    {
+      flex: 0.025,
+      field: "carID",
+      minWidth: 120,
+      headerName: "Car ID",
+      renderCell: ({ row }: CellType) => {
+        const { uniqueId } = row;
 
-        return <ClickableTypography name={id} />;
+        return <ClickableTypography name={String(uniqueId) ?? "-"} />;
       },
     },
     {
       flex: 0.05,
-      field: "name",
-      minWidth: 120,
-      headerName: "Car Name",
+      field: "dealer",
+      minWidth: 200,
+      headerName: "Dealer Name",
       renderCell: ({ row }: CellType) => {
-        const { name } = row;
-
-        return <ClickableTypography name={name} />;
+        const { winner, leaderBoard } = row;
+        const dealer = getWinner(leaderBoard, winner);
+        return <Typography noWrap>{dealer?.fullname}</Typography>;
       },
     },
     {
-      flex: 0.02,
-      field: "duration",
-      minWidth: 50,
-      headerName: "Duration",
+      flex: 0.04,
+      field: "phone",
+      minWidth: 150,
+      headerName: "Phone",
       renderCell: ({ row }: CellType) => {
-        const { duration } = row;
-        return <Typography noWrap>{duration}</Typography>;
+        const { winner, leaderBoard } = row;
+        const dealer = getWinner(leaderBoard, winner);
+        return <Typography noWrap>{dealer?.contactNo ?? ""}</Typography>;
       },
     },
     {
-      flex: 0.026,
-      field: "time_remaining",
-      minWidth: 50,
-      headerName: "Time Remaining",
+      flex: 0.06,
+      field: "model",
+      minWidth: 250,
+      headerName: "Car Model",
       renderCell: ({ row }: CellType) => {
-        const { time_remaining } = row;
-        return <Typography noWrap>{time_remaining}</Typography>;
-      },
-    },
-    {
-      flex: 0.026,
-      field: "win_and_lead",
-      minWidth: 50,
-      headerName: "Win/Lead",
-      renderCell: ({ row }: CellType) => {
-        const { win_or_lead } = row;
-        return <ClickableTypography name={win_or_lead} />;
-      },
-    },
-    {
-      flex: 0.02,
-      field: "total_bidders",
-      minWidth: 50,
-      headerName: "Total Bidders",
-      renderCell: ({ row }: CellType) => {
-        return <Typography noWrap>{row.total_bidder}</Typography>;
+        const { model } = row;
+        return <Typography noWrap>{model}</Typography>;
       },
     },
     {
       flex: 0.026,
-      field: "highest_price",
-      minWidth: 50,
-      headerName: "Highest Price",
+      field: "highest_bid",
+      minWidth: 200,
+      headerName: "Highest Bid",
       renderCell: ({ row }: CellType) => {
-        return <AmountTypography text={row.highest_price} />;
+        const { winner, leaderBoard } = row;
+        const dealer = getWinner(leaderBoard, winner);
+        return <Typography>{dealer?.amount}</Typography>;
       },
     },
     {
       flex: 0.026,
-      field: "auction_status",
-      minWidth: 50,
-      headerName: "Auction Status",
+      field: "status",
+      minWidth: 250,
+      headerName: "Status",
       renderCell: ({ row }: CellType) => {
+        const chipData = getAuctionStat(row.status as any) as any;
         return (
           <Chip
-            label={row.status}
+            label={chipData?.title ?? "-"}
             variant="outlined"
-            color={getAuctionStat(row.status) as any}
+            color={chipData?.color ?? "error"}
           />
         );
       },
@@ -125,41 +123,18 @@ const useColumns = () => {
     {
       flex: 0.03,
       field: "action",
-      minWidth: 30,
+      minWidth: 240,
       headerName: "Actions",
-      renderCell: ({ row }: any) => {
-        const { qc, auction } = row;
+      renderCell: ({ row }: CellType) => {
+        const { model, leaderBoard } = row;
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Tooltip title="Stop Auction">
-              <IconButton size="small" sx={{ color: "text.secondary" }}>
-                <IconifyIcon
-                  icon={"tabler:circle-rectangle"}
-                  fontSize={"1.5rem"}
-                />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="One Touch Buy">
-              <IconButton
-                size="small"
-                sx={{ color: "text.secondary" }}
-                disabled={qc === "Approved" || qc === "Not Submitted"}
-              >
-                <IconifyIcon icon={"tabler:hand-click"} fontSize={"1.5rem"} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Approve Auction">
-              <IconButton
-                size="small"
-                sx={{ color: "text.secondary" }}
-                disabled={auction === "Approved"}
-              >
-                <IconifyIcon
-                  icon={"tabler:discount-check"}
-                  fontSize={"1.5rem"}
-                />
-              </IconButton>
-            </Tooltip>
+            <Button
+              onClick={() => handleLog(leaderBoard, model)}
+              variant="contained"
+            >
+              Bid Log
+            </Button>
           </Box>
         );
       },
