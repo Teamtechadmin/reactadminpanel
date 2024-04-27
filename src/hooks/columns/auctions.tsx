@@ -1,9 +1,10 @@
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
-import { AuctionData, LeaderBoard } from "@/services/result/auction/types";
+import { getWinner } from "@/functions/results/get-winner";
+import { AuctionData, LogProps } from "@/services/result/auction/types";
 import { Box, Button, Chip, Typography } from "@mui/material";
 
 interface Props {
-  handleLog: (leaderBoard: LeaderBoard[], model: string, id: string) => void;
+  handleLog: (props: LogProps) => void;
 }
 
 type CellType = {
@@ -29,10 +30,6 @@ const auctionStatus = {
 
 function getAuctionStat(auctionStat: AuctionStatus) {
   return auctionStatus[auctionStat];
-}
-
-function getWinner(leaderBoard: LeaderBoard[], winner: string) {
-  return leaderBoard && leaderBoard.find((item) => item.userId === winner);
 }
 
 const useColumns = (props: Props) => {
@@ -126,15 +123,42 @@ const useColumns = (props: Props) => {
       minWidth: 240,
       headerName: "Actions",
       renderCell: ({ row }: CellType) => {
-        const { model, leaderBoard, _id } = row;
+        const { model, _id, status, negotiation_status } = row;
+        const isNoBid = status === "NO_BID";
+        const disableLog = isNoBid;
+        const isGiveOffer = status === "NEGOTIATION";
+        const isViewOffer = negotiation_status?.[0] === "VIEW";
+
         return (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
             <Button
-              onClick={() => handleLog(leaderBoard, model, _id)}
+              onClick={() =>
+                handleLog({
+                  id: _id,
+                  model,
+                  type: "log",
+                })
+              }
               variant="contained"
+              disabled={disableLog}
             >
               Bid Log
             </Button>
+            {isGiveOffer && (
+              <Button
+                onClick={() =>
+                  handleLog({
+                    id: _id,
+                    model,
+                    type: "offer",
+                  })
+                }
+                variant="contained"
+                disabled={disableLog}
+              >
+                {isViewOffer ? "View Offer" : "Give Offer"}
+              </Button>
+            )}
           </Box>
         );
       },

@@ -11,10 +11,12 @@ interface TimePickerProps {
   label?: string;
   defaultValue?: Date;
   todayByDefault?: boolean;
+  minDate?: Date;
 }
 
 const TimePickerForm = (props: TimePickerProps) => {
-  const { id, control, error, label, defaultValue, todayByDefault } = props;
+  const { id, control, error, label, defaultValue, todayByDefault, minDate } =
+    props;
   const today = new Date();
   return (
     <Grid width={"100%"}>
@@ -25,7 +27,7 @@ const TimePickerForm = (props: TimePickerProps) => {
           <DateTimePicker
             value={value}
             onChange={(e) => onChange(e)}
-            minDate={today}
+            minDate={minDate ?? today}
             label={label ?? "Date and Time"}
             format="dd/MM/yyyy HH:mm"
             defaultValue={
