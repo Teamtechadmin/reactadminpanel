@@ -47,12 +47,19 @@ export interface LeaderBoard {
 export interface UpdateResultProps {
   id: string;
   body: {
-    status: "accept" | "reject";
-    userId: string;
+    status: "accept" | "reject" | "offer";
+    userId: string | null;
     startTime?: string;
     endTime?: string;
     gst?: string;
     serviceFees?: string;
     totalAmount?: string;
+    amount?: number;
   };
+}
+
+export interface LogProps {
+  id: string;
+  model: string;
+  type: "log" | "offer";
 }

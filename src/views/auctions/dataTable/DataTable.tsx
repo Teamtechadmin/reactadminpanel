@@ -4,9 +4,10 @@ import { DataGrid } from "@mui/x-data-grid";
 import useColumns from "@/hooks/columns/auctions";
 import { useGetAuctionResults } from "@/services/result/auction/get";
 import { addKey } from "@/utils/add-key";
-import { LeaderBoard } from "@/services/result/auction/types";
+import { LogProps } from "@/services/result/auction/types";
 import AuctionLogBody from "../modals/AuctionLogBody";
 import LogModal from "../modals/AuctionLogModal";
+import { OfferModal } from "../modals/OfferModal";
 
 const DataTable = () => {
   const isSmallScreen = useMediaQuery((theme: Theme) =>
@@ -22,24 +23,34 @@ const DataTable = () => {
     pageSize: 10,
   });
   const [open, setOpen] = useState(false);
-  const [log, setLog] = useState({ leaderBoard: [{}], model: "", id: "" });
+  const [offerOpen, setOfferOpen] = useState(false);
+  const [log, setLog] = useState<LogProps>({ id: "", model: "", type: "log" });
 
   const auctions = useGetAuctionResults();
   const auctionData: any = auctions?.data?.data;
   const auctionWithId = addKey(auctionData, "id", "_id") ?? [];
 
-  function handleLog(leaderBoard: LeaderBoard[], model: string, id: string) {
-    handleModal();
+  function handleLog({ id, model, type }: LogProps) {
+    if (type === "log") {
+      handleModal();
+    } else {
+      handleOfferModal();
+    }
     setLog({
-      leaderBoard,
       model,
       id,
+      type,
     });
   }
 
   function handleModal() {
     setOpen(!open);
   }
+
+  function handleOfferModal() {
+    setOfferOpen(!offerOpen);
+  }
+
   return (
     <React.Fragment>
       <Card>
@@ -64,23 +75,24 @@ const DataTable = () => {
             paginationMode="server"
             paginationModel={params}
             onPaginationModelChange={setParams}
-            // initialState={{
-            //   pagination: { paginationModel: { page: 1, pageSize: 10 } },
-            // }}
           />
         </Grid>
       </Card>
       <LogModal
         open={open}
         dailogueTitle={log.model}
-        ContentComponent={
-          <AuctionLogBody leaderBoard={log.leaderBoard} carID={log.id} />
-        }
+        ContentComponent={<AuctionLogBody log={log} data={auctionWithId} />}
         handleClose={handleModal}
         icon="tabler:article"
         titleFont={22}
         iconSize={"1.65rem"}
         maxWidth="md"
+      />
+      <OfferModal
+        open={offerOpen}
+        handleClose={handleOfferModal}
+        data={auctionWithId}
+        selectedId={log.id}
       />
     </React.Fragment>
   );

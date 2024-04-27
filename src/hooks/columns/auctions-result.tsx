@@ -1,5 +1,7 @@
 import { AmountTypography } from "@/components/ui/containers/AmountTypography";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
+import { getWinner } from "@/functions/results/get-winner";
+import { LeaderBoard } from "@/services/result/auction/types";
 import { ModalAction } from "@/views/auctions/modals/AuctionLogBody";
 import { Box, Button, Typography } from "@mui/material";
 
@@ -10,10 +12,14 @@ interface AuctionResultColsProps {
     id: string,
     userId: string,
   ) => void;
+  winner: string;
+  leaderBoard: LeaderBoard[] | [object];
 }
 
 export default function useColumns(props: AuctionResultColsProps) {
-  const { handleModal } = props;
+  const { handleModal, winner, leaderBoard } = props;
+  const winnerData = getWinner(leaderBoard as LeaderBoard[], winner);
+  const isWinnerRejected = winner && winnerData?.isRejected;
   const columns = [
     {
       flex: 0.012,
@@ -58,31 +64,36 @@ export default function useColumns(props: AuctionResultColsProps) {
       },
     },
     {
-      flex: 0.02,
+      flex: 0.025,
       field: "action",
-      minWidth: 230,
+      minWidth: 100,
       headerName: "Actions",
       renderCell: ({ row }: any) => {
         const { isRejected, fullname, id, userId } = row;
-        console.log(row, "rowCheck");
+        const isWinner = userId === winner;
+        const disableChoose = !isWinnerRejected;
+
         return (
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-            <Button
-              onClick={() => handleModal("Choose", fullname, id, userId)}
-              disabled={isRejected}
-              variant="contained"
-              color="primary"
-            >
-              Choose
-            </Button>
-            <Button
-              onClick={() => handleModal("Reject", fullname, id, userId)}
-              disabled={isRejected}
-              variant="contained"
-              color="error"
-            >
-              Reject
-            </Button>
+            {isWinner || isRejected ? (
+              <Button
+                onClick={() => handleModal("Reject", fullname, id, userId)}
+                disabled={isRejected}
+                variant={"contained"}
+                color="error"
+              >
+                {isRejected ? "Rejected" : "Reject"}
+              </Button>
+            ) : (
+              <Button
+                onClick={() => handleModal("Choose", fullname, id, userId)}
+                disabled={disableChoose}
+                variant="contained"
+                color="primary"
+              >
+                Choose
+              </Button>
+            )}
           </Box>
         );
       },

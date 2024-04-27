@@ -8,10 +8,14 @@ import ActionsConfirmation from "./AuctionActionsConfirmation";
 import { useUpdateResult } from "@/services/result/auction/patch";
 import { useQueryClient } from "@tanstack/react-query";
 import useCustomToast from "@/utils/toast";
+import { LogProps } from "@/services/result/auction/types";
+import { errorMessageParser } from "@/utils/error";
+import { useUpdateCar } from "@/services/cars/update/patch";
+import { AxiosError } from "axios";
 
 interface LogBodyProps {
-  leaderBoard: any[];
-  carID: string;
+  log: LogProps;
+  data: any;
 }
 
 export type ActionData = {
@@ -32,14 +36,23 @@ export default function AuctionLogBody(props: LogBodyProps) {
     userId: "",
   });
   const isChoose = action.type === "Choose";
+  const isUnsold = action.type === "Unsold";
   const toast = useCustomToast();
   const queryClient = useQueryClient();
-  const { leaderBoard, carID } = props;
+  const { log, data } = props;
+  const { id: carID } = log;
+  const selectedCar = data?.find((item: { id: string }) => item.id === carID);
+  const { winner } = selectedCar || {};
+  const leaderBoard = selectedCar?.leaderBoard;
+
   const leaderData = addKey(leaderBoard, "id", "_id");
   const columns = useColumns({
     handleModal,
+    winner,
+    leaderBoard,
   });
   const update = useUpdateResult();
+  const unsold = useUpdateCar();
 
   function handleModal(
     type: ModalAction,
@@ -70,26 +83,56 @@ export default function AuctionLogBody(props: LogBodyProps) {
   }
 
   function handleConfirm() {
-    update.mutate(
-      {
-        id: carID,
-        body: {
-          status: isChoose ? "accept" : "reject",
-          userId: action.userId ?? "",
+    if (isUnsold) {
+      unsold.mutate(
+        {
+          id: carID,
+          body: {
+            status: "UNSOLD",
+          },
         },
-      },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: ["auction-result"],
-          });
-          handleConfirmModal();
-          toast.success(
-            isChoose ? `User Accepted as highest Bidder` : `Offer Rejected`,
-          );
+        {
+          onSuccess: () => handleSuccess(),
+          onError: (err) => handleError(err),
         },
-      },
+      );
+    } else {
+      update.mutate(
+        {
+          id: carID,
+          body: {
+            status: isChoose ? "accept" : "reject",
+            userId: action.userId ?? "",
+          },
+        },
+        {
+          onSuccess: () => {
+            handleSuccess;
+          },
+          onError: (err) => {
+            handleError(err);
+          },
+        },
+      );
+    }
+  }
+
+  function handleSuccess() {
+    queryClient.invalidateQueries({
+      queryKey: ["auction-result"],
+    });
+    handleConfirmModal();
+    toast.success(
+      isChoose
+        ? `User Accepted as Highest Bidder`
+        : isUnsold
+          ? "Car Marked as UNSOLD"
+          : `Offer Rejected`,
     );
+  }
+
+  function handleError(err: Error | AxiosError | unknown) {
+    toast.error(errorMessageParser(err));
   }
 
   return (
