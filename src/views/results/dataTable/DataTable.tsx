@@ -6,6 +6,11 @@ import { useGetAuctionResults } from "@/services/result/auction/get";
 import { addKey } from "@/utils/add-key";
 import { CarAuctionOtbHandleTypes } from "@/types/cars/car";
 import AuctionDialogue from "@/views/cars/dailogue/AuctionDialogue";
+import ConfirmModal from "@/components/ui/modals/ConfirmModal";
+import { ConfirmBody } from "@/components/ui/custom/confirm/ConfirmBody";
+import useUpdateCarById from "@/hooks/actions/cars/update-car";
+import useCustomToast from "@/utils/toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const DataTable = () => {
   const isSmallScreen = useMediaQuery((theme: Theme) =>
@@ -15,6 +20,7 @@ const DataTable = () => {
 
   const columns = useColumns({
     handleAuctionOtb,
+    handleRC,
   });
   const [params, setParams] = useState({
     page: 0,
@@ -30,6 +36,11 @@ const DataTable = () => {
 
   const [id, setId] = useState("");
   const [openApprove, setOpenApprove] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const update = useUpdateCarById();
+  const toast = useCustomToast();
+  const queryClient = useQueryClient();
+
   const [modal, setModal] = useState<CarAuctionOtbHandleTypes>("auction");
 
   function handleAuctionOtb(carId: string, type: CarAuctionOtbHandleTypes) {
@@ -37,6 +48,30 @@ const DataTable = () => {
     setOpenApprove(!openApprove);
     setModal(type);
   }
+
+  function handleRC(id: string) {
+    handleConfirmModal();
+    setId(id);
+  }
+
+  function handleConfirmModal() {
+    setOpenConfirm(!openConfirm);
+  }
+
+  function handleRCSubmit() {
+    update({
+      body: { status: "RCTRANSFER" },
+      id,
+      handleSuccess: () => {
+        handleConfirmModal();
+        toast.success("Status set to RC Transfer"),
+          queryClient.invalidateQueries({
+            queryKey: ["auction-result"],
+          });
+      },
+    });
+  }
+
   const resultDataCount: any = data;
   const count = resultDataCount?.count;
 
@@ -74,6 +109,24 @@ const DataTable = () => {
           isList
           modal={modal}
           isResult
+        />
+        <ConfirmModal
+          open={openConfirm}
+          dailogueTitle={`Are you sure?`}
+          handleClose={handleConfirmModal}
+          ContentComponent={
+            <ConfirmBody
+              handleClose={handleConfirmModal}
+              handleSubmit={handleRCSubmit}
+              text={
+                "By Clicking on Submit this car will be marked to RC Transfer Status"
+              }
+            />
+          }
+          icon="tabler:info-hexagon"
+          iconSize={"1.5rem"}
+          titleFont={20}
+          hideClose
         />
       </Grid>
     </Card>
