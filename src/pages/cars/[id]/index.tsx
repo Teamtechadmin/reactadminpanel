@@ -110,6 +110,7 @@ const CarsView = () => {
           open={openApprove}
           setOpen={setOpenApprove}
           id={String(router.query.id)}
+          modal="auction"
         />
       </>
     );

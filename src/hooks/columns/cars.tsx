@@ -8,6 +8,7 @@ import { Box, Chip, IconButton, Tooltip, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import useCarActions from "../actions/cars/car-actions";
 import { StatusType, getStatusColor } from "@/functions/cars/get-status-color";
+import { CarColumnProps } from "@/types/cars/car";
 
 type RowType = {
   id: string;
@@ -28,10 +29,6 @@ type FuelType = "Petrol" | "Diesel" | "Hybrid";
 
 type AuctionStatusType = "Pending" | "Rejected";
 
-interface CarColumnProps {
-  handleAuction: (id: string) => void;
-}
-
 const statusLabel: any = {
   EVALUATED: "EVALUATED",
   PENDING_EVALUATION: "PENDING",
@@ -43,7 +40,7 @@ const statusLabel: any = {
 };
 
 const useColumns = (props: CarColumnProps) => {
-  const { handleAuction } = props;
+  const { handleAuctionOtb } = props;
   const router = useRouter();
   const { approveQC } = useCarActions();
 
@@ -144,7 +141,7 @@ const useColumns = (props: CarColumnProps) => {
       },
     },
     {
-      flex: 0.02,
+      flex: 0.025,
       field: "action",
       minWidth: 30,
       headerName: "Actions",
@@ -174,10 +171,23 @@ const useColumns = (props: CarColumnProps) => {
                 size="small"
                 sx={{ color: "text.secondary" }}
                 disabled={isAuction}
-                onClick={() => handleAuction(id)}
+                onClick={() => handleAuctionOtb(id, "auction")}
               >
                 <IconifyIcon
                   icon={"tabler:discount-check"}
+                  fontSize={"1.5rem"}
+                />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Move To OTB">
+              <IconButton
+                size="small"
+                sx={{ color: "text.secondary" }}
+                disabled={isAuction}
+                onClick={() => handleAuctionOtb(id, "otb")}
+              >
+                <IconifyIcon
+                  icon={"tabler:credit-card-pay"}
                   fontSize={"1.5rem"}
                 />
               </IconButton>

@@ -8,18 +8,18 @@ interface AuctionControlProps {
   control: Control<ApproveCar>;
   errors: any;
   handleCancel: () => void;
+  isAuction: boolean;
 }
 
 export function AuctionContent(auctionContentProps: AuctionControlProps) {
-  const { control, errors, handleCancel } = auctionContentProps;
-
+  const { control, errors, handleCancel, isAuction } = auctionContentProps;
   return (
     <Grid padding={3} container display={"flex"} gap={2} width={"100%"}>
       <Grid width={"100%"}>
         <TimePickerForm
           id="bidStartTime"
           control={control}
-          error={errors?.startBidTime}
+          error={errors?.bidStartTime}
           label="Start Bid Time"
         />
       </Grid>
@@ -27,7 +27,7 @@ export function AuctionContent(auctionContentProps: AuctionControlProps) {
         <TimePickerForm
           id="bidEndTime"
           control={control}
-          error={errors?.endBidTime}
+          error={errors?.bidEndTime}
           label="End Bid Time"
         />
       </Grid>
@@ -36,7 +36,7 @@ export function AuctionContent(auctionContentProps: AuctionControlProps) {
           control={control}
           id="realValue"
           error={errors?.realValue}
-          label="Fair Market Price"
+          label={isAuction ? "Fair Market Price" : "OTB Price"}
           size="medium"
           type="number"
           InputProps={{
