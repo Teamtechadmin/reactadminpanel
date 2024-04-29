@@ -3,12 +3,10 @@ import { getWinner } from "@/functions/results/get-winner";
 import { AuctionData } from "@/services/result/auction/types";
 import { CarAuctionOtbHandleTypes } from "@/types/cars/car";
 import { Box, Button, Chip, Typography } from "@mui/material";
-import useUpdateCarById from "../actions/cars/update-car";
-import useCustomToast from "@/utils/toast";
-import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   handleAuctionOtb: (carId: string, type: CarAuctionOtbHandleTypes) => void;
+  handleRC: (id: string) => void;
 }
 
 type CellType = {
@@ -37,22 +35,7 @@ function getAuctionStat(auctionStat: AuctionStatus) {
 }
 
 const useColumns = (props: Props) => {
-  const { handleAuctionOtb } = props;
-  const update = useUpdateCarById();
-  const toast = useCustomToast();
-  const queryClient = useQueryClient();
-  const handleRC = (id: string) => {
-    update({
-      body: { status: "RCTRANSFER" },
-      id,
-      handleSuccess: () => {
-        toast.success("Status set to RC Transfer"),
-          queryClient.invalidateQueries({
-            queryKey: ["auction-result"],
-          });
-      },
-    });
-  };
+  const { handleAuctionOtb, handleRC } = props;
 
   const columns = [
     {
