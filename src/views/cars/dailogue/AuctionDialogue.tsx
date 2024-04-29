@@ -16,6 +16,7 @@ interface AuctionDialogueProps {
   id: string;
   modal: CarAuctionOtbHandleTypes;
   isList?: boolean;
+  isResult?: boolean;
 }
 
 const defaultValues = {
@@ -25,7 +26,7 @@ const defaultValues = {
 };
 
 function AuctionDialogue(props: AuctionDialogueProps) {
-  const { open, setOpen, id, modal, isList } = props;
+  const { open, setOpen, id, modal, isList, isResult } = props;
   const isAuction = modal === "auction";
   const schema = useFormSchema();
   const approveAuction = useUpdateCarById();
@@ -60,7 +61,7 @@ function AuctionDialogue(props: AuctionDialogueProps) {
         );
         handleClose();
         queryClient.invalidateQueries({
-          queryKey: [isList ? "cars" : "car"],
+          queryKey: [isList ? "cars" : isResult ? "auction-result" : "car"],
         });
       },
     });
