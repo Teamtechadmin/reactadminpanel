@@ -48,13 +48,13 @@ export interface LeaderBoard {
 export interface UpdateResultProps {
   id: string;
   body: {
-    status: "accept" | "reject" | "offer";
-    userId: string | null;
+    status: "accept" | "reject" | "offer" | "bill";
+    userId?: string | null;
     startTime?: string;
     endTime?: string;
-    gst?: string;
-    serviceFees?: string;
-    totalAmount?: string;
+    gst?: number;
+    serviceFees?: number;
+    totalAmount?: number;
     amount?: number;
   };
 }
