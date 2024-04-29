@@ -39,6 +39,15 @@ const statusLabel: any = {
   DEAL_LOST: "DEAL LOST",
 };
 
+const disableBtnStatus = [
+  "SCHEDULED",
+  "LIVE",
+  "PROCUREMENT",
+  "DEAL_LOST",
+  "RCTRANSFER",
+  "OTB",
+];
+
 const useColumns = (props: CarColumnProps) => {
   const { handleAuctionOtb } = props;
   const router = useRouter();
@@ -148,7 +157,7 @@ const useColumns = (props: CarColumnProps) => {
       renderCell: ({ row }: any) => {
         const { qcStatus, status, id } = row;
         const isQcChecked = qcStatus === "VERIFIED";
-        const isAuction = status === "SCHEDULED" || status === "LIVE";
+        const disableBtns = disableBtnStatus.includes(status);
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <ButtonIcon
@@ -170,7 +179,7 @@ const useColumns = (props: CarColumnProps) => {
               <IconButton
                 size="small"
                 sx={{ color: "text.secondary" }}
-                disabled={isAuction}
+                disabled={disableBtns}
                 onClick={() => handleAuctionOtb(id, "auction")}
               >
                 <IconifyIcon
@@ -183,7 +192,7 @@ const useColumns = (props: CarColumnProps) => {
               <IconButton
                 size="small"
                 sx={{ color: "text.secondary" }}
-                disabled={isAuction}
+                disabled={disableBtns}
                 onClick={() => handleAuctionOtb(id, "otb")}
               >
                 <IconifyIcon
