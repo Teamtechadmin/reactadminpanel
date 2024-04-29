@@ -8,6 +8,8 @@ export const statusColor: any = {
   PENDING_EVALUATION: "warning",
   PROCUREMENT: "success",
   OTB: "info",
+  RCTRANSFER: "info",
+  DEAL_LOST: "error",
 };
 
 export function getStatusColor(status: StatusType) {
