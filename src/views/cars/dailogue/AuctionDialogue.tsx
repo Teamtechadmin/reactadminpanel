@@ -19,8 +19,8 @@ interface AuctionDialogueProps {
 }
 
 const defaultValues = {
-  startBidTime: new Date(),
-  endBidTime: new Date(),
+  bidStartTime: new Date(),
+  bidEndTime: new Date(),
   realValue: 0,
 };
 

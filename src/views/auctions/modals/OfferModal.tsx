@@ -199,9 +199,8 @@ export const OfferModalBody = (props: OfferModalBodyProps) => {
 
 export const OfferModal = (props: OfferModalProps) => {
   const { open, handleClose, data, selectedId } = props;
-  const selectedCarData = data?.find(
-    (item: { id: string }) => item.id === selectedId,
-  );
+  const selectedCarData =
+    data && data?.find((item: { id: string }) => item.id === selectedId);
   const isView = selectedCarData?.negotiation_status?.[0] === "VIEW";
 
   return (
