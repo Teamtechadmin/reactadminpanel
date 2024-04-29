@@ -10,10 +10,10 @@ const navigation = (): VerticalNavItemsType => {
       icon: "tabler:dashboard",
     },
     {
-      title: "Customers",
-      path: "/customers",
+      title: "Dealers",
+      path: "/dealers",
       action: "manage",
-      subject: "customers",
+      subject: "dealers",
       icon: "tabler:users",
     },
     {

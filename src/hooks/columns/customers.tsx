@@ -1,15 +1,13 @@
-import { ButtonIcon } from "@/components/ui/buttons/ButtonIcon";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
-import { Box, Chip, Typography } from "@mui/material";
-import { useRouter } from "next/router";
+import { Chip, Typography } from "@mui/material";
 
-export type StatusType = "Blocked" | "Not Verified" | "Verified";
+export type StatusType = "Deactivated" | "Active";
 
-export type DocStatus = "Not Submitted" | "Submitted";
+export type DocStatus = "NOTSUBMITTED" | "SUBMITTED";
 
 interface RowType {
   status: StatusType;
-  documents: DocStatus;
+  isDocumentsVerified: DocStatus;
   location: string;
   id: string;
   name: string;
@@ -21,14 +19,13 @@ type CellType = {
 };
 
 const statusColor = {
-  Verified: "success",
-  "Not Verified": "warning",
-  Blocked: "error",
+  Deactivated: "error",
+  Active: "success",
 };
 
 const docColor = {
-  Submitted: "success",
-  "Not Submitted": "warning",
+  SUBMITTED: "success",
+  NOTSUBMITTED: "warning",
 };
 
 function getStatusColor(status: StatusType) {
@@ -40,21 +37,17 @@ function getDocumentColor(documentStatus: DocStatus) {
 }
 
 const useColumns = () => {
-  const router = useRouter();
-  function handleView(id: string) {
-    router.push(`/customers/${id}`);
-  }
   const columns: any = [
     {
       flex: 0.012,
       field: "id",
       minWidth: 110,
-      headerName: "Customer ID",
+      headerName: "Dealer ID",
       headerClassName: "super-app-theme--header",
       renderCell: ({ row }: any) => {
-        const { id } = row;
-
-        return <ClickableTypography name={id} />;
+        const { userId } = row;
+        console.log(row, "dealerData");
+        return <ClickableTypography name={userId} />;
       },
     },
     {
@@ -63,9 +56,9 @@ const useColumns = () => {
       minWidth: 120,
       headerName: "Customer Name",
       renderCell: ({ row }: any) => {
-        const { name } = row;
+        const { fullname } = row;
 
-        return <ClickableTypography name={name} />;
+        return <ClickableTypography name={fullname} />;
       },
     },
     {
@@ -74,8 +67,8 @@ const useColumns = () => {
       minWidth: 50,
       headerName: "Phone No.",
       renderCell: ({ row }: any) => {
-        const { phone } = row;
-        return <Typography noWrap>{phone}</Typography>;
+        const { contactNo } = row;
+        return <Typography noWrap>{contactNo}</Typography>;
       },
     },
     {
@@ -96,9 +89,9 @@ const useColumns = () => {
       renderCell: ({ row }: CellType) => {
         return (
           <Chip
-            label={row.documents}
+            label={row.isDocumentsVerified ?? "-"}
             variant="outlined"
-            color={getDocumentColor(row.documents) as any}
+            color={getDocumentColor(row.isDocumentsVerified) as any}
           />
         );
       },
@@ -109,7 +102,8 @@ const useColumns = () => {
       minWidth: 50,
       headerName: "Status",
       renderCell: ({ row }: any) => {
-        const { status } = row;
+        const { isDeactivate } = row;
+        const status = isDeactivate ? "Deactivated" : "Active";
         return (
           <Chip
             label={status}
@@ -119,29 +113,29 @@ const useColumns = () => {
         );
       },
     },
-    {
-      flex: 0.02,
-      field: "action",
-      minWidth: 30,
-      headerName: "Actions",
-      renderCell: ({ row }: any) => {
-        const { status, documents, id } = row;
-        return (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <ButtonIcon
-              icon="tabler:eye"
-              title="View"
-              onClick={() => handleView(id)}
-            />
-            <ButtonIcon
-              icon="tabler:discount-check"
-              title="Verify"
-              disabled={status === "Verified" || documents === "Not Submitted"}
-            />
-          </Box>
-        );
-      },
-    },
+    // {
+    //   flex: 0.02,
+    //   field: "action",
+    //   minWidth: 30,
+    //   headerName: "Actions",
+    //   renderCell: ({ row }: any) => {
+    //     const { status, documents, id } = row;
+    //     return (
+    //       <Box sx={{ display: "flex", alignItems: "center" }}>
+    //         <ButtonIcon
+    //           icon="tabler:eye"
+    //           title="View"
+    //           onClick={() => handleView(id)}
+    //         />
+    //         <ButtonIcon
+    //           icon="tabler:discount-check"
+    //           title="Verify"
+    //           disabled={status === "Verified" || documents === "Not Submitted"}
+    //         />
+    //       </Box>
+    //     );
+    //   },
+    // },
   ];
 
   return columns;
