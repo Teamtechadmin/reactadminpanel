@@ -11,6 +11,8 @@ import { ConfirmBody } from "@/components/ui/custom/confirm/ConfirmBody";
 import useUpdateCarById from "@/hooks/actions/cars/update-car";
 import useCustomToast from "@/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { AuctionData } from "@/services/result/auction/types";
+import { BillDialogue } from "../modals/BillDialogue";
 
 const DataTable = () => {
   const isSmallScreen = useMediaQuery((theme: Theme) =>
@@ -21,6 +23,7 @@ const DataTable = () => {
   const columns = useColumns({
     handleAuctionOtb,
     handleRC,
+    handleBill,
   });
   const [params, setParams] = useState({
     page: 0,
@@ -37,6 +40,9 @@ const DataTable = () => {
   const [id, setId] = useState("");
   const [openApprove, setOpenApprove] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
+  const [openBill, setOpenBill] = useState(false);
+  const [bill, setBill] = useState<AuctionData | null>(null);
+
   const update = useUpdateCarById();
   const toast = useCustomToast();
   const queryClient = useQueryClient();
@@ -70,6 +76,15 @@ const DataTable = () => {
           });
       },
     });
+  }
+
+  function handleBill(data: AuctionData) {
+    handleBillOpen();
+    setBill(data);
+  }
+
+  function handleBillOpen() {
+    setOpenBill(!openBill);
   }
 
   const resultDataCount: any = data;
@@ -127,6 +142,12 @@ const DataTable = () => {
           iconSize={"1.5rem"}
           titleFont={20}
           hideClose
+        />
+
+        <BillDialogue
+          open={openBill}
+          handleClose={handleBillOpen}
+          data={bill}
         />
       </Grid>
     </Card>

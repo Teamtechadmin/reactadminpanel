@@ -7,6 +7,7 @@ import { Box, Button, Chip, Typography } from "@mui/material";
 interface Props {
   handleAuctionOtb: (carId: string, type: CarAuctionOtbHandleTypes) => void;
   handleRC: (id: string) => void;
+  handleBill: (row: AuctionData) => void;
 }
 
 type CellType = {
@@ -35,7 +36,7 @@ function getAuctionStat(auctionStat: AuctionStatus) {
 }
 
 const useColumns = (props: Props) => {
-  const { handleAuctionOtb, handleRC } = props;
+  const { handleAuctionOtb, handleRC, handleBill } = props;
 
   const columns = [
     {
@@ -110,9 +111,9 @@ const useColumns = (props: Props) => {
       },
     },
     {
-      flex: 0.03,
+      flex: 0.035,
       field: "action",
-      minWidth: 240,
+      minWidth: 260,
       headerName: "Actions",
       renderCell: ({ row }: CellType) => {
         const { _id, status } = row;
@@ -140,6 +141,11 @@ const useColumns = (props: Props) => {
             {isProcured && (
               <Button onClick={() => handleRC(_id)} variant="contained">
                 RC Transfer
+              </Button>
+            )}
+            {isProcured && (
+              <Button onClick={() => handleBill(row)} variant="contained">
+                Give Bill
               </Button>
             )}
           </Box>
