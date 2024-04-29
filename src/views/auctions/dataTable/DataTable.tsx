@@ -26,7 +26,7 @@ const DataTable = () => {
   const [offerOpen, setOfferOpen] = useState(false);
   const [log, setLog] = useState<LogProps>({ id: "", model: "", type: "log" });
 
-  const auctions = useGetAuctionResults();
+  const auctions = useGetAuctionResults(params);
   const auctionData: any = auctions?.data?.data;
   const auctionWithId = addKey(auctionData, "id", "_id") ?? [];
 

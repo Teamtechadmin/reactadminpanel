@@ -4,9 +4,18 @@ import { GET_AUCTION_RESULT } from "../endPoints";
 import { AxiosResponse } from "axios";
 import { AuctionRoot } from "./types";
 
-async function getAuctionResult(): Promise<AxiosResponse<AuctionRoot>> {
+interface AuctionsParams {
+  page: number;
+  pageSize: number;
+}
+
+async function getAuctionResult(
+  params: AuctionsParams,
+): Promise<AxiosResponse<AuctionRoot>> {
   const filterParams = {
     status: "NEGOTIATION,DEAL_LOST",
+    page: params.page + 1,
+    limit: params.pageSize,
   };
 
   const response = await axiosInstance.get(GET_AUCTION_RESULT, {
@@ -16,9 +25,9 @@ async function getAuctionResult(): Promise<AxiosResponse<AuctionRoot>> {
   return response.data;
 }
 
-export const useGetAuctionResults = () => {
+export const useGetAuctionResults = (params: AuctionsParams) => {
   return useQuery({
     queryKey: ["auction-result"],
-    queryFn: () => getAuctionResult(),
+    queryFn: () => getAuctionResult(params),
   });
 };
