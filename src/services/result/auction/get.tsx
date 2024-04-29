@@ -7,13 +7,14 @@ import { AuctionRoot } from "./types";
 interface AuctionsParams {
   page: number;
   pageSize: number;
+  status: string;
 }
 
 async function getAuctionResult(
   params: AuctionsParams,
 ): Promise<AxiosResponse<AuctionRoot>> {
   const filterParams = {
-    status: "NEGOTIATION,DEAL_LOST",
+    status: params.status,
     page: params.page + 1,
     limit: params.pageSize,
   };
