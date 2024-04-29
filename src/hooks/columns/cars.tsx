@@ -38,6 +38,8 @@ const statusLabel: any = {
   LIVE: "LIVE",
   SCHEDULED: "SCHEDULED",
   PROCUREMENT: "PROCUREMENT",
+  RCTRANSFER: "RC TRANSFER",
+  DEAL_LOST: "DEAL LOST",
 };
 
 const useColumns = (props: CarColumnProps) => {
