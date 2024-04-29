@@ -146,8 +146,8 @@ export default function AuctionLogBody(props: LogBodyProps) {
             disableColumnSelector
             columns={columns ?? []}
             rows={(leaderData as any) ?? []}
-            rowCount={10}
             paginationMode="server"
+            pageSizeOptions={[]}
           />
         </Grid>
 
