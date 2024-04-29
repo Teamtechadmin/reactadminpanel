@@ -3,6 +3,7 @@ export interface AuctionRoot {
   message: string;
   data: AuctionData[];
   meta: Meta;
+  count: number;
 }
 
 interface Meta {

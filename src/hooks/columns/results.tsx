@@ -1,134 +1,164 @@
-import { ButtonIcon } from "@/components/ui/buttons/ButtonIcon";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
-import { formatToAmount } from "@/utils/convert-to-rs";
-import { Box, Chip, Typography } from "@mui/material";
-import { useRouter } from "next/router";
+import { getWinner } from "@/functions/results/get-winner";
+import { AuctionData } from "@/services/result/auction/types";
+import { CarAuctionOtbHandleTypes } from "@/types/cars/car";
+import { Box, Button, Chip, Typography } from "@mui/material";
+import useUpdateCarById from "../actions/cars/update-car";
+import useCustomToast from "@/utils/toast";
+import { useQueryClient } from "@tanstack/react-query";
 
-export type StatusType = "Contacted" | "Not Contacted";
-
-interface RowType {
-  status: StatusType;
-  highest_price: string;
-  id: string;
-  customerId: string;
-  carName: string;
-  customerName: string;
-  name: string;
-  phone: string;
+interface Props {
+  handleAuctionOtb: (carId: string, type: CarAuctionOtbHandleTypes) => void;
 }
 
 type CellType = {
-  row: RowType;
+  row: AuctionData;
 };
 
-const statusColor = {
-  Contacted: "success",
-  "Not Contacted": "warning",
-  Blocked: "error",
+type AuctionStatus = "PROCUREMENT" | "NOBID" | "UNSOLD";
+
+const auctionStatus = {
+  PROCUREMENT: {
+    title: "PROCUREMENT",
+    color: "success",
+  },
+  UNSOLD: {
+    title: "UNSOLD",
+    color: "error",
+  },
+  NOBID: {
+    title: "NO BID",
+    color: "error",
+  },
 };
 
-function getStatusColor(status: StatusType) {
-  return statusColor[status as StatusType] as "success" | "warning" | "error";
+function getAuctionStat(auctionStat: AuctionStatus) {
+  return auctionStatus[auctionStat];
 }
 
-const useColumns = () => {
-  const router = useRouter();
+const useColumns = (props: Props) => {
+  const { handleAuctionOtb } = props;
+  const update = useUpdateCarById();
+  const toast = useCustomToast();
+  const queryClient = useQueryClient();
+  const handleRC = (id: string) => {
+    update({
+      body: { status: "RCTRANSFER" },
+      id,
+      handleSuccess: () => {
+        toast.success("Status set to RC Transfer"),
+          queryClient.invalidateQueries({
+            queryKey: ["auction-result"],
+          });
+      },
+    });
+  };
 
   const columns = [
     {
       flex: 0.012,
       field: "id",
       minWidth: 110,
+      headerName: "Dealer ID",
+      headerClassName: "super-app-theme--header",
+      renderCell: ({ row }: CellType) => {
+        const { winner, leaderBoard } = row;
+        const dealer = getWinner(leaderBoard, winner);
+        return <ClickableTypography name={dealer?.userId ?? "-"} />;
+      },
+    },
+    {
+      flex: 0.025,
+      field: "carID",
+      minWidth: 120,
       headerName: "Car ID",
       renderCell: ({ row }: CellType) => {
-        const { id } = row;
+        const { uniqueId } = row;
 
-        return <ClickableTypography name={id} />;
+        return <ClickableTypography name={String(uniqueId) ?? "-"} />;
       },
     },
     {
-      flex: 0.012,
-      field: "id",
-      minWidth: 110,
-      headerName: "Customer ID",
+      flex: 0.05,
+      field: "dealer",
+      minWidth: 200,
+      headerName: "Dealer Name",
       renderCell: ({ row }: CellType) => {
-        const { customerId } = row;
-
-        return <ClickableTypography name={customerId} />;
+        const { winner, leaderBoard } = row;
+        const dealer = getWinner(leaderBoard, winner);
+        return <Typography noWrap>{dealer?.fullname}</Typography>;
       },
     },
     {
-      flex: 0.03,
-      field: "name",
-      minWidth: 120,
-      headerName: "Car Name",
-      renderCell: ({ row }: CellType) => {
-        const { carName } = row;
-
-        return <ClickableTypography name={carName} />;
-      },
-    },
-    {
-      flex: 0.03,
-      field: "customer_name",
-      minWidth: 120,
-      headerName: "Customer Name",
-      renderCell: ({ row }: CellType) => {
-        const { customerName } = row;
-
-        return <ClickableTypography name={customerName} />;
-      },
-    },
-    {
-      flex: 0.03,
+      flex: 0.04,
       field: "phone",
-      minWidth: 50,
-      headerName: "Phone No.",
+      minWidth: 150,
+      headerName: "Phone",
       renderCell: ({ row }: CellType) => {
-        const { phone } = row;
-        return <Typography noWrap>{phone}</Typography>;
+        const { winner, leaderBoard } = row;
+        const dealer = getWinner(leaderBoard, winner);
+        return <Typography noWrap>{dealer?.contactNo ?? ""}</Typography>;
       },
     },
     {
-      flex: 0.022,
-      field: "highest_price",
-      minWidth: 50,
-      headerName: "Highest Price",
+      flex: 0.06,
+      field: "model",
+      minWidth: 250,
+      headerName: "Car Model",
       renderCell: ({ row }: CellType) => {
-        const { highest_price } = row;
-        return <Typography noWrap>{formatToAmount(highest_price)}</Typography>;
+        const { model } = row;
+        return <Typography noWrap>{model}</Typography>;
       },
     },
     {
-      flex: 0.02,
+      flex: 0.026,
       field: "status",
-      minWidth: 50,
+      minWidth: 250,
       headerName: "Status",
       renderCell: ({ row }: CellType) => {
-        const { status } = row;
+        const chipData = getAuctionStat(row.status as any) as any;
         return (
           <Chip
-            label={status}
+            label={chipData?.title ?? "-"}
             variant="outlined"
-            color={getStatusColor(status)}
+            color={chipData?.color ?? "error"}
           />
         );
       },
     },
     {
-      flex: 0.02,
+      flex: 0.03,
       field: "action",
-      minWidth: 30,
+      minWidth: 240,
       headerName: "Actions",
       renderCell: ({ row }: CellType) => {
-        const { id } = row;
+        const { _id, status } = row;
+        const isProcured = status === "PROCUREMENT";
+        const isUnsold = status === "UNSOLD";
+
         return (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <ButtonIcon
-              onClick={() => router.push(`/results/${id}`)}
-              icon="tabler:eye"
-              title="View"
-            />
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            {isUnsold && (
+              <Button
+                onClick={() => handleAuctionOtb(_id, "auction")}
+                variant="contained"
+              >
+                Re-auction
+              </Button>
+            )}
+            {isUnsold && (
+              <Button
+                onClick={() => handleAuctionOtb(_id, "otb")}
+                variant="contained"
+              >
+                OTB
+              </Button>
+            )}
+            {isProcured && (
+              <Button onClick={() => handleRC(_id)} variant="contained">
+                RC Transfer
+              </Button>
+            )}
           </Box>
         );
       },

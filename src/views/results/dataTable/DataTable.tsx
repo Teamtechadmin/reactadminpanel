@@ -2,7 +2,10 @@ import { Card, CardHeader, Grid, Theme, useMediaQuery } from "@mui/material";
 import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import useColumns from "../../../hooks/columns/results";
-import { results } from "@/dummy/results";
+import { useGetAuctionResults } from "@/services/result/auction/get";
+import { addKey } from "@/utils/add-key";
+import { CarAuctionOtbHandleTypes } from "@/types/cars/car";
+import AuctionDialogue from "@/views/cars/dailogue/AuctionDialogue";
 
 const DataTable = () => {
   const isSmallScreen = useMediaQuery((theme: Theme) =>
@@ -10,11 +13,32 @@ const DataTable = () => {
   );
   const defaultRowHeight = 55;
 
-  const columns = useColumns();
+  const columns = useColumns({
+    handleAuctionOtb,
+  });
   const [params, setParams] = useState({
     page: 0,
     pageSize: 10,
   });
+
+  const { data } = useGetAuctionResults({
+    ...params,
+    status: "PROCUREMENT,UNSOLD,NOBID",
+  });
+  const resultData = data?.data;
+  const results = addKey(resultData as any, "id", "_id") ?? [];
+
+  const [id, setId] = useState("");
+  const [openApprove, setOpenApprove] = useState(false);
+  const [modal, setModal] = useState<CarAuctionOtbHandleTypes>("auction");
+
+  function handleAuctionOtb(carId: string, type: CarAuctionOtbHandleTypes) {
+    setId(carId);
+    setOpenApprove(!openApprove);
+    setModal(type);
+  }
+  const resultDataCount: any = data;
+  const count = resultDataCount?.count;
 
   return (
     <Card>
@@ -35,12 +59,21 @@ const DataTable = () => {
           disableColumnSelector
           columns={columns}
           rows={results as any}
+          rowCount={(count as number) ?? 0}
           paginationMode="server"
           paginationModel={params}
           onPaginationModelChange={setParams}
           initialState={{
             pagination: { paginationModel: { page: 0, pageSize: 15 } },
           }}
+        />
+        <AuctionDialogue
+          open={openApprove}
+          setOpen={setOpenApprove}
+          id={id}
+          isList
+          modal={modal}
+          isResult
         />
       </Grid>
     </Card>
