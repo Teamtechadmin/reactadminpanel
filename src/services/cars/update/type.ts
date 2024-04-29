@@ -10,4 +10,6 @@ export interface UpdateCarDataBody {
   bidStartTime?: string;
   bidEndTime?: string;
   realValue?: string;
+  otbStartTime?: string;
+  otbEndTime?: string;
 }

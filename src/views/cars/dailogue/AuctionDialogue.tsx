@@ -8,11 +8,13 @@ import { ApproveCar } from "@/types/cars/approve";
 import useUpdateCarById from "@/hooks/actions/cars/update-car";
 import { useQueryClient } from "@tanstack/react-query";
 import useCustomToast from "@/utils/toast";
+import { CarAuctionOtbHandleTypes } from "@/types/cars/car";
 
 interface AuctionDialogueProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
   id: string;
+  modal: CarAuctionOtbHandleTypes;
   isList?: boolean;
 }
 
@@ -23,7 +25,8 @@ const defaultValues = {
 };
 
 function AuctionDialogue(props: AuctionDialogueProps) {
-  const { open, setOpen, id, isList } = props;
+  const { open, setOpen, id, modal, isList } = props;
+  const isAuction = modal === "auction";
   const schema = useFormSchema();
   const approveAuction = useUpdateCarById();
   const queryClient = useQueryClient();
@@ -39,11 +42,22 @@ function AuctionDialogue(props: AuctionDialogueProps) {
   });
 
   function onSubmit(val: ApproveCar) {
+    const auctionBody = { ...val, status: "SCHEDULED" };
+    const otbBody = {
+      otbStartTime: String(val.startBidTime),
+      otbEndTime: String(val.endBidTime),
+      realValue: val.realValue,
+      status: "OTB",
+    };
     approveAuction({
-      body: { ...val, status: "SCHEDULED" },
+      body: isAuction ? auctionBody : otbBody,
       id,
       handleSuccess: () => {
-        toast.success("Auction Approved Successfully!!");
+        toast.success(
+          isAuction
+            ? "Auction Approved Successfully!!"
+            : "Moved To Otb Successfully",
+        );
         handleClose();
         queryClient.invalidateQueries({
           queryKey: [isList ? "cars" : "car"],
@@ -60,9 +74,9 @@ function AuctionDialogue(props: AuctionDialogueProps) {
   return (
     <CustomDialogue
       open={open}
-      dailogueTitle={"Ready for Auction?"}
+      dailogueTitle={isAuction ? "Ready for Auction?" : "Move To OTB?"}
       handleClose={handleClose}
-      icon="tabler:gavel"
+      icon={isAuction ? "tabler:gavel" : "tabler:credit-card-pay"}
       maxWidth={"xs"}
       titleFont={18}
       titleWeight={600}
@@ -73,6 +87,7 @@ function AuctionDialogue(props: AuctionDialogueProps) {
             handleCancel={handleClose}
             control={control}
             errors={errors as any}
+            isAuction={isAuction}
           />
         </form>
       }

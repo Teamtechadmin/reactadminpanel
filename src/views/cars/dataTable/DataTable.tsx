@@ -10,6 +10,7 @@ import { CarData } from "@/services/cars/list/types";
 import usePostSearchCars from "@/hooks/actions/cars/post-search";
 import { useSearchCars } from "@/services/cars/list/post";
 import AuctionDialogue from "../dailogue/AuctionDialogue";
+import { CarAuctionOtbHandleTypes } from "@/types/cars/car";
 
 interface CarDataTableProps {
   control: Control<{ searchBy: string; search: string }>;
@@ -27,7 +28,7 @@ const DataTable = (carDataTableProps: CarDataTableProps) => {
     (Boolean(search) && search !== "") ||
     (Boolean(createdAt) && createdAt !== null);
   const columns = useColumns({
-    handleAuction,
+    handleAuctionOtb,
   });
   const [params, setParams] = useState({
     page: 0,
@@ -55,10 +56,12 @@ const DataTable = (carDataTableProps: CarDataTableProps) => {
 
   const [openApprove, setOpenApprove] = useState(false);
   const [id, setId] = useState("");
+  const [modal, setModal] = useState<CarAuctionOtbHandleTypes>("auction");
 
-  function handleAuction(carId: string) {
+  function handleAuctionOtb(carId: string, type: CarAuctionOtbHandleTypes) {
     setId(carId);
     setOpenApprove(!openApprove);
+    setModal(type);
   }
 
   return (
@@ -89,6 +92,7 @@ const DataTable = (carDataTableProps: CarDataTableProps) => {
         setOpen={setOpenApprove}
         id={id}
         isList
+        modal={modal}
       />
     </Card>
   );

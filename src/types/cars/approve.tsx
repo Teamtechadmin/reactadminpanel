@@ -3,4 +3,5 @@ export interface ApproveCar {
   endBidTime: Date;
   qcStatus?: string;
   status: string;
+  realValue?: string;
 }
