@@ -22,9 +22,8 @@ const DataTable = () => {
     status: "PENDING",
   });
 
-  const otbResponse: any = otbData?.data?.data;
+  const otbResponse: any = otbData?.data;
   const otb = addKey(otbResponse, "id", "_id") ?? [];
-  console.log(otb, "OTB");
 
   return (
     <Card>

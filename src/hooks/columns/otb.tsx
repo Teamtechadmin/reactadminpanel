@@ -1,28 +1,31 @@
-import { ButtonIcon } from "@/components/ui/buttons/ButtonIcon";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
+import { getWinner } from "@/functions/results/get-winner";
+import { LeaderBoard } from "@/services/result/auction/types";
 import { formatToAmount } from "@/utils/convert-to-rs";
-import { Box, Chip, Typography } from "@mui/material";
-import { useRouter } from "next/router";
+import { Chip, Typography } from "@mui/material";
 
 type RowType = {
   id: string;
+  uniqueId: string;
   customerId: string;
-  name: string;
+  model: string;
   customer: string;
   phone: number;
   otb: number;
   status: StatusType;
+  winner: string;
+  leaderBoard: LeaderBoard[];
+  highestBid: string;
 };
 
 type CellType = {
   row: RowType;
 };
 
-type StatusType = "Not Contacted" | "Contacted";
+type StatusType = "PENDING";
 
 const status = {
-  "Not Contacted": "warning",
-  Contacted: "success",
+  PENDING: "warning",
 };
 
 function getStatus(value: StatusType) {
@@ -30,7 +33,6 @@ function getStatus(value: StatusType) {
 }
 
 const useColumns = () => {
-  const router = useRouter();
   const columns = [
     {
       flex: 0.012,
@@ -38,9 +40,9 @@ const useColumns = () => {
       minWidth: 110,
       headerName: "Car ID",
       renderCell: ({ row }: CellType) => {
-        const { id } = row;
+        const { uniqueId } = row;
 
-        return <ClickableTypography name={id} />;
+        return <ClickableTypography name={uniqueId} />;
       },
     },
     {
@@ -49,9 +51,10 @@ const useColumns = () => {
       minWidth: 110,
       headerName: "Customer ID",
       renderCell: ({ row }: CellType) => {
-        const { customerId } = row;
+        const { leaderBoard, winner } = row;
+        const dealer = getWinner(leaderBoard, winner);
 
-        return <ClickableTypography name={customerId} />;
+        return <ClickableTypography name={dealer?.userId ?? "-"} />;
       },
     },
     {
@@ -60,9 +63,9 @@ const useColumns = () => {
       minWidth: 120,
       headerName: "Car Name",
       renderCell: ({ row }: CellType) => {
-        const { name } = row;
+        const { model } = row;
 
-        return <ClickableTypography name={name} />;
+        return <ClickableTypography name={model} />;
       },
     },
     {
@@ -71,9 +74,10 @@ const useColumns = () => {
       minWidth: 120,
       headerName: "Customer Name",
       renderCell: ({ row }: CellType) => {
-        const { customer } = row;
+        const { leaderBoard, winner } = row;
+        const dealer = getWinner(leaderBoard, winner);
 
-        return <ClickableTypography name={customer} />;
+        return <ClickableTypography name={dealer?.fullname ?? "-"} />;
       },
     },
     {
@@ -82,8 +86,9 @@ const useColumns = () => {
       minWidth: 50,
       headerName: "Phone",
       renderCell: ({ row }: CellType) => {
-        const { phone } = row;
-        return <Typography noWrap>{phone}</Typography>;
+        const { leaderBoard, winner } = row;
+        const dealer = getWinner(leaderBoard, winner);
+        return <Typography noWrap>{dealer?.contactNo}</Typography>;
       },
     },
     {
@@ -92,8 +97,8 @@ const useColumns = () => {
       minWidth: 50,
       headerName: "OTB Price",
       renderCell: ({ row }: CellType) => {
-        const { otb } = row;
-        return <Typography noWrap>{formatToAmount(otb)}</Typography>;
+        const { highestBid } = row;
+        return <Typography noWrap>{formatToAmount(highestBid)}</Typography>;
       },
     },
     {
@@ -108,24 +113,6 @@ const useColumns = () => {
             variant="outlined"
             color={getStatus(row.status) as any}
           />
-        );
-      },
-    },
-    {
-      flex: 0.02,
-      field: "action",
-      minWidth: 30,
-      headerName: "Actions",
-      renderCell: ({ row }: any) => {
-        const { id } = row;
-        return (
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <ButtonIcon
-              onClick={() => router.push(`/otb/${id}`)}
-              icon="tabler:eye"
-              title="View"
-            />
-          </Box>
         );
       },
     },
