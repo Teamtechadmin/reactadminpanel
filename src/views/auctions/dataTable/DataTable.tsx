@@ -84,7 +84,13 @@ const DataTable = () => {
       <LogModal
         open={open}
         dailogueTitle={log.model}
-        ContentComponent={<AuctionLogBody log={log} data={auctionWithId} />}
+        ContentComponent={
+          <AuctionLogBody
+            log={log}
+            data={auctionWithId}
+            handleClose={handleModal}
+          />
+        }
         handleClose={handleModal}
         icon="tabler:article"
         titleFont={22}

@@ -3,3 +3,5 @@ export interface BillForm {
   serviceRate?: number;
   gstRate?: number;
 }
+
+export type BillHandleType = "view" | "give";

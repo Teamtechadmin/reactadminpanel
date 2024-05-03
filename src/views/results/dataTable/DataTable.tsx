@@ -13,6 +13,7 @@ import useCustomToast from "@/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { AuctionData } from "@/services/result/auction/types";
 import { BillDialogue } from "../modals/BillDialogue";
+import { BillHandleType } from "@/types/results/type";
 
 const DataTable = () => {
   const isSmallScreen = useMediaQuery((theme: Theme) =>
@@ -42,6 +43,7 @@ const DataTable = () => {
   const [openConfirm, setOpenConfirm] = useState(false);
   const [openBill, setOpenBill] = useState(false);
   const [bill, setBill] = useState<AuctionData | null>(null);
+  const [billType, setBillType] = useState<BillHandleType>("give");
 
   const update = useUpdateCarById();
   const toast = useCustomToast();
@@ -78,9 +80,10 @@ const DataTable = () => {
     });
   }
 
-  function handleBill(data: AuctionData) {
+  function handleBill(data: AuctionData, type: BillHandleType) {
     handleBillOpen();
     setBill(data);
+    setBillType(type);
   }
 
   function handleBillOpen() {
@@ -148,6 +151,7 @@ const DataTable = () => {
           open={openBill}
           handleClose={handleBillOpen}
           data={bill}
+          type={billType}
         />
       </Grid>
     </Card>

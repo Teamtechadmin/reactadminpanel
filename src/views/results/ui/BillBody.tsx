@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 interface BillBodyProps {
   data: AuctionData | null;
   handleClose: () => void;
+  isView: boolean;
 }
 
 const defaultValues = {
@@ -30,7 +31,7 @@ const defaultValues = {
 };
 
 export const BillBody = (props: BillBodyProps) => {
-  const { data, handleClose } = props;
+  const { data, handleClose, isView } = props;
   const winnerData = getWinner(data?.leaderBoard ?? [], data?.winner ?? "");
   const { control, setValue, watch, handleSubmit } = useForm<BillForm>({
     defaultValues,
@@ -83,6 +84,7 @@ export const BillBody = (props: BillBodyProps) => {
             label="Total Amount"
             placeholder="Total Amount"
             size="medium"
+            isDisabled={isView}
             type="number"
           />
         </Grid>
@@ -94,6 +96,7 @@ export const BillBody = (props: BillBodyProps) => {
             placeholder="Service Rate"
             size="medium"
             type="number"
+            isDisabled={isView}
             InputProps={{
               endAdornment: <Grid mr={1}>%</Grid>,
             }}
@@ -107,6 +110,7 @@ export const BillBody = (props: BillBodyProps) => {
             placeholder="GST Rate"
             size="medium"
             type="number"
+            isDisabled={isView}
             InputProps={{
               endAdornment: <Grid mr={1}>%</Grid>,
             }}
@@ -126,14 +130,16 @@ export const BillBody = (props: BillBodyProps) => {
           <AmountTypography text={String(calc?.gstFee ?? "0")} />
         </Grid>
       </Grid>
-      <DialogActions>
-        <Button type="submit" variant="contained">
-          Submit
-        </Button>
-        <Button onClick={handleClose} variant="outlined">
-          Cancel
-        </Button>
-      </DialogActions>
+      {!isView && (
+        <DialogActions>
+          <Button type="submit" variant="contained">
+            Submit
+          </Button>
+          <Button onClick={handleClose} variant="outlined">
+            Cancel
+          </Button>
+        </DialogActions>
+      )}
     </form>
   );
 };

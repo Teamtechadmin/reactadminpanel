@@ -16,6 +16,7 @@ import { AxiosError } from "axios";
 interface LogBodyProps {
   log: LogProps;
   data: any;
+  handleClose: () => void;
 }
 
 export type ActionData = {
@@ -39,7 +40,7 @@ export default function AuctionLogBody(props: LogBodyProps) {
   const isUnsold = action.type === "Unsold";
   const toast = useCustomToast();
   const queryClient = useQueryClient();
-  const { log, data } = props;
+  const { log, data, handleClose } = props;
   const { id: carID } = log;
   const selectedCar = data?.find((item: { id: string }) => item.id === carID);
   const { winner } = selectedCar || {};
@@ -83,6 +84,7 @@ export default function AuctionLogBody(props: LogBodyProps) {
   }
 
   function handleConfirm() {
+    handleConfirmModal();
     if (isUnsold) {
       unsold.mutate(
         {
@@ -92,7 +94,10 @@ export default function AuctionLogBody(props: LogBodyProps) {
           },
         },
         {
-          onSuccess: () => handleSuccess(),
+          onSuccess: () => {
+            handleSuccess();
+            handleClose();
+          },
           onError: (err) => handleError(err),
         },
       );
@@ -107,7 +112,7 @@ export default function AuctionLogBody(props: LogBodyProps) {
         },
         {
           onSuccess: () => {
-            handleSuccess;
+            handleSuccess();
           },
           onError: (err) => {
             handleError(err);
@@ -121,7 +126,6 @@ export default function AuctionLogBody(props: LogBodyProps) {
     queryClient.invalidateQueries({
       queryKey: ["auction-result"],
     });
-    handleConfirmModal();
     toast.success(
       isChoose
         ? `User Accepted as Highest Bidder`
@@ -148,6 +152,7 @@ export default function AuctionLogBody(props: LogBodyProps) {
             rows={(leaderData as any) ?? []}
             paginationMode="server"
             pageSizeOptions={[]}
+            loading={unsold.isPending || update.isPending}
           />
         </Grid>
 

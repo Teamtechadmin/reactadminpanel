@@ -2,12 +2,13 @@ import { ClickableTypography } from "@/components/ui/containers/ClickableTypogra
 import { getWinner } from "@/functions/results/get-winner";
 import { AuctionData } from "@/services/result/auction/types";
 import { CarAuctionOtbHandleTypes } from "@/types/cars/car";
+import { BillHandleType } from "@/types/results/type";
 import { Box, Button, Chip, Typography } from "@mui/material";
 
 interface Props {
   handleAuctionOtb: (carId: string, type: CarAuctionOtbHandleTypes) => void;
   handleRC: (id: string) => void;
-  handleBill: (row: AuctionData) => void;
+  handleBill: (row: AuctionData, type: BillHandleType) => void;
 }
 
 type CellType = {
@@ -116,9 +117,10 @@ const useColumns = (props: Props) => {
       minWidth: 260,
       headerName: "Actions",
       renderCell: ({ row }: CellType) => {
-        const { _id, status } = row;
+        const { _id, status, procurement_status } = row;
         const isProcured = status === "PROCUREMENT";
         const isUnsold = status === "UNSOLD";
+        const isViewBill = procurement_status?.[0];
 
         return (
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -144,8 +146,11 @@ const useColumns = (props: Props) => {
               </Button>
             )}
             {isProcured && (
-              <Button onClick={() => handleBill(row)} variant="contained">
-                Give Bill
+              <Button
+                onClick={() => handleBill(row, isViewBill ? "view" : "give")}
+                variant="contained"
+              >
+                {isViewBill ? "View Bill" : "Give Bill"}
               </Button>
             )}
           </Box>
