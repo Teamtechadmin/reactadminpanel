@@ -11,6 +11,7 @@ export const statusColor: any = {
   RCTRANSFER: "info",
   DEAL_LOST: "error",
   NEGOTIATION: "info",
+  UNSOLD: "error",
 };
 
 export function getStatusColor(status: StatusType) {

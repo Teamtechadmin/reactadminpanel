@@ -38,6 +38,7 @@ const statusLabel: any = {
   RCTRANSFER: "RC TRANSFER",
   DEAL_LOST: "DEAL LOST",
   NEGOTIATION: "NEGOTIATION",
+  UNSOLD: "UNSOLD",
 };
 
 const disableBtnStatus = [
@@ -48,6 +49,7 @@ const disableBtnStatus = [
   "RCTRANSFER",
   "OTB",
   "NEGOTIATION",
+  "UNSOLD",
 ];
 
 const useColumns = (props: CarColumnProps) => {
