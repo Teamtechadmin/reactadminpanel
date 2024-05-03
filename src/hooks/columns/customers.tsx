@@ -26,6 +26,7 @@ const statusColor = {
 const docColor = {
   SUBMITTED: "success",
   NOTSUBMITTED: "warning",
+  VERIFIED: "success",
 };
 
 function getStatusColor(status: StatusType) {
@@ -77,8 +78,8 @@ const useColumns = () => {
       minWidth: 50,
       headerName: "Location",
       renderCell: ({ row }: any) => {
-        const { location } = row;
-        return <Typography noWrap>{location}</Typography>;
+        const { district } = row;
+        return <Typography noWrap>{district}</Typography>;
       },
     },
     {

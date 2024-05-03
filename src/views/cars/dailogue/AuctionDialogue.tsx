@@ -45,8 +45,8 @@ function AuctionDialogue(props: AuctionDialogueProps) {
   function onSubmit(val: ApproveCar) {
     const auctionBody = { ...val, status: "SCHEDULED" };
     const otbBody = {
-      otbStartTime: String(val.startBidTime),
-      otbEndTime: String(val.endBidTime),
+      otbStartTime: val.bidStartTime,
+      otbEndTime: val.bidEndTime,
       realValue: val.realValue,
       status: "OTB",
     };

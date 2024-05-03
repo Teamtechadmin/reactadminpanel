@@ -37,6 +37,7 @@ const statusLabel: any = {
   PROCUREMENT: "PROCUREMENT",
   RCTRANSFER: "RC TRANSFER",
   DEAL_LOST: "DEAL LOST",
+  NEGOTIATION: "NEGOTIATION",
 };
 
 const disableBtnStatus = [
@@ -46,6 +47,7 @@ const disableBtnStatus = [
   "DEAL_LOST",
   "RCTRANSFER",
   "OTB",
+  "NEGOTIATION",
 ];
 
 const useColumns = (props: CarColumnProps) => {
@@ -137,7 +139,6 @@ const useColumns = (props: CarColumnProps) => {
       minWidth: 50,
       headerName: "Status",
       renderCell: ({ row }: CellType) => {
-        console.log(row, "rowState");
         return (
           <Chip
             label={(statusLabel[row.status] as StatusType) ?? row.status}
@@ -157,7 +158,8 @@ const useColumns = (props: CarColumnProps) => {
       renderCell: ({ row }: any) => {
         const { qcStatus, status, id } = row;
         const isQcChecked = qcStatus === "VERIFIED";
-        const disableBtns = disableBtnStatus.includes(status);
+        const disableBtns =
+          disableBtnStatus.includes(status) || qcStatus !== "VERIFIED";
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <ButtonIcon

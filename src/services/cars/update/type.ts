@@ -7,9 +7,9 @@ export interface UpdateCarDataBody {
   _id?: string;
   qcStatus?: string;
   status?: string;
-  bidStartTime?: string;
-  bidEndTime?: string;
+  bidStartTime?: Date;
+  bidEndTime?: Date;
+  startBidTime?: Date;
+  endBidTime?: Date;
   realValue?: string;
-  otbStartTime?: string;
-  otbEndTime?: string;
 }

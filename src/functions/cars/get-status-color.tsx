@@ -10,6 +10,7 @@ export const statusColor: any = {
   OTB: "info",
   RCTRANSFER: "info",
   DEAL_LOST: "error",
+  NEGOTIATION: "info",
 };
 
 export function getStatusColor(status: StatusType) {
