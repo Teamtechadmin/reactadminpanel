@@ -185,7 +185,7 @@ export const OfferModalBody = (props: OfferModalBodyProps) => {
                 <Button variant="contained" type="submit">
                   Submit
                 </Button>
-                <Button onClick={handleCancel} variant="outlined" type="submit">
+                <Button onClick={handleCancel} variant="outlined">
                   Cancel
                 </Button>
               </DialogActions>
