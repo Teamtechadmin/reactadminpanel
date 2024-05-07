@@ -19,7 +19,7 @@ type AuctionStatus = "PROCUREMENT" | "NOBID" | "UNSOLD";
 
 const auctionStatus = {
   PROCUREMENT: {
-    title: "PROCUREMENT",
+    title: "PROCURED",
     color: "success",
   },
   UNSOLD: {
@@ -120,11 +120,13 @@ const useColumns = (props: Props) => {
         const { _id, status, procurement_status } = row;
         const isProcured = status === "PROCUREMENT";
         const isUnsold = status === "UNSOLD";
+        const isNoBid = status === "NOBID";
+        const showRedo = isUnsold || isNoBid;
         const isViewBill = procurement_status?.[0];
 
         return (
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            {isUnsold && (
+            {showRedo && (
               <Button
                 onClick={() => handleAuctionOtb(_id, "auction")}
                 variant="contained"
@@ -132,7 +134,7 @@ const useColumns = (props: Props) => {
                 Re-auction
               </Button>
             )}
-            {isUnsold && (
+            {showRedo && (
               <Button
                 onClick={() => handleAuctionOtb(_id, "otb")}
                 variant="contained"

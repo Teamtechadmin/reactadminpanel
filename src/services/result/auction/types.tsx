@@ -30,6 +30,7 @@ export interface AuctionData {
   serviceFees: any[];
   totalAmount: any[];
   finalPrice: any[];
+  userId?: string;
 }
 
 export interface LeaderBoard {
@@ -48,7 +49,7 @@ export interface LeaderBoard {
 export interface UpdateResultProps {
   id: string;
   body: {
-    status: "accept" | "reject" | "offer" | "bill";
+    status: "accept" | "reject" | "offer" | "bill" | "otb_bill";
     userId?: string | null;
     startTime?: string;
     endTime?: string;

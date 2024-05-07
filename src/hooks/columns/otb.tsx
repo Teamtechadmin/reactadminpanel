@@ -1,11 +1,13 @@
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
 import { getWinner } from "@/functions/results/get-winner";
 import { LeaderBoard } from "@/services/result/auction/types";
+import { OtbLogProps } from "@/types/results/type";
 import { formatToAmount } from "@/utils/convert-to-rs";
-import { Chip, Typography } from "@mui/material";
+import { Box, Button, Chip, Typography } from "@mui/material";
 
 type RowType = {
   id: string;
+  _id: string;
   uniqueId: string;
   customerId: string;
   model: string;
@@ -22,17 +24,23 @@ type CellType = {
   row: RowType;
 };
 
-type StatusType = "PENDING";
+type StatusType = "PENDING" | "NOBID";
+
+interface OtbColumnProps {
+  handleLog: ({ model, leaderBoard, id }: OtbLogProps) => void;
+}
 
 const status = {
   PENDING: "warning",
+  NOBID: "error",
 };
 
 function getStatus(value: StatusType) {
   return status[value];
 }
 
-const useColumns = () => {
+const useColumns = (props: OtbColumnProps) => {
+  const { handleLog } = props;
   const columns = [
     {
       flex: 0.012,
@@ -113,6 +121,36 @@ const useColumns = () => {
             variant="outlined"
             color={getStatus(row.status) as any}
           />
+        );
+      },
+    },
+    {
+      flex: 0.03,
+      field: "action",
+      minWidth: 240,
+      headerName: "Actions",
+      renderCell: ({ row }: CellType) => {
+        const { model, status, leaderBoard, winner, _id } = row;
+        const isNoBid = status === "NOBID";
+        const disableLog = isNoBid;
+
+        return (
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Button
+              onClick={() =>
+                handleLog({
+                  model,
+                  leaderBoard,
+                  winner,
+                  id: _id,
+                })
+              }
+              variant="contained"
+              disabled={disableLog}
+            >
+              OTB Log
+            </Button>
+          </Box>
         );
       },
     },

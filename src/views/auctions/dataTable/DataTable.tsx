@@ -30,6 +30,7 @@ const DataTable = () => {
     ...params,
     status: "NEGOTIATION,DEAL_LOST",
   });
+  const auctionsCount: any = auctions?.data;
   const auctionData: any = auctions?.data?.data;
   const auctionWithId = addKey(auctionData, "id", "_id") ?? [];
 
@@ -74,7 +75,7 @@ const DataTable = () => {
             disableColumnSelector
             columns={columns}
             rows={auctionWithId as any}
-            rowCount={10}
+            rowCount={auctionsCount?.count ?? 0}
             paginationMode="server"
             paginationModel={params}
             onPaginationModelChange={setParams}

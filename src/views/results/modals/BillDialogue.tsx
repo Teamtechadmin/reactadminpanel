@@ -1,24 +1,34 @@
 import CustomDialogue from "@/components/ui/dialogue/AuctionDailogue";
-import { AuctionData } from "@/services/result/auction/types";
 import { BillBody } from "../ui/BillBody";
-import { BillHandleType } from "@/types/results/type";
+import { BillHandleType, OtbLeaderBoardRow } from "@/types/results/type";
+import { AuctionData } from "@/services/result/auction/types";
 
-interface BillDialogueProps {
+interface BillDialogueProps<T> {
   open: boolean;
   handleClose: () => void;
-  data: AuctionData | null;
+  data: T;
   type: BillHandleType;
+  carID: string;
+  isOtb?: boolean;
 }
 
-export const BillDialogue = (props: BillDialogueProps) => {
-  const { open, handleClose, data, type } = props;
+export function BillDialogue<T extends AuctionData | OtbLeaderBoardRow>(
+  props: BillDialogueProps<T>,
+) {
+  const { open, handleClose, data, type, isOtb, carID } = props;
   const isView = type === "view";
   return (
     <CustomDialogue
       open={open}
       dailogueTitle={isView ? "View Bill" : "Bill Details"}
       ComponentContent={
-        <BillBody data={data} handleClose={handleClose} isView={isView} />
+        <BillBody
+          data={data}
+          handleClose={handleClose}
+          isView={isView}
+          isOtb={isOtb}
+          carID={carID}
+        />
       }
       handleClose={handleClose}
       icon="tabler:bill"
@@ -27,4 +37,4 @@ export const BillDialogue = (props: BillDialogueProps) => {
       maxWidth="xs"
     />
   );
-};
+}

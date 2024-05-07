@@ -5,7 +5,7 @@ import { usePrefillBill } from "@/hooks/utils/bill";
 import { useCalculateBill } from "@/hooks/utils/calculate-gst-bill";
 import { useUpdateResult } from "@/services/result/auction/patch";
 import { AuctionData } from "@/services/result/auction/types";
-import { BillForm } from "@/types/results/type";
+import { BillForm, OtbLeaderBoardRow } from "@/types/results/type";
 import { errorMessageParser } from "@/utils/error";
 import useCustomToast from "@/utils/toast";
 import {
@@ -18,10 +18,12 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 
-interface BillBodyProps {
-  data: AuctionData | null;
+interface BillBodyProps<T> {
+  data: T;
   handleClose: () => void;
   isView: boolean;
+  carID: string;
+  isOtb?: boolean;
 }
 
 const defaultValues = {
@@ -30,12 +32,26 @@ const defaultValues = {
   gstRate: 18,
 };
 
-export const BillBody = (props: BillBodyProps) => {
-  const { data, handleClose, isView } = props;
-  const winnerData = getWinner(data?.leaderBoard ?? [], data?.winner ?? "");
+export function BillBody<T extends AuctionData | OtbLeaderBoardRow>(
+  props: BillBodyProps<T>,
+) {
+  const { data, handleClose, isView, isOtb, carID } = props;
   const { control, setValue, watch, handleSubmit } = useForm<BillForm>({
     defaultValues,
   });
+
+  function getWinnerData(): any {
+    if (isOtb) {
+      return { amount: (data as OtbLeaderBoardRow)?.amount };
+    } else {
+      return getWinner(
+        (data as AuctionData)?.leaderBoard ?? [],
+        (data as AuctionData)?.winner ?? "",
+      );
+    }
+  }
+
+  const winnerData = getWinnerData();
   const values = watch();
   const updateResult = useUpdateResult();
   const toast = useCustomToast();
@@ -53,12 +69,13 @@ export const BillBody = (props: BillBodyProps) => {
   function onSubmit() {
     updateResult.mutate(
       {
-        id: data?._id ?? "",
+        id: carID ?? "",
         body: {
-          status: "bill",
-          gst: calc?.gstFee,
-          serviceFees: calc?.serviceFee,
-          totalAmount: calc?.totalDue,
+          status: isOtb ? "otb_bill" : "bill",
+          gst: Number(calc?.gstFee ?? 0),
+          serviceFees: Number(calc?.serviceFee ?? 0),
+          totalAmount: Number(calc?.totalDue ?? 0),
+          ...(isOtb && { userId: data?.userId }),
         },
       },
       {
@@ -142,4 +159,4 @@ export const BillBody = (props: BillBodyProps) => {
       )}
     </form>
   );
-};
+}

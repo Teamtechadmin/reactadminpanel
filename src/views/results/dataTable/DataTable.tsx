@@ -89,10 +89,8 @@ const DataTable = () => {
   function handleBillOpen() {
     setOpenBill(!openBill);
   }
-
   const resultDataCount: any = data;
   const count = resultDataCount?.count;
-
   return (
     <Card>
       <CardHeader
@@ -117,7 +115,7 @@ const DataTable = () => {
           paginationModel={params}
           onPaginationModelChange={setParams}
           initialState={{
-            pagination: { paginationModel: { page: 0, pageSize: 15 } },
+            pagination: { paginationModel: { page: 0, pageSize: 10 } },
           }}
         />
         <AuctionDialogue
@@ -150,8 +148,9 @@ const DataTable = () => {
         <BillDialogue
           open={openBill}
           handleClose={handleBillOpen}
-          data={bill}
+          data={bill as AuctionData}
           type={billType}
+          carID={bill?._id ?? ""}
         />
       </Grid>
     </Card>

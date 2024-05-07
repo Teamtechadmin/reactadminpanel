@@ -28,7 +28,7 @@ async function getAuctionResult(
 
 export const useGetAuctionResults = (params: AuctionsParams) => {
   return useQuery({
-    queryKey: ["auction-result"],
+    queryKey: ["auction-result", params],
     queryFn: () => getAuctionResult(params),
   });
 };
