@@ -12,6 +12,8 @@ export const statusColor: any = {
   DEAL_LOST: "error",
   NEGOTIATION: "info",
   UNSOLD: "error",
+  NOQUOTE: "error",
+  NOBID: "error",
 };
 
 export function getStatusColor(status: StatusType) {

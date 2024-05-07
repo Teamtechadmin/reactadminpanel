@@ -124,7 +124,7 @@ const useColumns = (props: Props) => {
       headerName: "Actions",
       renderCell: ({ row }: CellType) => {
         const { model, _id, status, negotiation_status } = row;
-        const isNoBid = status === "NO_BID";
+        const isNoBid = status === "NOBID";
         const disableLog = isNoBid;
         const isGiveOffer = status === "NEGOTIATION";
         const isViewOffer = negotiation_status?.[0] === "VIEW";

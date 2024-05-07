@@ -39,6 +39,8 @@ const statusLabel: any = {
   DEAL_LOST: "DEAL LOST",
   NEGOTIATION: "NEGOTIATION",
   UNSOLD: "UNSOLD",
+  NOQUOTE: "NO QUOTE",
+  NOBID: "NO BID",
 };
 
 const disableBtnStatus = [
