@@ -1,3 +1,5 @@
+import { Dealer } from "@/types/customers/get";
+import { numberToINR } from "@/utils/convert-to-rs";
 import {
   Paper,
   Table,
@@ -7,42 +9,49 @@ import {
   TableRow,
 } from "@mui/material";
 
-const customerData = [
-  {
-    label: "Name",
-    value: "Ananthakrishnan",
-  },
-  {
-    label: "Status",
-    value: "Not Verified",
-  },
-  {
-    label: "Phone Number",
-    value: "+91 99999 99999",
-  },
-  {
-    label: "Business Name As per GSTIN",
-    value: "Ananthakrishnan A",
-  },
-  {
-    label: "Business Address",
-    value: "Customer One One Customer One One, Kozhikode, Kerala",
-  },
-  {
-    label: "Pincode",
-    value: "670500",
-  },
-  {
-    label: "District, State",
-    value: "Kozhikode, Kerala",
-  },
-  {
-    label: "Security Deposit",
-    value: "Kozhikode, Kerala",
-  },
-];
+function getCustomerData(data: Dealer) {
+  return [
+    {
+      label: "Name",
+      value: data?.fullname,
+    },
+    {
+      label: "Status",
+      value: data?.isBlocked ? "Blocked" : "Active",
+    },
+    {
+      label: "Document Status",
+      value: data?.isDocumentsVerified ? "Verified" : "Not Verified",
+    },
+    {
+      label: "Phone Number",
+      value: data?.contactNo,
+    },
+    {
+      label: "Business Name As per GSTIN",
+      value: data?.businessName,
+    },
+    {
+      label: "Business Address",
+      value: data?.businessAddress,
+    },
+    {
+      label: "Pincode",
+      value: data?.pincode,
+    },
+    {
+      label: "District, State",
+      value: `${data?.district ?? ""}`,
+    },
+    {
+      label: "Security Deposit",
+      value: numberToINR(data?.depositedAmount),
+    },
+  ];
+}
 
-const CustomerDetails = () => {
+const CustomerDetails = ({ data }: { data: Dealer }) => {
+  const customerData = getCustomerData(data);
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">

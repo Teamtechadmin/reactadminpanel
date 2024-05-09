@@ -28,7 +28,7 @@ export const FileTile = (fileTileProps: FileTileProps) => {
     linkElement.target = "_blank";
     linkElement.click();
   }
-  const isVideo = videoFormats.includes(file.downloadLink.slice(-3));
+  const isVideo = videoFormats.includes(file?.downloadLink?.slice(-3));
   return (
     <Box onMouseEnter={handleHover} onMouseLeave={handleHover}>
       <Grid

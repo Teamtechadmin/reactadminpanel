@@ -1,5 +1,6 @@
+import { ButtonIcon } from "@/components/ui/buttons/ButtonIcon";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
-import { Chip, Typography } from "@mui/material";
+import { Box, Chip, Typography } from "@mui/material";
 
 export type StatusType = "Deactivated" | "Active";
 
@@ -37,7 +38,15 @@ function getDocumentColor(documentStatus: DocStatus) {
   return docColor[documentStatus];
 }
 
-const useColumns = () => {
+export const disableStatus = ["VERIFIED", "NOTSUBMITTED"];
+
+const useColumns = ({
+  handleView,
+  handleVerify,
+}: {
+  handleView: (id: string) => void;
+  handleVerify: (id: string) => void;
+}) => {
   const columns: any = [
     {
       flex: 0.012,
@@ -114,29 +123,31 @@ const useColumns = () => {
         );
       },
     },
-    // {
-    //   flex: 0.02,
-    //   field: "action",
-    //   minWidth: 30,
-    //   headerName: "Actions",
-    //   renderCell: ({ row }: any) => {
-    //     const { status, documents, id } = row;
-    //     return (
-    //       <Box sx={{ display: "flex", alignItems: "center" }}>
-    //         <ButtonIcon
-    //           icon="tabler:eye"
-    //           title="View"
-    //           onClick={() => handleView(id)}
-    //         />
-    //         <ButtonIcon
-    //           icon="tabler:discount-check"
-    //           title="Verify"
-    //           disabled={status === "Verified" || documents === "Not Submitted"}
-    //         />
-    //       </Box>
-    //     );
-    //   },
-    // },
+    {
+      flex: 0.02,
+      field: "action",
+      minWidth: 30,
+      headerName: "Actions",
+      renderCell: ({ row }: any) => {
+        const { id, isDocumentsVerified } = row;
+        const disableVerify = disableStatus.includes(isDocumentsVerified);
+        return (
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <ButtonIcon
+              icon="tabler:eye"
+              title="View"
+              onClick={() => handleView(id)}
+            />
+            <ButtonIcon
+              icon="tabler:discount-check"
+              title="Verify"
+              disabled={disableVerify}
+              onClick={() => handleVerify(id)}
+            />
+          </Box>
+        );
+      },
+    },
   ];
 
   return columns;

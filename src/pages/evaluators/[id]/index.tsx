@@ -35,7 +35,7 @@ const EvaluatorPage = () => {
 
   const tabComponents = {
     evaluator_details: <EvaluatorDetails data={evaluator} />,
-    documents: <CustomerDocuments />,
+    documents: <CustomerDocuments data={evaluator} />,
   };
 
   function handleBlock() {
