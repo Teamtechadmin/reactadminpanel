@@ -115,7 +115,7 @@ const useColumns = (props: ColProps) => {
             <ButtonIcon
               onClick={() => handleEdit(row)}
               icon="tabler:edit"
-              title="View"
+              title="Edit"
             />
             <ButtonIcon
               icon={block ? "tabler:check" : "tabler:x"}
