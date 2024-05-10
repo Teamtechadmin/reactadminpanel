@@ -18,12 +18,13 @@ interface CarDataTableProps {
     search: string;
     createdAt?: Date | null;
     searchBy?: string;
+    status: string;
   };
 }
 
 const DataTable = (carDataTableProps: CarDataTableProps) => {
   const { postQueryParams } = carDataTableProps;
-  const { search, createdAt, searchBy } = postQueryParams;
+  const { search, createdAt, searchBy, status } = postQueryParams;
   const isPost =
     (Boolean(search) && search !== "") ||
     (Boolean(createdAt) && createdAt !== null);
@@ -36,7 +37,7 @@ const DataTable = (carDataTableProps: CarDataTableProps) => {
   });
   const [carPostData, setCarPostData] = useState<CarData[]>([]);
   const { data: carsData, isLoading } = useGetCars({
-    params,
+    params: { ...params, status },
   });
   const [count, setCount] = useState<number>(0);
   const carWithoutId = carsData?.data?.data;

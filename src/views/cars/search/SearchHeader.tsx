@@ -5,6 +5,7 @@ import SelectFormField from "../../../components/ui/inputfields/SelectField";
 import { Control, UseFormSetValue } from "react-hook-form";
 import DatePickerForm from "@/components/ui/inputfields/DatePicker";
 import SearchByDropDown from "./SearchByDropDown";
+import { statusData } from "@/data/cars/search";
 
 // For AWS
 
@@ -12,18 +13,8 @@ interface SearchHeaderProps {
   control: Control<any>;
   setDate: React.Dispatch<SetStateAction<Date | null>>;
   setValue: UseFormSetValue<{ searchBy: string; search: string }>;
+  setStatus: React.Dispatch<SetStateAction<string>>;
 }
-
-const statusData = [
-  {
-    name: "SCHEDULED",
-    id: "SCHEDULED",
-  },
-  {
-    name: "LIVE",
-    id: "LIVE",
-  },
-];
 
 function renderItem(obj: { id: string; name: string }) {
   return (
@@ -34,7 +25,7 @@ function renderItem(obj: { id: string; name: string }) {
 }
 
 const SearchHeaders = (props: SearchHeaderProps) => {
-  const { control, setDate, setValue } = props;
+  const { control, setDate, setValue, setStatus } = props;
   return (
     <Grid
       container
@@ -73,6 +64,7 @@ const SearchHeaders = (props: SearchHeaderProps) => {
           label="Status"
           labelSize="small"
           fillWhite
+          handleOnChange={(e) => setStatus(e.target.value)}
         />
       </Grid>
     </Grid>

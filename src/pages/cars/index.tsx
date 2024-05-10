@@ -15,7 +15,8 @@ const Cars = () => {
   });
   const [search, searchBy] = watch(["search", "searchBy"]);
   const [createdAt, setCreatedAt] = useState<Date | null>(null);
-  const params = { search, createdAt, searchBy };
+  const [status, setStatus] = useState("");
+  const params = { search, createdAt, searchBy, status };
 
   return (
     <Grid>
@@ -23,6 +24,7 @@ const Cars = () => {
         control={control}
         setDate={setCreatedAt}
         setValue={setValue}
+        setStatus={setStatus}
       />
       <DataTable control={control} postQueryParams={params} />
     </Grid>
