@@ -15,7 +15,7 @@ type CellType = {
   row: AuctionData;
 };
 
-type AuctionStatus = "PROCUREMENT" | "NOBID" | "UNSOLD";
+type AuctionStatus = "PROCUREMENT" | "NOBID" | "UNSOLD" | "NOQUOTE";
 
 const auctionStatus = {
   PROCUREMENT: {
@@ -28,6 +28,10 @@ const auctionStatus = {
   },
   NOBID: {
     title: "NO BID",
+    color: "error",
+  },
+  NOQUOTE: {
+    title: "NO QUOTE",
     color: "error",
   },
 };
@@ -121,7 +125,8 @@ const useColumns = (props: Props) => {
         const isProcured = status === "PROCUREMENT";
         const isUnsold = status === "UNSOLD";
         const isNoBid = status === "NOBID";
-        const showRedo = isUnsold || isNoBid;
+        const isNoQuote = status === "NOQUOTE";
+        const showRedo = isUnsold || isNoBid || isNoQuote;
         const isViewBill = procurement_status?.[0];
 
         return (

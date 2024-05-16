@@ -33,7 +33,7 @@ const DataTable = () => {
 
   const { data } = useGetAuctionResults({
     ...params,
-    status: "PROCUREMENT,UNSOLD,NOBID",
+    status: "PROCUREMENT,UNSOLD,NOBID,NOQUOTE",
   });
   const resultData = data?.data;
   const results = addKey(resultData as any, "id", "_id") ?? [];
