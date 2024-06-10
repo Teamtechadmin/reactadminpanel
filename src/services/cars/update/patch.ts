@@ -5,7 +5,7 @@ import { GET_CARS_ENDPOINT } from "../endpoints";
 
 const updateCar = (props: UpdateCarProps) => {
   const { id, body } = props;
-  return axiosInstance.patch(`${GET_CARS_ENDPOINT}/${id}`, body);
+  return axiosInstance.patch(`${GET_CARS_ENDPOINT + id}`, body);
 };
 
 export const useUpdateCar = () => {
