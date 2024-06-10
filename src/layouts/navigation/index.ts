@@ -51,6 +51,13 @@ const navigation = (): VerticalNavItemsType => {
       subject: "evaluators",
       icon: "tabler:user-star",
     },
+    {
+      title: "Leads",
+      path: "/leads",
+      action: "manage",
+      subject: "leads",
+      icon: "tabler:users-group",
+    },
   ];
 };
 
