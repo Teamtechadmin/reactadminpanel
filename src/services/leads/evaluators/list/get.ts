@@ -13,7 +13,7 @@ async function getCarEvaluators(
   params: PageParams,
 ): Promise<AxiosResponse<EvaluatorObject>> {
   const filterParams = {
-    page: params.page,
+    page: params.page + 1,
     limit: params.pageSize,
   };
 
@@ -26,7 +26,7 @@ async function getCarEvaluators(
 
 export const useGetAllEvaluators = (params: PageParams) => {
   return useQuery({
-    queryKey: ["evaluators-all"],
+    queryKey: ["evaluators-all", params],
     queryFn: () => getCarEvaluators(params),
     staleTime: Infinity,
   });

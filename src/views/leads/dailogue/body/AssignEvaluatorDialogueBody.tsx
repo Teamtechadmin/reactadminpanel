@@ -21,7 +21,7 @@ export default function AssignEvaluatorDialogueBody(props: Props) {
   const { handleClose, leadID } = props;
   const { control } = useForm();
   const [params, setParams] = useState({
-    page: 1,
+    page: 0,
     pageSize: 10,
   });
   const { data } = useGetAllEvaluators(params);
@@ -36,6 +36,7 @@ export default function AssignEvaluatorDialogueBody(props: Props) {
         body: {
           evaluatorId: row._id,
           status: "assign",
+          assignEvaluatorTime: new Date().toISOString(),
         },
       },
       {
@@ -52,7 +53,6 @@ export default function AssignEvaluatorDialogueBody(props: Props) {
       },
     );
     handleClose();
-    console.log(row, "rowcheck");
   };
   const columns = useColumns({
     handleAssign,

@@ -48,7 +48,7 @@ const useColumns = ({
   handleView,
   handleAssign,
 }: {
-  handleView: (id: string) => void;
+  handleView: (row: Lead) => void;
   handleAssign: (row: Lead) => void;
 }) => {
   const columns: any = [
@@ -136,14 +136,14 @@ const useColumns = ({
       minWidth: 30,
       headerName: "Actions",
       renderCell: ({ row }: CellType) => {
-        const { id, leadStatus } = row;
+        const { leadStatus } = row;
         const disableVerify = !notDisableStatus.includes(leadStatus);
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <ButtonIcon
               icon="tabler:eye"
               title="View"
-              onClick={() => handleView(id)}
+              onClick={() => handleView(row)}
             />
             <ButtonIcon
               icon="tabler:user-check"

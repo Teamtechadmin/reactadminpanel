@@ -3,12 +3,14 @@ import { tabs } from "@/data/leads/tabs";
 import useColumns from "@/hooks/columns/leads";
 import { useGetLeads } from "@/services/leads/list/get";
 import { GetLeadParams, Lead, LeadStatus } from "@/services/leads/list/types";
+import { useLeadStore } from "@/store/leads/store";
 import { addKey } from "@/utils/add-key";
 import SearchHeaders from "@/views/customers/searchHeader/SearchHeaders";
 import AddLeadDialogue from "@/views/leads/dailogue/AddLeadDialogue";
 import AssignEvaluatorDialogue from "@/views/leads/dailogue/AssignEvaluatorDialogue";
 import { Button, Card, Grid, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -17,19 +19,21 @@ function LeadsPage() {
   const [open, setOpen] = useState(false);
   const [openAssign, setOpenAssign] = useState(false);
   const [leadID, setLeadID] = useState("");
-
   const [params, setParams] = useState<GetLeadParams>({
     page: 0,
     pageSize: 10,
   });
 
+  const router = useRouter();
   const handleAssign = (row: Lead) => {
     setOpenAssign(!openAssign);
     setLeadID(row._id);
   };
 
-  const handleView = (id: string) => {
-    console.log(id);
+  const { setLead } = useLeadStore();
+  const handleView = (row: Lead) => {
+    setLead(row);
+    router.push(`/leads/${row?._id}`);
   };
 
   const columns = useColumns({

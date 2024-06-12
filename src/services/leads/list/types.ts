@@ -35,8 +35,18 @@ export interface Lead {
   proposeOfInspection: string;
   city: string;
   pinCode: null | number;
-  dateAndTime: string;
+  dateAndTime: Date;
   source: string;
   leadStatus: LeadStatus;
   make: string;
+  model: string;
+  variant: string;
+  fuelType: string;
+  ownershipNumber: string;
+  odometerReading: string;
+  transmission: string;
+  rto: string;
+  registrationNumber: string;
+  sellingPlan: string;
+  year: string;
 }

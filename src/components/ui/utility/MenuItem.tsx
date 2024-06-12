@@ -7,3 +7,7 @@ export function renderItem(obj: { id: string; name: string }) {
     </MenuItem>
   );
 }
+
+export const renderMenuItems = (item: { label: string; value: string }) => (
+  <MenuItem value={item.value}>{item.label}</MenuItem>
+);

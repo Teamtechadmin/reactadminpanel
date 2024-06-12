@@ -124,7 +124,7 @@ export default function CarDetails(props: CarDetailsProps) {
         <Grid item lg={3.75}>
           <SelectFormField
             control={control}
-            id="year"
+            id="monthAndYearOfManufacture"
             label="Manufacturing Year"
             size="medium"
             renderMenuItems={renderMenuItems}

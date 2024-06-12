@@ -1,6 +1,7 @@
 export interface AssignEvaluatorBody {
   status: "assign";
   evaluatorId: string;
+  assignEvaluatorTime: string;
 }
 
 export interface AssignedResult {
