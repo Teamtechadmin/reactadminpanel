@@ -1,7 +1,12 @@
 export type LeadStatus =
+  | "NOTCONTACTED"
   | "EVOLUTIONCONFIRMED"
+  | "EVOLUTIONSCHEDULED"
+  | "EVOLUTIONCOMPLETED"
+  | "RESCHEDULING"
   | "NONRESPONSIVE"
-  | "RESCHEDULING";
+  | "EVOLUTIONEXPIRED"
+  | "NOTCONTACTED,EVOLUTIONCONFIRMED,EVOLUTIONSCHEDULED,EVOLUTIONCOMPLETED,RESCHEDULING,NONRESPONSIVE,EVOLUTIONEXPIRED";
 
 export interface GetLeadParams {
   status?: LeadStatus;
@@ -12,7 +17,7 @@ export interface GetLeadParams {
 export interface LeadObject {
   status: string;
   message: string;
-  data: any[];
+  data: Lead[];
   count: number;
   meta: Meta;
 }
@@ -20,4 +25,18 @@ export interface LeadObject {
 interface Meta {
   access: string;
   refresh: string;
+}
+
+export interface Lead {
+  id: string;
+  _id: string;
+  leadId: string;
+  sellerMobileNumber: number;
+  proposeOfInspection: string;
+  city: string;
+  pinCode: null | number;
+  dateAndTime: string;
+  source: string;
+  leadStatus: LeadStatus;
+  make: string;
 }

@@ -1,5 +1,6 @@
 import SelectFormField from "@/components/ui/inputfields/SelectField";
-import { InputAdornment, MenuItem } from "@mui/material";
+import { renderItem } from "@/components/ui/utility/MenuItem";
+import { InputAdornment } from "@mui/material";
 import React from "react";
 import { Control, UseFormSetValue } from "react-hook-form";
 
@@ -10,14 +11,6 @@ const selectBy = [
   },
   { id: "regNum", name: "Reg. No." },
 ];
-
-function renderItem(obj: { id: string; name: string }) {
-  return (
-    <MenuItem key={obj.id} value={obj.id}>
-      {obj.name}
-    </MenuItem>
-  );
-}
 
 interface Props {
   control: Control<any>;

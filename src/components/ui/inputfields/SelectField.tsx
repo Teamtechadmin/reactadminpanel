@@ -7,6 +7,7 @@ import {
 import React from "react";
 import { Control, Controller } from "react-hook-form";
 import RequiredLabel from "../utility/RequiredLabel";
+import ErrorBox from "../utility/ErrorBox";
 
 const SelectFormField = ({
   id,
@@ -23,6 +24,7 @@ const SelectFormField = ({
   data,
   isMultiple,
   fillWhite,
+  error,
 }: {
   id: string;
   control: Control<any>;
@@ -38,6 +40,7 @@ const SelectFormField = ({
   data?: any;
   isMultiple?: boolean;
   fillWhite?: boolean;
+  error?: any;
 }) => {
   return (
     <FormControl fullWidth>
@@ -91,6 +94,7 @@ const SelectFormField = ({
           </Select>
         )}
       />
+      {error && <ErrorBox error={error} />}
     </FormControl>
   );
 };

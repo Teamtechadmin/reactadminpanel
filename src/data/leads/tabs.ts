@@ -1,7 +1,15 @@
-export const tabs = [
+import { LeadStatus } from "@/services/leads/list/types";
+
+interface LeadTabs {
+  label: string;
+  value: LeadStatus;
+}
+
+export const tabs: LeadTabs[] = [
   {
     label: "All Leads",
-    value: "ALLEADS",
+    value:
+      "NOTCONTACTED,EVOLUTIONCONFIRMED,EVOLUTIONSCHEDULED,EVOLUTIONCOMPLETED,RESCHEDULING,NONRESPONSIVE,EVOLUTIONEXPIRED",
   },
   {
     label: "Not Contacted",
@@ -13,11 +21,11 @@ export const tabs = [
   },
   {
     label: "Evaluation Scheduled",
-    value: "evaluation_scheduled",
+    value: "EVOLUTIONSCHEDULED",
   },
   {
     label: "Evaluation Completed",
-    value: "evaluation_completed",
+    value: "EVOLUTIONCOMPLETED",
   },
   {
     label: "Rescheduling Needed",

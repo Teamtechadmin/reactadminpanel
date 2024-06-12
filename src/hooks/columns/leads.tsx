@@ -1,42 +1,55 @@
 import { ButtonIcon } from "@/components/ui/buttons/ButtonIcon";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
+import { Lead, LeadStatus } from "@/services/leads/list/types";
+import { formatDateAndTime } from "@/utils/format-date-and-time";
 import { Box, Chip, Typography } from "@mui/material";
 
-export type StatusType = "Deactivated" | "Active";
-
-export type DocStatus = "NOTSUBMITTED" | "SUBMITTED";
-
-interface RowType {
-  status: StatusType;
-  isDocumentsVerified: DocStatus;
-  location: string;
-  id: string;
-  name: string;
-  phone: string;
-  date: Date;
-}
-
 type CellType = {
-  row: RowType;
+  row: Lead;
 };
 
-const statusColor = {
-  Deactivated: "error",
-  Active: "success",
+type StatusColorType = {
+  [key in LeadStatus]: string;
 };
 
-function getStatusColor(status: StatusType) {
+const statusColor: StatusColorType = {
+  RESCHEDULING: "pending",
+  EVOLUTIONCOMPLETED: "success",
+  EVOLUTIONCONFIRMED: "info",
+  EVOLUTIONEXPIRED: "secondary",
+  EVOLUTIONSCHEDULED: "info",
+  NONRESPONSIVE: "error",
+  NOTCONTACTED: "error",
+  "NOTCONTACTED,EVOLUTIONCONFIRMED,EVOLUTIONSCHEDULED,EVOLUTIONCOMPLETED,RESCHEDULING,NONRESPONSIVE,EVOLUTIONEXPIRED":
+    "info",
+};
+
+const statusLabel: StatusColorType = {
+  RESCHEDULING: "Rescheduling",
+  EVOLUTIONCOMPLETED: "Completed",
+  EVOLUTIONCONFIRMED: "Confirmed",
+  EVOLUTIONEXPIRED: "Expired",
+  EVOLUTIONSCHEDULED: "Scheduled",
+  NONRESPONSIVE: "Non Responsive",
+  NOTCONTACTED: "Not Contacted",
+  "NOTCONTACTED,EVOLUTIONCONFIRMED,EVOLUTIONSCHEDULED,EVOLUTIONCOMPLETED,RESCHEDULING,NONRESPONSIVE,EVOLUTIONEXPIRED":
+    "",
+};
+
+function getStatusColor(status: LeadStatus) {
   return statusColor[status] as any;
 }
 
-export const disableStatus = ["VERIFIED", "NOTSUBMITTED"];
+const getStatusLabel = (value: LeadStatus) => statusLabel[value];
+
+export const notDisableStatus = ["EVOLUTIONCONFIRMED", "NOTSUBMITTED"];
 
 const useColumns = ({
   handleView,
   handleAssign,
 }: {
   handleView: (id: string) => void;
-  handleAssign: (id: string) => void;
+  handleAssign: (row: Lead) => void;
 }) => {
   const columns: any = [
     {
@@ -45,9 +58,10 @@ const useColumns = ({
       minWidth: 110,
       headerName: "Lead ID",
       headerClassName: "super-app-theme--header",
-      renderCell: (row: RowType) => {
-        const { id } = row;
-        return <ClickableTypography name={id} />;
+      renderCell: ({ row }: CellType) => {
+        const { leadId } = row;
+        console.log(row, "rowCheck");
+        return <ClickableTypography name={leadId} />;
       },
     },
     {
@@ -56,8 +70,11 @@ const useColumns = ({
       minWidth: 120,
       headerName: "Date",
       renderCell: ({ row }: CellType) => {
-        console.log(row);
-        return <Typography>Date</Typography>;
+        return (
+          <Typography>
+            {formatDateAndTime(new Date(row?.dateAndTime))}
+          </Typography>
+        );
       },
     },
     {
@@ -65,9 +82,8 @@ const useColumns = ({
       field: "purpose",
       minWidth: 50,
       headerName: "Inspection Purpose",
-      renderCell: ({ row }: any) => {
-        const { contactNo } = row;
-        return <Typography noWrap>{contactNo}</Typography>;
+      renderCell: ({ row }: CellType) => {
+        return <Typography noWrap>{row?.proposeOfInspection}</Typography>;
       },
     },
     {
@@ -75,9 +91,8 @@ const useColumns = ({
       field: "brand",
       minWidth: 50,
       headerName: "Car Brand",
-      renderCell: ({ row }: any) => {
-        const { district } = row;
-        return <Typography noWrap>{district}</Typography>;
+      renderCell: ({ row }: CellType) => {
+        return <Typography noWrap>{row?.make}</Typography>;
       },
     },
     {
@@ -85,9 +100,8 @@ const useColumns = ({
       field: "location",
       minWidth: 50,
       headerName: "Location",
-      renderCell: ({ row }: any) => {
-        const { district } = row;
-        return <Typography noWrap>{district}</Typography>;
+      renderCell: ({ row }: CellType) => {
+        return <Typography noWrap>{row?.city}</Typography>;
       },
     },
     {
@@ -95,9 +109,9 @@ const useColumns = ({
       field: "phone",
       minWidth: 50,
       headerName: "Phone",
-      renderCell: ({ row }: any) => {
-        const { district } = row;
-        return <Typography noWrap>{district}</Typography>;
+      renderCell: ({ row }: CellType) => {
+        const { sellerMobileNumber } = row;
+        return <Typography noWrap>{sellerMobileNumber}</Typography>;
       },
     },
     {
@@ -105,14 +119,13 @@ const useColumns = ({
       field: "status",
       minWidth: 50,
       headerName: "Status",
-      renderCell: ({ row }: any) => {
-        const { isDeactivate } = row;
-        const status = isDeactivate ? "Deactivated" : "Active";
+      renderCell: ({ row }: CellType) => {
+        const { leadStatus } = row;
         return (
           <Chip
-            label={status}
+            label={getStatusLabel(leadStatus)}
             variant="outlined"
-            color={getStatusColor(status)}
+            color={getStatusColor(leadStatus)}
           />
         );
       },
@@ -122,9 +135,9 @@ const useColumns = ({
       field: "action",
       minWidth: 30,
       headerName: "Actions",
-      renderCell: ({ row }: any) => {
-        const { id, isDocumentsVerified } = row;
-        const disableVerify = disableStatus.includes(isDocumentsVerified);
+      renderCell: ({ row }: CellType) => {
+        const { id, leadStatus } = row;
+        const disableVerify = !notDisableStatus.includes(leadStatus);
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <ButtonIcon
@@ -134,9 +147,9 @@ const useColumns = ({
             />
             <ButtonIcon
               icon="tabler:user-check"
-              title="Verify"
+              title="Assign"
               disabled={disableVerify}
-              onClick={() => handleAssign(id)}
+              onClick={() => handleAssign(row)}
             />
           </Box>
         );
