@@ -53,9 +53,9 @@ const useColumns = ({
 }) => {
   const columns: any = [
     {
-      flex: 0.012,
+      flex: 0.0125,
       field: "id",
-      minWidth: 110,
+      minWidth: 120,
       headerName: "Lead ID",
       headerClassName: "super-app-theme--header",
       renderCell: ({ row }: CellType) => {
@@ -78,7 +78,7 @@ const useColumns = ({
       },
     },
     {
-      flex: 0.03,
+      flex: 0.0175,
       field: "purpose",
       minWidth: 50,
       headerName: "Inspection Purpose",
@@ -105,7 +105,7 @@ const useColumns = ({
       },
     },
     {
-      flex: 0.022,
+      flex: 0.0185,
       field: "phone",
       minWidth: 50,
       headerName: "Phone",
@@ -131,7 +131,7 @@ const useColumns = ({
       },
     },
     {
-      flex: 0.02,
+      flex: 0.0175,
       field: "action",
       minWidth: 30,
       headerName: "Actions",
