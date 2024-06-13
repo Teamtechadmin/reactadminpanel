@@ -6,10 +6,11 @@ import { Control } from "react-hook-form";
 interface Props {
   control: Control<any>;
   errors: any;
+  owner: string;
 }
 
 export default function CallInfoCard(props: Props) {
-  const { control, errors } = props;
+  const { control, errors, owner } = props;
   return (
     <Grid>
       <Grid
@@ -28,7 +29,7 @@ export default function CallInfoCard(props: Props) {
       </Grid>
       <Divider />
       <Grid>
-        <CallInfoForm control={control} errors={errors} />
+        <CallInfoForm control={control} errors={errors} owner={owner} />
       </Grid>
     </Grid>
   );

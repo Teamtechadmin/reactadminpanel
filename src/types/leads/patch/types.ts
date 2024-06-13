@@ -14,4 +14,5 @@ export interface LeadUpdate {
   status: string;
   initialFollowUpNotes: string;
   relation: string;
+  city: string;
 }

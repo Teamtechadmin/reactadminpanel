@@ -1,3 +1,4 @@
+import usePrefillFields from "@/hooks/leads/prefill/usePrefillFields";
 import useFormSchema from "@/hooks/schema/leads/update/schema";
 import { useUpdateLead } from "@/services/leads/patch/patch";
 import { useLeadStore } from "@/store/leads/store";
@@ -9,7 +10,7 @@ import CustomerStatusCard from "@/views/leads/view/CustomerStatusCard";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Card, Grid, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const leadStatuses = [
@@ -23,15 +24,19 @@ const leadStatuses = [
 ];
 
 export default function LeadDetailedPage() {
+  const [refresh, setRefresh] = useState(1);
   const { lead } = useLeadStore();
   const schema = useFormSchema();
   const {
     control,
     formState: { errors },
     handleSubmit,
+    setValue,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const [owner] = watch(["owner"]);
   const toast = useCustomToast();
   const router = useRouter();
   const update = useUpdateLead();
@@ -43,10 +48,10 @@ export default function LeadDetailedPage() {
           ...val,
           sellerName: val.sellerName,
           relation: val.owner === "yes" ? "owner" : val.relation,
-          district: val.district,
+          city: val.district,
           pinCode: val.pinCode,
           locationLink: val.locationLink,
-          address: val.locationLink,
+          address: val.address,
           landMark: val.landMark,
           sellingReason: val.sellingReason,
           floodAffected: val.floodAffected,
@@ -68,14 +73,15 @@ export default function LeadDetailedPage() {
     );
   };
 
-  // usePrefillFields({
-  //   data: lead,
-  //   setValue,
-  // });
+  usePrefillFields({
+    data: lead as any,
+    setValue: setValue as any,
+    setRefresh,
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid>
+      <Grid key={refresh}>
         <Grid display={"flex"} gap={1} marginTop={3}>
           <Typography fontWeight={600} color={"GrayText"}>
             Lead ID:
@@ -86,7 +92,7 @@ export default function LeadDetailedPage() {
           <CarDetailsBasicCard />
         </Card>
         <Card sx={{ my: 3 }}>
-          <CallInfoCard control={control} errors={errors} />
+          <CallInfoCard control={control} errors={errors} owner={owner} />
         </Card>
         <Card sx={{ my: 3 }}>
           <CustomerStatusCard control={control} errors={errors} />

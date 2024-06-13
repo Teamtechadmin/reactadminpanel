@@ -4,12 +4,12 @@ import TextFormField from "@/components/ui/inputfields/TextFormField";
 import { renderMenuItems } from "@/components/ui/utility/MenuItem";
 import { districts } from "@/data/leads/districts";
 import { Grid } from "@mui/material";
-import React, { useState } from "react";
 import { Control } from "react-hook-form";
 
 interface Props {
   control: Control<any>;
   errors: any;
+  owner: string;
 }
 
 const options = [
@@ -24,8 +24,8 @@ const options = [
 ];
 
 export default function CallInfoForm(props: Props) {
-  const { control, errors } = props;
-  const [show, setShow] = useState(false);
+  const { control, errors, owner } = props;
+  const isOwner = owner === "yes";
   return (
     <Grid container display={"flex"} padding={2} gap={3}>
       <Grid item lg={3.75}>
@@ -48,13 +48,9 @@ export default function CallInfoForm(props: Props) {
           data={options ?? []}
           error={errors?.owner}
           required
-          handleOnChange={(e) => {
-            const isNo = e.target.value === "no";
-            setShow(Boolean(isNo));
-          }}
         />
       </Grid>
-      {show && (
+      {!isOwner && (
         <Grid item lg={3.75}>
           <TextFormField
             control={control}

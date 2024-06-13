@@ -26,10 +26,10 @@ const statusColor: StatusColorType = {
 
 const statusLabel: StatusColorType = {
   RESCHEDULING: "Rescheduling",
-  EVOLUTIONCOMPLETED: "Completed",
-  EVOLUTIONCONFIRMED: "Confirmed",
-  EVOLUTIONEXPIRED: "Expired",
-  EVOLUTIONSCHEDULED: "Scheduled",
+  EVOLUTIONCOMPLETED: "Evaluation Completed",
+  EVOLUTIONCONFIRMED: "Evaluation Confirmed",
+  EVOLUTIONEXPIRED: "Evaluation Expired",
+  EVOLUTIONSCHEDULED: "Evaluation Scheduled",
   NONRESPONSIVE: "Non Responsive",
   NOTCONTACTED: "Not Contacted",
   "NOTCONTACTED,EVOLUTIONCONFIRMED,EVOLUTIONSCHEDULED,EVOLUTIONCOMPLETED,RESCHEDULING,NONRESPONSIVE,EVOLUTIONEXPIRED":
