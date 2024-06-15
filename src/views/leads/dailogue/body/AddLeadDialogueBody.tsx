@@ -12,7 +12,7 @@ import { LeadBody } from "@/services/leads/post/types";
 const defaultValues = {
   make: "",
   rto: "",
-  year: "",
+  monthAndYearOfManufacture: "",
   model: "",
   fuelType: "",
   transmission: "",

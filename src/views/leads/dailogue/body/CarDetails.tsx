@@ -130,7 +130,7 @@ export default function CarDetails(props: CarDetailsProps) {
             renderMenuItems={renderMenuItems}
             data={years ?? []}
             handleOnChange={(e) => setYear(e.target.value)}
-            error={errors?.year}
+            error={errors?.monthAndYearOfManufacture}
           />{" "}
         </Grid>
         <Grid item lg={3.75}>

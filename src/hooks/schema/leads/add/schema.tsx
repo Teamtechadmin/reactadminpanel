@@ -13,7 +13,7 @@ function useFormSchema() {
       ),
     make: yup.string().required("This Field is Required"),
     rto: yup.string().required("This Field is Required"),
-    year: yup.string().required("This Field is Required"),
+    monthAndYearOfManufacture: yup.string().required("This Field is Required"),
     model: yup.string().required("This Field is Required"),
     fuelType: yup.string().required("This Field is Required"),
     transmission: yup.string().required("This Field is Required"),

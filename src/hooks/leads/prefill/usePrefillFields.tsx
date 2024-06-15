@@ -12,6 +12,26 @@ export default function usePrefillFields(props: Props) {
   const { data, setValue, setRefresh } = props;
   useEffect(() => {
     if (data) {
+      const indexToDataMap: any = {
+        0: {
+          notes: data.initialFollowUpNotes,
+          date: data.initialCallDate,
+        },
+        1: {
+          notes: data.followUpNotes,
+          date: data.followUpCallDate,
+        },
+        2: {
+          notes: data.finalFollowUpNotes,
+          date: data.finalCallDate,
+        },
+      };
+      const subStatus = data?.subStatus;
+      const followUps: any = subStatus?.map((item, index) => ({
+        status: item,
+        notes: indexToDataMap[index]?.notes,
+        date: indexToDataMap[index]?.date,
+      }));
       setValue("address", data?.address);
       setValue("district", data?.city);
       setValue("expectedPrice", data?.expectedPrice);
@@ -27,6 +47,7 @@ export default function usePrefillFields(props: Props) {
       setValue("sellingReason", data?.sellingReason);
       setValue("status", data?.status);
       setValue("teleCallerId", data?.teleCallerId);
+      setValue("followUps", followUps);
       setRefresh((refresh) => refresh + 1);
     }
   }, [data, setRefresh, setValue]);

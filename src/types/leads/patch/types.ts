@@ -15,4 +15,17 @@ export interface LeadUpdate {
   initialFollowUpNotes: string;
   relation: string;
   city: string;
+  subStatus: string[];
+  leadStatus: string;
+  followUpNotes: string;
+  followUpCallDate: string;
+  finalFollowUpNotes: string;
+  finalCallDate: string;
+  followUps: [
+    {
+      status: string;
+      date: string;
+      notes: string;
+    },
+  ];
 }

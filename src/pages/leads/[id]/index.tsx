@@ -6,12 +6,12 @@ import { LeadUpdate } from "@/types/leads/patch/types";
 import useCustomToast from "@/utils/toast";
 import CallInfoCard from "@/views/leads/view/CallInfoCard";
 import CarDetailsBasicCard from "@/views/leads/view/CarDetailsBasicCard";
-import CustomerStatusCard from "@/views/leads/view/CustomerStatusCard";
+import FollowUpCard from "@/views/leads/view/FollowUpCard";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, Card, Grid, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 
 const leadStatuses = [
   "NOTCONTACTED",
@@ -22,6 +22,29 @@ const leadStatuses = [
   "NONRESPONSIVE",
   "EVOLUTIONEXPIRED",
 ];
+
+const defaultValues = {
+  sellerName: "",
+  owner: "",
+  relation: "",
+  district: "",
+  pinCode: "",
+  locationLink: "",
+  address: "",
+  landMark: "",
+  sellingReason: "",
+  floodAffected: "",
+  expectedPrice: 0,
+  initialCallDate: "",
+  teleCallerId: "",
+  followUps: [
+    {
+      status: "",
+      date: new Date(),
+      notes: "",
+    },
+  ],
+};
 
 export default function LeadDetailedPage() {
   const [refresh, setRefresh] = useState(1);
@@ -34,35 +57,58 @@ export default function LeadDetailedPage() {
     setValue,
     watch,
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver<any>(schema),
+    defaultValues,
   });
+
+  const { fields, append } = useFieldArray({
+    control,
+    name: "followUps",
+  });
+  const maxFields = fields.length <= 2;
+
   const [owner] = watch(["owner"]);
   const toast = useCustomToast();
   const router = useRouter();
   const update = useUpdateLead();
+
   const onSubmit: any = (val: LeadUpdate) => {
+    const followUps: any = val?.followUps;
+    const subStatus = followUps?.map((item: { status: string }) => item.status);
+
+    const leadBody: any = {
+      sellerName: val.sellerName,
+      relation: val.owner === "yes" ? "owner" : val.relation,
+      city: val.district,
+      pinCode: val.pinCode,
+      locationLink: val.locationLink,
+      address: val.address,
+      landMark: val.landMark,
+      sellingReason: val.sellingReason,
+      floodAffected: val.floodAffected,
+      expectedPrice: val.expectedPrice,
+      teleCallerId: val.teleCallerId,
+      initialFollowUpNotes: followUps?.[0]?.notes,
+      followUpNotes: followUps?.[1]?.notes,
+      finalFollowUpNotes: followUps?.[2]?.notes,
+      initialCallDate: followUps?.[0]?.date,
+      followUpCallDate: followUps?.[1]?.date,
+      finalCallDate: followUps?.[2]?.date,
+      subStatus,
+    };
+
+    const matchedStatus = subStatus.find((status: string) =>
+      leadStatuses.includes(status),
+    );
+
+    if (matchedStatus) {
+      leadBody.leadStatus = matchedStatus;
+    }
+    console.log(leadBody, "leadBody");
     update.mutate(
       {
         id: lead?._id ?? "",
-        body: {
-          ...val,
-          sellerName: val.sellerName,
-          relation: val.owner === "yes" ? "owner" : val.relation,
-          city: val.district,
-          pinCode: val.pinCode,
-          locationLink: val.locationLink,
-          address: val.address,
-          landMark: val.landMark,
-          sellingReason: val.sellingReason,
-          floodAffected: val.floodAffected,
-          expectedPrice: val.expectedPrice,
-          initialCallDate: val.initialCallDate,
-          teleCallerId: val.teleCallerId,
-          initialFollowUpNotes: val.initialFollowUpNotes,
-          ...(leadStatuses.includes(val.status)
-            ? { leadStatus: val.status }
-            : { subStatus: val.status }),
-        },
+        body: leadBody,
       },
       {
         onSuccess: () => {
@@ -79,6 +125,12 @@ export default function LeadDetailedPage() {
     setRefresh,
   });
 
+  function handleAdd() {
+    if (fields.length <= 2) {
+      append(defaultValues.followUps);
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid key={refresh}>
@@ -94,11 +146,25 @@ export default function LeadDetailedPage() {
         <Card sx={{ my: 3 }}>
           <CallInfoCard control={control} errors={errors} owner={owner} />
         </Card>
-        <Card sx={{ my: 3 }}>
-          <CustomerStatusCard control={control} errors={errors} />
-        </Card>
+        {fields.map((field, index) => {
+          const heading = index === 0 ? "Customer Status" : "";
+          return (
+            <Card key={field.id} sx={{ my: 3 }}>
+              <FollowUpCard
+                customHeading={heading}
+                control={control}
+                errors={errors}
+                index={index}
+              />
+            </Card>
+          );
+        })}
         <Grid display={"flex"} gap={2} justifyContent={"end"}>
-          <Button variant="outlined">Add Follow Up</Button>
+          {maxFields && (
+            <Button onClick={handleAdd} variant="outlined">
+              Add Follow Up
+            </Button>
+          )}
           <Button type="submit" variant="contained">
             Submit
           </Button>
