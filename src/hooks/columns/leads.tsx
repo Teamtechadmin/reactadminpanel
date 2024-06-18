@@ -13,7 +13,7 @@ type StatusColorType = {
 };
 
 const statusColor: StatusColorType = {
-  RESCHEDULING: "pending",
+  RESCHEDULING: "warning",
   EVOLUTIONCOMPLETED: "success",
   EVOLUTIONCONFIRMED: "info",
   EVOLUTIONEXPIRED: "secondary",
@@ -37,7 +37,7 @@ const statusLabel: StatusColorType = {
 };
 
 function getStatusColor(status: LeadStatus) {
-  return statusColor[status] as any;
+  return (statusColor[status] as any) || "info";
 }
 
 const getStatusLabel = (value: LeadStatus) => statusLabel[value];
@@ -122,11 +122,13 @@ const useColumns = ({
       renderCell: ({ row }: CellType) => {
         const { leadStatus } = row;
         return (
-          <Chip
-            label={getStatusLabel(leadStatus)}
-            variant="outlined"
-            color={getStatusColor(leadStatus)}
-          />
+          leadStatus && (
+            <Chip
+              label={getStatusLabel(leadStatus)}
+              variant="outlined"
+              color={getStatusColor(leadStatus)}
+            />
+          )
         );
       },
     },
