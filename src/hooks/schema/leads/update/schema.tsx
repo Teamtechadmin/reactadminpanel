@@ -9,6 +9,12 @@ function useFormSchema() {
     floodAffected: yup.string().required(defaultReqText),
     expectedPrice: yup.string().required(defaultReqText),
     initialCallDate: yup.string().required(defaultReqText),
+    followUps: yup.array().of(
+      yup.object().shape({
+        date: yup.date().required(defaultReqText),
+        status: yup.string().required(defaultReqText),
+      }),
+    ),
   });
 
   return schema;

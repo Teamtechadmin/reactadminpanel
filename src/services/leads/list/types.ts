@@ -33,6 +33,7 @@ export interface Lead {
   leadId: string;
   sellerMobileNumber: number;
   proposeOfInspection: string;
+  monthAndYearOfManufacture: string;
   city: string;
   pinCode: null | number;
   dateAndTime: Date;

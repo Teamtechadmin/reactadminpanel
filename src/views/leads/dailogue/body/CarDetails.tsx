@@ -220,7 +220,6 @@ export default function CarDetails(props: CarDetailsProps) {
             label="Phone Number"
             error={errors?.sellerMobileNumber as any}
             size="medium"
-            type="number"
           />
         </Grid>
         <Grid item lg={3.75}>

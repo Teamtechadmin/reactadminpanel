@@ -24,7 +24,10 @@ function useFormSchema() {
     sellerMobileNumber: yup
       .string()
       .required("This Field is Required")
-      .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits"),
+      .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits")
+      .test("is-numeric", "Mobile number must contain only numbers", (value) =>
+        /^\d+$/.test(value),
+      ),
     source: yup.string().required("This Field is Required"),
     registrationNumber: yup.string().required("This Field is Required"),
     purpose: yup.string().required("This Field is Required"),

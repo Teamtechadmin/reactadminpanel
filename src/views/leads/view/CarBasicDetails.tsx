@@ -1,5 +1,6 @@
 import { Lead } from "@/services/leads/list/types";
 import { useLeadStore } from "@/store/leads/store";
+import { capitaliseFirstLetter } from "@/utils/capitalise-firstletter";
 import { formatDateAndTime } from "@/utils/format-date-and-time";
 import { Grid, Typography } from "@mui/material";
 import React from "react";
@@ -16,11 +17,11 @@ function getDatas(lead: Lead) {
     },
     {
       label: "RTO Location",
-      value: lead?.rto,
+      value: capitaliseFirstLetter(lead?.rto ?? ""),
     },
     {
       label: "Manufacturing Year",
-      value: lead?.year,
+      value: lead?.monthAndYearOfManufacture,
     },
     {
       label: "Car Model",

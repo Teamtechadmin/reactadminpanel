@@ -22,6 +22,7 @@ export default function FollowUp(props: FollowUpProps) {
           control={control}
           id={`followUps.${[index]}.status`}
           label="Schedule Status"
+          error={errors?.[index]?.status}
           renderMenuItems={renderMenuItems}
           data={statuses ?? []}
           size="medium"
@@ -31,7 +32,7 @@ export default function FollowUp(props: FollowUpProps) {
       <Grid item lg={4}>
         <TimePickerForm
           control={control}
-          error={errors?.initialCallDate}
+          error={errors?.[index]?.date}
           id={`followUps.${[index]}.date`}
           label="Schedule date & time"
         />
@@ -40,7 +41,7 @@ export default function FollowUp(props: FollowUpProps) {
         <TextFormField
           control={control}
           id={`followUps.${[index]}.notes`}
-          error={errors?.initialFollowUpNotes}
+          error={errors?.[index]?.notes}
           size="medium"
           label="Notes"
           multiline

@@ -35,7 +35,7 @@ const defaultValues = {
   sellingReason: "",
   floodAffected: "",
   expectedPrice: 0,
-  initialCallDate: "",
+  initialCallDate: new Date(),
   teleCallerId: "",
   followUps: [
     {
@@ -75,7 +75,6 @@ export default function LeadDetailedPage() {
   const onSubmit: any = (val: LeadUpdate) => {
     const followUps: any = val?.followUps;
     const subStatus = followUps?.map((item: { status: string }) => item.status);
-
     const leadBody: any = {
       sellerName: val.sellerName,
       relation: val.owner === "yes" ? "owner" : val.relation,
@@ -104,7 +103,6 @@ export default function LeadDetailedPage() {
     if (matchedStatus) {
       leadBody.leadStatus = matchedStatus;
     }
-    console.log(leadBody, "leadBody");
     update.mutate(
       {
         id: lead?._id ?? "",
@@ -153,7 +151,7 @@ export default function LeadDetailedPage() {
               <FollowUpCard
                 customHeading={heading}
                 control={control}
-                errors={errors}
+                errors={errors?.followUps}
                 index={index}
               />
             </Card>
@@ -165,7 +163,7 @@ export default function LeadDetailedPage() {
               Add Follow Up
             </Button>
           )}
-          <Button type="submit" variant="contained">
+          <Button disabled={update.isPending} type="submit" variant="contained">
             Submit
           </Button>
         </Grid>

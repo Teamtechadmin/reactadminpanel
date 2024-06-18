@@ -11,7 +11,7 @@ interface Props {
 export default function usePrefillFields(props: Props) {
   const { data, setValue, setRefresh } = props;
   useEffect(() => {
-    if (data) {
+    if (data && data.initialCallDate) {
       const indexToDataMap: any = {
         0: {
           notes: data.initialFollowUpNotes,
