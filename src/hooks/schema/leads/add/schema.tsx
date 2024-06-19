@@ -5,6 +5,7 @@ function useFormSchema() {
   const schema = yup.object().shape({
     dateAndTime: yup
       .date()
+      .typeError("Enter Proper Date")
       .required("Date is required")
       .test(
         "is-incremented",
