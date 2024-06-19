@@ -65,6 +65,7 @@ export default function LeadDetailedPage() {
     control,
     name: "followUps",
   });
+
   const maxFields = fields.length <= 2;
 
   const [owner] = watch(["owner"]);
@@ -75,6 +76,7 @@ export default function LeadDetailedPage() {
   const onSubmit: any = (val: LeadUpdate) => {
     const followUps: any = val?.followUps;
     const subStatus = followUps?.map((item: { status: string }) => item.status);
+    const addedLeads = lead?.subStatus || [];
     const leadBody: any = {
       sellerName: val.sellerName,
       relation: val.owner === "yes" ? "owner" : val.relation,
@@ -93,9 +95,11 @@ export default function LeadDetailedPage() {
       initialCallDate: followUps?.[0]?.date,
       followUpCallDate: followUps?.[1]?.date,
       finalCallDate: followUps?.[2]?.date,
-      subStatus: [subStatus[subStatus.length - 1]],
+      ...(addedLeads?.length < subStatus.length && {
+        subStatus: [subStatus[subStatus.length - 1]],
+      }),
     };
-    console.log(leadBody, lead, "leadCheck");
+
     const matchedStatus = subStatus.find((status: string) =>
       leadStatuses.includes(status),
     );

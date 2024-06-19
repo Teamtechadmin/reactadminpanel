@@ -50,4 +50,5 @@ export interface Lead {
   registrationNumber: string;
   sellingPlan: string;
   year: string;
+  subStatus: string[];
 }
