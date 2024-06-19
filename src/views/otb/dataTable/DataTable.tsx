@@ -51,7 +51,6 @@ const DataTable = () => {
   const otb = addKey(otbResponse, "id", "_id") ?? [];
   const selectedItem =
     Array.isArray(otb) && otb?.find((car) => car?.id === logData?.id);
-  console.log(selectedItem, "otbCheck");
 
   return (
     <>
