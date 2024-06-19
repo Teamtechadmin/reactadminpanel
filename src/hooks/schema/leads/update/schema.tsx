@@ -11,7 +11,10 @@ function useFormSchema() {
     initialCallDate: yup.string().required(defaultReqText),
     followUps: yup.array().of(
       yup.object().shape({
-        date: yup.date().required(defaultReqText),
+        date: yup
+          .date()
+          .required(defaultReqText)
+          .typeError("Enter Proper Date"),
         status: yup.string().required(defaultReqText),
       }),
     ),

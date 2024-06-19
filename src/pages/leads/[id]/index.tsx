@@ -93,9 +93,9 @@ export default function LeadDetailedPage() {
       initialCallDate: followUps?.[0]?.date,
       followUpCallDate: followUps?.[1]?.date,
       finalCallDate: followUps?.[2]?.date,
-      subStatus,
+      subStatus: [subStatus[subStatus.length - 1]],
     };
-
+    console.log(leadBody, lead, "leadCheck");
     const matchedStatus = subStatus.find((status: string) =>
       leadStatuses.includes(status),
     );

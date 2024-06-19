@@ -77,6 +77,7 @@ export default function AddLeadDialogueBody(props: Props) {
         errors={errors}
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
+        isDisabled={create.isPending}
       />
     </Grid>
   );

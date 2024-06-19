@@ -23,6 +23,7 @@ interface CarDetailsProps {
   errors: FieldErrors<any>;
   handleSubmit: UseFormHandleSubmit<any>;
   onSubmit: (val: any) => void;
+  isDisabled?: boolean;
 }
 
 const renderDisplayMenuItems = (item: { id: string; display_name: string }) => (
@@ -36,7 +37,7 @@ const renderMenuItems = (item: { label: string; value: string }) => (
 );
 
 export default function CarDetails(props: CarDetailsProps) {
-  const { control, errors, handleSubmit, onSubmit } = props;
+  const { control, errors, handleSubmit, onSubmit, isDisabled } = props;
   const [make, setMake] = useState("");
   const [year, setYear] = useState("");
   const [model, setModel] = useState({});
@@ -255,7 +256,11 @@ export default function CarDetails(props: CarDetailsProps) {
         </Grid>
       </Grid>
       <Grid display={"flex"} justifyContent={"end"} gap={2}>
-        <Button type="submit" variant="contained">
+        <Button
+          disabled={Boolean(isDisabled)}
+          type="submit"
+          variant="contained"
+        >
           Submit
         </Button>
       </Grid>
