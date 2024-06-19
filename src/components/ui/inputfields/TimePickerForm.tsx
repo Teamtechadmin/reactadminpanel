@@ -12,11 +12,20 @@ interface TimePickerProps {
   defaultValue?: Date;
   todayByDefault?: boolean;
   minDate?: Date;
+  isDisabled?: boolean;
 }
 
 const TimePickerForm = (props: TimePickerProps) => {
-  const { id, control, error, label, defaultValue, todayByDefault, minDate } =
-    props;
+  const {
+    id,
+    control,
+    error,
+    label,
+    defaultValue,
+    todayByDefault,
+    minDate,
+    isDisabled,
+  } = props;
   const today = new Date();
   return (
     <Grid width={"100%"}>
@@ -34,6 +43,7 @@ const TimePickerForm = (props: TimePickerProps) => {
               defaultValue ? defaultValue : todayByDefault ? today : null
             }
             sx={{ width: "100%" }}
+            disabled={Boolean(isDisabled)}
           />
         )}
       />

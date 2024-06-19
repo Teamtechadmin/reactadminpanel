@@ -11,10 +11,11 @@ interface FollowUpProps {
   control: Control<any>;
   errors: any;
   index: number;
+  isDisabled?: boolean;
 }
 
 export default function FollowUp(props: FollowUpProps) {
-  const { control, errors, index } = props;
+  const { control, errors, index, isDisabled } = props;
   return (
     <Grid container display={"flex"} padding={2} gap={3}>
       <Grid item lg={4}>
@@ -27,6 +28,7 @@ export default function FollowUp(props: FollowUpProps) {
           data={statuses ?? []}
           size="medium"
           required
+          isDisabled={Boolean(isDisabled)}
         />
       </Grid>
       <Grid item lg={4}>
@@ -35,6 +37,7 @@ export default function FollowUp(props: FollowUpProps) {
           error={errors?.[index]?.date}
           id={`followUps.${[index]}.date`}
           label="Schedule date & time"
+          isDisabled={isDisabled}
         />
       </Grid>
       <Grid item lg={4}>
@@ -46,6 +49,7 @@ export default function FollowUp(props: FollowUpProps) {
           label="Notes"
           multiline
           rows={3}
+          isDisabled={isDisabled}
         />
       </Grid>
     </Grid>

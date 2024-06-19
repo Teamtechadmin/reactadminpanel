@@ -8,10 +8,11 @@ interface Props {
   errors: any;
   index: number;
   customHeading: string;
+  isDisabled?: boolean;
 }
 
 export default function FollowUpCard(props: Props) {
-  const { control, errors, index, customHeading } = props;
+  const { control, errors, index, customHeading, isDisabled } = props;
   return (
     <Grid>
       <Grid
@@ -30,7 +31,12 @@ export default function FollowUpCard(props: Props) {
       </Grid>
       <Divider />
       <Grid>
-        <FollowUp index={index} control={control} errors={errors} />
+        <FollowUp
+          index={index}
+          control={control}
+          errors={errors}
+          isDisabled={isDisabled}
+        />
       </Grid>
     </Grid>
   );
