@@ -60,7 +60,6 @@ const useColumns = ({
       headerClassName: "super-app-theme--header",
       renderCell: ({ row }: CellType) => {
         const { leadId } = row;
-        console.log(row, "rowCheck");
         return <ClickableTypography name={leadId} />;
       },
     },
@@ -71,9 +70,7 @@ const useColumns = ({
       headerName: "Date",
       renderCell: ({ row }: CellType) => {
         return (
-          <Typography>
-            {formatDateAndTime(new Date(row?.dateAndTime))}
-          </Typography>
+          <Typography>{formatDateAndTime(new Date(row?.createdAt))}</Typography>
         );
       },
     },

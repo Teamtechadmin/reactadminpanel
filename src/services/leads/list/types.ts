@@ -28,6 +28,7 @@ interface Meta {
 }
 
 export interface Lead {
+  createdAt: Date;
   id: string;
   _id: string;
   leadId: string;
@@ -51,4 +52,5 @@ export interface Lead {
   sellingPlan: string;
   year: string;
   subStatus: string[];
+  proposeOfSell: string;
 }

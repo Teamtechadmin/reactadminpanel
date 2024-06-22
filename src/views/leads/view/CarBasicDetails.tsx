@@ -9,7 +9,7 @@ function getDatas(lead: Lead) {
   return [
     {
       label: "Date",
-      value: formatDateAndTime(new Date(lead.dateAndTime)),
+      value: formatDateAndTime(new Date(lead.createdAt)),
     },
     {
       label: "Car Brand",
@@ -49,7 +49,7 @@ function getDatas(lead: Lead) {
     },
     {
       label: "Planned Selling Time",
-      value: lead?.sellingPlan,
+      value: lead?.sellingPlan || lead?.proposeOfSell,
     },
     {
       label: "Mobile Number",

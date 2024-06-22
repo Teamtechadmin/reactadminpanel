@@ -150,7 +150,7 @@ export default function LeadDetailedPage() {
         </Card>
         {fields.map((field, index) => {
           const heading = index === 0 ? "Customer Status" : "";
-          const addedFollowUps = lead?.subStatus.length ?? 0;
+          const addedFollowUps = lead?.subStatus?.length ?? 0;
           const disableFields = addedFollowUps >= index + 1;
           return (
             <Card key={field.id} sx={{ my: 3 }}>
