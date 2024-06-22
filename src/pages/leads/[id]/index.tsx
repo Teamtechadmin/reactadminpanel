@@ -77,6 +77,12 @@ export default function LeadDetailedPage() {
     const followUps: any = val?.followUps;
     const subStatus = followUps?.map((item: { status: string }) => item.status);
     const addedLeads = lead?.subStatus || [];
+
+    const matchedStatus = subStatus.find((status: string) =>
+      leadStatuses.includes(status),
+    );
+    console.log(matchedStatus, "matchStatus");
+
     const leadBody: any = {
       sellerName: val.sellerName,
       relation: val.owner === "yes" ? "owner" : val.relation,
@@ -95,14 +101,11 @@ export default function LeadDetailedPage() {
       initialCallDate: followUps?.[0]?.date,
       followUpCallDate: followUps?.[1]?.date,
       finalCallDate: followUps?.[2]?.date,
-      ...(addedLeads?.length < subStatus.length && {
-        subStatus: [subStatus[subStatus.length - 1]],
-      }),
+      ...(addedLeads?.length < subStatus.length &&
+        !matchedStatus && {
+          subStatus: [subStatus[subStatus.length - 1]],
+        }),
     };
-
-    const matchedStatus = subStatus.find((status: string) =>
-      leadStatuses.includes(status),
-    );
 
     if (matchedStatus) {
       leadBody.leadStatus = matchedStatus;
