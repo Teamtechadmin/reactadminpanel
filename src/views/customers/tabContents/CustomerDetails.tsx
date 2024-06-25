@@ -21,7 +21,7 @@ function getCustomerData(data: Dealer) {
     },
     {
       label: "Document Status",
-      value: data?.isDocumentsVerified ? "Verified" : "Not Verified",
+      value: data?.isDocumentsVerified,
     },
     {
       label: "Phone Number",

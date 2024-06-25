@@ -8,6 +8,7 @@ interface GetUserParams {
   page: number;
   pageSize: number;
   role: UserRoles;
+  contactNo?: string;
 }
 
 interface UserParam {
@@ -19,6 +20,7 @@ async function getUsers(params: GetUserParams): Promise<AxiosResponse<any>> {
     page: params.page + 1,
     limit: params.pageSize,
     role: params.role,
+    contactNo: params.contactNo !== "" ? params.contactNo : null,
   };
 
   const response = await axiosInstance.get(GET_EVALUATORS_ENDPOINT, {

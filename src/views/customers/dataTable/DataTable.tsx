@@ -8,7 +8,12 @@ import ConfirmModal from "@/components/ui/modals/ConfirmModal";
 import DealerDocumentVerifyBody from "../modals/DealerDocumentVerifyBody";
 import { useRouter } from "next/router";
 
-const DataTable = () => {
+interface Props {
+  search: string;
+}
+
+const DataTable = (props: Props) => {
+  const { search } = props;
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("sm"),
   );
@@ -28,7 +33,7 @@ const DataTable = () => {
   const [cusId, setCusId] = useState("");
 
   const { data: dealers } = useGetUsers({
-    params: { ...params, role: "DEALER" },
+    params: { ...params, role: "DEALER", contactNo: search },
   });
   const data = dealers?.data?.data;
   const dataWithId = addKey(data, "id", "_id") || [];

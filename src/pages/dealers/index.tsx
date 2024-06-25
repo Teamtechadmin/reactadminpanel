@@ -5,19 +5,21 @@ import { useForm } from "react-hook-form";
 import DataTable from "../../views/customers/dataTable/DataTable";
 
 const defaultValues = {
-  name: "",
+  search: "",
   status: "",
 };
 
 const Dealers = () => {
-  const { control } = useForm({
+  const { control, watch } = useForm({
     defaultValues,
   });
+
+  const [searchParams] = watch(["search"]);
 
   return (
     <Grid>
       <SearchHeaders control={control} />
-      <DataTable />
+      <DataTable search={searchParams} />
     </Grid>
   );
 };
