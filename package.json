@@ -32,6 +32,7 @@
     "@types/pdfmake": "^0.2.9",
     "axios": "^1.6.7",
     "date-fns": "^3.5.0",
+    "firebase": "^10.12.2",
     "next": "14.1.0",
     "next-nprogress": "^1.4.0",
     "pdfmake": "^0.2.9",

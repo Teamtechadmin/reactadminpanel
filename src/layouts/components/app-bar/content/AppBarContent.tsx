@@ -3,7 +3,7 @@ import UserDropdown from "@/components/ui/custom/user/UserDropdown";
 import Icon from "@/components/ui/icon";
 import { IconButton } from "@mui/material";
 import Box from "@mui/material/Box";
-import React from "react";
+import NotificationDropdown from "../notifications/Notifications";
 
 export type AppBarContentProps = {
   hidden: boolean;
@@ -12,6 +12,24 @@ export type AppBarContentProps = {
 
 const AppBarContent = (props: AppBarContentProps) => {
   const { hidden, toggleNavVisibility } = props;
+  const notifications = [
+    {
+      title: "Notification",
+      subtitle: "This is notification",
+    },
+    {
+      title: "Notification",
+      subtitle: "This is notification",
+    },
+    {
+      title: "Notification",
+      subtitle: "This is notification",
+    },
+    {
+      title: "Notification",
+      subtitle: "This is notification",
+    },
+  ];
 
   return (
     <Box
@@ -32,6 +50,7 @@ const AppBarContent = (props: AppBarContentProps) => {
           <Icon fontSize="1.5rem" icon="tabler:menu-2" />
         </IconButton>
       ) : null}
+      <NotificationDropdown notifications={notifications} />
       <UserDropdown />
     </Box>
   );
