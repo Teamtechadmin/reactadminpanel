@@ -1,4 +1,10 @@
-import { useState, SyntheticEvent, Fragment, ReactNode } from "react";
+import {
+  useState,
+  SyntheticEvent,
+  Fragment,
+  ReactNode,
+  useEffect,
+} from "react";
 import Box from "@mui/material/Box";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
@@ -7,7 +13,13 @@ import MuiMenu, { MenuProps } from "@mui/material/Menu";
 import MuiMenuItem, { MenuItemProps } from "@mui/material/MenuItem";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { Chip } from "@mui/material";
+import { Chip, Grid } from "@mui/material";
+import { getMessaging, getToken } from "firebase/messaging";
+import { firebaseConfig } from "../../../../firebase/firebaseConfig";
+import { initializeApp } from "firebase/app";
+import { useSetFCM } from "@/services/notification/post/post";
+import { useAuthStore } from "@/store/auth/store";
+import { useGetNotifications } from "@/services/notification/get/get";
 
 // ** Styled Menu component
 const Menu = styled(MuiMenu)<MenuProps>(({ theme }) => ({
@@ -67,16 +79,12 @@ const ScrollWrapper = ({ children }: { children: ReactNode }) => {
   );
 };
 
-interface Props {
-  notifications: { title: string; subtitle: string }[];
-}
-
-const NotificationDropdown = (props: Props) => {
-  const { notifications } = props;
+const NotificationDropdown = () => {
   // ** States
   const [anchorEl, setAnchorEl] = useState<(EventTarget & Element) | null>(
     null,
   );
+  const [fcmSuccess, setFcmSuccess] = useState(false);
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
     setAnchorEl(event.currentTarget);
@@ -85,6 +93,55 @@ const NotificationDropdown = (props: Props) => {
   const handleDropdownClose = () => {
     setAnchorEl(null);
   };
+
+  const { auth } = useAuthStore();
+  const userID = auth?.user?._id;
+
+  const setFCM = useSetFCM();
+  const { data: notifications } = useGetNotifications({
+    id: userID,
+    isFCMSuccess: fcmSuccess,
+  });
+
+  useEffect(() => {
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    // Messaging service
+    const messaging = getMessaging(app);
+
+    async function requestPermission() {
+      //requesting permission using Notification API
+      const permission = await Notification.requestPermission();
+
+      if (permission === "granted") {
+        const token = await getToken(messaging, {
+          vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID,
+        });
+
+        if (userID) {
+          setFCM.mutate(
+            {
+              body: {
+                fcmToken: token,
+                platform: "WEB",
+              },
+              id: userID,
+            },
+            {
+              onSuccess: () => setFcmSuccess(true),
+              onError: () => setFcmSuccess(false),
+            },
+          );
+        }
+
+        console.log("Token generated : ", token);
+      } else if (permission === "denied") {
+        alert("You denied for the notification");
+      }
+    }
+    requestPermission();
+  }, [userID]);
 
   return (
     <Fragment>
@@ -97,7 +154,7 @@ const NotificationDropdown = (props: Props) => {
         <Badge
           color="error"
           variant="dot"
-          invisible={!notifications.length}
+          invisible={notifications && !notifications.data?.length}
           sx={{
             "& .MuiBadge-badge": {
               top: 4,
@@ -140,7 +197,7 @@ const NotificationDropdown = (props: Props) => {
             <Chip
               className={"MuiChip-light"}
               color="primary"
-              label={`${notifications.length} New`}
+              label={notifications ? `${notifications?.data?.length} New` : ""}
               sx={{
                 height: 20,
                 fontSize: "0.75rem",
@@ -151,37 +208,41 @@ const NotificationDropdown = (props: Props) => {
           </Box>
         </MenuItem>
         <ScrollWrapper>
-          {notifications.map((notification: any, index: number) => (
-            <MenuItem
-              key={index}
-              disableRipple
-              disableTouchRipple
-              onClick={handleDropdownClose}
-            >
-              <Box
-                sx={{ width: "100%", display: "flex", alignItems: "center" }}
+          {notifications ? (
+            notifications?.data?.map((notification: any, index: number) => (
+              <MenuItem
+                key={index}
+                disableRipple
+                disableTouchRipple
+                onClick={handleDropdownClose}
               >
                 <Box
-                  sx={{
-                    mr: 4,
-                    ml: 2.5,
-                    flex: "1 1",
-                    display: "flex",
-                    overflow: "hidden",
-                    flexDirection: "column",
-                  }}
+                  sx={{ width: "100%", display: "flex", alignItems: "center" }}
                 >
-                  <MenuItemTitle>{notification.title}</MenuItemTitle>
-                  <MenuItemSubtitle variant="body2">
-                    {notification.subtitle}
-                  </MenuItemSubtitle>
+                  <Box
+                    sx={{
+                      mr: 4,
+                      ml: 2.5,
+                      flex: "1 1",
+                      display: "flex",
+                      overflow: "hidden",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <MenuItemTitle>{notification.title}</MenuItemTitle>
+                    <MenuItemSubtitle variant="body2">
+                      {notification.subtitle}
+                    </MenuItemSubtitle>
+                  </Box>
+                  <Typography variant="body2" sx={{ color: "text.disabled" }}>
+                    {notification.meta}
+                  </Typography>
                 </Box>
-                <Typography variant="body2" sx={{ color: "text.disabled" }}>
-                  {notification.meta}
-                </Typography>
-              </Box>
-            </MenuItem>
-          ))}
+              </MenuItem>
+            ))
+          ) : (
+            <Grid display={"flex"} justifyContent={"center"}></Grid>
+          )}
         </ScrollWrapper>
       </Menu>
     </Fragment>

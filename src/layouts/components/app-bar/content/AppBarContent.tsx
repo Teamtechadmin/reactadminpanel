@@ -12,24 +12,24 @@ export type AppBarContentProps = {
 
 const AppBarContent = (props: AppBarContentProps) => {
   const { hidden, toggleNavVisibility } = props;
-  const notifications = [
-    {
-      title: "Notification",
-      subtitle: "This is notification",
-    },
-    {
-      title: "Notification",
-      subtitle: "This is notification",
-    },
-    {
-      title: "Notification",
-      subtitle: "This is notification",
-    },
-    {
-      title: "Notification",
-      subtitle: "This is notification",
-    },
-  ];
+  // const notifications = [
+  //   {
+  //     title: "Notification",
+  //     subtitle: "This is notification",
+  //   },
+  //   {
+  //     title: "Notification",
+  //     subtitle: "This is notification",
+  //   },
+  //   {
+  //     title: "Notification",
+  //     subtitle: "This is notification",
+  //   },
+  //   {
+  //     title: "Notification",
+  //     subtitle: "This is notification",
+  //   },
+  // ];
 
   return (
     <Box
@@ -50,7 +50,7 @@ const AppBarContent = (props: AppBarContentProps) => {
           <Icon fontSize="1.5rem" icon="tabler:menu-2" />
         </IconButton>
       ) : null}
-      <NotificationDropdown notifications={notifications} />
+      <NotificationDropdown />
       <UserDropdown />
     </Box>
   );
