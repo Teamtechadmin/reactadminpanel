@@ -13,7 +13,7 @@ import MuiMenu, { MenuProps } from "@mui/material/Menu";
 import MuiMenuItem, { MenuItemProps } from "@mui/material/MenuItem";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { Chip, Grid } from "@mui/material";
+import { Chip, Grid, Tooltip } from "@mui/material";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { firebaseConfig } from "../../../../firebase/firebaseConfig";
 import { initializeApp } from "firebase/app";
@@ -114,7 +114,7 @@ const NotificationDropdown = () => {
     async function requestPermission() {
       //requesting permission using Notification API
       const permission = await Notification.requestPermission();
-
+      console.log(permission, "Permission");
       if (permission === "granted") {
         const token = await getToken(messaging, {
           vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID,
@@ -248,10 +248,14 @@ const NotificationDropdown = () => {
                         flexDirection: "column",
                       }}
                     >
-                      <MenuItemTitle>{notification.title}</MenuItemTitle>
-                      <MenuItemSubtitle variant="body2">
-                        {notification.body}
-                      </MenuItemSubtitle>
+                      <Tooltip title={notification.title}>
+                        <MenuItemTitle>{notification.title}</MenuItemTitle>
+                      </Tooltip>
+                      <Tooltip title={notification.body}>
+                        <MenuItemSubtitle variant="body2">
+                          {notification.body}
+                        </MenuItemSubtitle>
+                      </Tooltip>
                     </Box>
                   </Box>
                 </MenuItem>
