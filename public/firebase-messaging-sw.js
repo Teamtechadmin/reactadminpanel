@@ -7,12 +7,13 @@ importScripts(
 );
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCqieSmiIe9STIaP8UBBBR-E05hCOkFfTc",
-  authDomain: "react-message-service.firebaseapp.com",
-  projectId: "react-message-service",
-  storageBucket: "react-message-service.appspot.com",
-  messagingSenderId: "1089574679017",
-  appId: "1:1089574679017:web:557e5973097d164aa59b78",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize the Firebase app in the service worker by passing the firebaseConfig directly

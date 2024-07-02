@@ -14,12 +14,14 @@ import MuiMenuItem, { MenuItemProps } from "@mui/material/MenuItem";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Chip, Grid } from "@mui/material";
-import { getMessaging, getToken } from "firebase/messaging";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { firebaseConfig } from "../../../../firebase/firebaseConfig";
 import { initializeApp } from "firebase/app";
 import { useSetFCM } from "@/services/notification/post/post";
 import { useAuthStore } from "@/store/auth/store";
 import { useGetNotifications } from "@/services/notification/get/get";
+import useCustomToast from "@/utils/toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 // ** Styled Menu component
 const Menu = styled(MuiMenu)<MenuProps>(({ theme }) => ({
@@ -36,7 +38,7 @@ const Menu = styled(MuiMenu)<MenuProps>(({ theme }) => ({
     "& .MuiMenuItem-root": {
       margin: 0,
       borderRadius: 0,
-      padding: theme.spacing(4, 6),
+      padding: theme.spacing(2, 3),
       "&:hover": {
         backgroundColor: theme.palette.action.hover,
       },
@@ -46,11 +48,9 @@ const Menu = styled(MuiMenu)<MenuProps>(({ theme }) => ({
 
 // ** Styled MenuItem component
 const MenuItem = styled(MuiMenuItem)<MenuItemProps>(({ theme }) => ({
-  paddingTop: theme.spacing(3),
-  paddingBottom: theme.spacing(3),
-  "&:not(:last-of-type)": {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-  },
+  paddingTop: theme.spacing(2),
+  paddingBottom: theme.spacing(2),
+  borderBottom: `1px solid ${theme.palette.divider}`,
 }));
 
 // ** Styled component for the title in MenuItems
@@ -85,6 +85,7 @@ const NotificationDropdown = () => {
     null,
   );
   const [fcmSuccess, setFcmSuccess] = useState(false);
+  const [fcmMessaging, setFcmMessaging] = useState<any>();
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
     setAnchorEl(event.currentTarget);
@@ -98,16 +99,16 @@ const NotificationDropdown = () => {
   const userID = auth?.user?._id;
 
   const setFCM = useSetFCM();
+  const queryClient = useQueryClient();
   const { data: notifications } = useGetNotifications({
     id: userID,
     isFCMSuccess: fcmSuccess,
   });
+  const notificationList = notifications?.data?.data ?? [];
+  const toast = useCustomToast();
 
   useEffect(() => {
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-
-    // Messaging service
     const messaging = getMessaging(app);
 
     async function requestPermission() {
@@ -129,19 +130,31 @@ const NotificationDropdown = () => {
               id: userID,
             },
             {
-              onSuccess: () => setFcmSuccess(true),
+              onSuccess: () => {
+                setFcmSuccess(true);
+                setFcmMessaging(messaging);
+              },
               onError: () => setFcmSuccess(false),
             },
           );
         }
-
-        console.log("Token generated : ", token);
       } else if (permission === "denied") {
         alert("You denied for the notification");
       }
     }
     requestPermission();
   }, [userID]);
+
+  if (fcmMessaging) {
+    onMessage(fcmMessaging, (payload) => {
+      const title = payload.notification?.title ?? "";
+      const msg = payload.notification?.body ?? "";
+      queryClient.invalidateQueries({
+        queryKey: ["notifications"],
+      });
+      toast.info(`${title + msg}`);
+    });
+  }
 
   return (
     <Fragment>
@@ -154,7 +167,7 @@ const NotificationDropdown = () => {
         <Badge
           color="error"
           variant="dot"
-          invisible={notifications && !notifications.data?.length}
+          invisible={notificationList && !notificationList?.length}
           sx={{
             "& .MuiBadge-badge": {
               top: 4,
@@ -171,8 +184,8 @@ const NotificationDropdown = () => {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleDropdownClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        transformOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
         <MenuItem
           disableRipple
@@ -197,7 +210,7 @@ const NotificationDropdown = () => {
             <Chip
               className={"MuiChip-light"}
               color="primary"
-              label={notifications ? `${notifications?.data?.length} New` : ""}
+              label={notificationList ? `${notificationList?.length ?? 0}` : ""}
               sx={{
                 height: 20,
                 fontSize: "0.75rem",
@@ -208,38 +221,42 @@ const NotificationDropdown = () => {
           </Box>
         </MenuItem>
         <ScrollWrapper>
-          {notifications ? (
-            notifications?.data?.map((notification: any, index: number) => (
-              <MenuItem
-                key={index}
-                disableRipple
-                disableTouchRipple
-                onClick={handleDropdownClose}
-              >
-                <Box
-                  sx={{ width: "100%", display: "flex", alignItems: "center" }}
+          {notificationList ? (
+            notificationList?.map((notification: any, index: number) => {
+              console.log(notification, "notificationItem");
+              return (
+                <MenuItem
+                  key={index}
+                  disableRipple
+                  disableTouchRipple
+                  onClick={handleDropdownClose}
                 >
                   <Box
                     sx={{
-                      mr: 4,
-                      ml: 2.5,
-                      flex: "1 1",
+                      width: "100%",
                       display: "flex",
-                      overflow: "hidden",
-                      flexDirection: "column",
+                      alignItems: "center",
                     }}
                   >
-                    <MenuItemTitle>{notification.title}</MenuItemTitle>
-                    <MenuItemSubtitle variant="body2">
-                      {notification.subtitle}
-                    </MenuItemSubtitle>
+                    <Box
+                      sx={{
+                        mr: 4,
+                        ml: 2.5,
+                        flex: "1 1",
+                        display: "flex",
+                        overflow: "hidden",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <MenuItemTitle>{notification.title}</MenuItemTitle>
+                      <MenuItemSubtitle variant="body2">
+                        {notification.body}
+                      </MenuItemSubtitle>
+                    </Box>
                   </Box>
-                  <Typography variant="body2" sx={{ color: "text.disabled" }}>
-                    {notification.meta}
-                  </Typography>
-                </Box>
-              </MenuItem>
-            ))
+                </MenuItem>
+              );
+            })
           ) : (
             <Grid display={"flex"} justifyContent={"center"}></Grid>
           )}

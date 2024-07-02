@@ -17,10 +17,19 @@ const useCustomToast = () => {
     });
   };
 
+  const toastInfo = (message: string, opts?: ToastOptions) => {
+    return toast(message, {
+      duration: 2000,
+      position: "bottom-right",
+      ...(opts && { ...opts }),
+    });
+  };
+
   return {
     success: (message: string, opts?: ToastOptions) =>
       toastSuccess(message, opts),
     error: (message: string, opts?: ToastOptions) => toastError(message, opts),
+    info: (message: string, opts?: ToastOptions) => toastInfo(message, opts),
   };
 };
 
