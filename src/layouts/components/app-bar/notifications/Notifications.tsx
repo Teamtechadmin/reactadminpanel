@@ -119,6 +119,8 @@ const NotificationDropdown = () => {
         const token = await getToken(messaging, {
           vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID,
         });
+        console.log(token, "Token");
+        console.log(userID, "userID");
 
         if (userID) {
           setFCM.mutate(
@@ -131,6 +133,7 @@ const NotificationDropdown = () => {
             },
             {
               onSuccess: () => {
+                console.log("FCMSUCCESS");
                 setFcmSuccess(true);
                 setFcmMessaging(messaging);
               },
@@ -153,6 +156,7 @@ const NotificationDropdown = () => {
         queryKey: ["notifications"],
       });
       toast.info(`${title + msg}`);
+      console.log(`${title + msg}`);
     });
   }
 
