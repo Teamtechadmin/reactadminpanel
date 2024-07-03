@@ -6,33 +6,43 @@ importScripts(
   "https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js",
 );
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAiuzgOcvwOCji6EJJdKBdMJGhWNxd2zgs",
-  authDomain: "merapartners-35393.firebaseapp.com",
-  projectId: "merapartners-35393",
-  storageBucket: "merapartners-35393.appspot.com",
-  messagingSenderId: "28440160509",
-  appId: "1:28440160509:web:9efad0eb68c6190d857694",
-  measurementId: "G-CKJM3E863C",
-};
+// Fetch Firebase configuration from the server
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    fetch("/api/firebase-config")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((firebaseConfig) => {
+        // Initialize the Firebase app in the service worker with the fetched config
+        firebase.initializeApp(firebaseConfig);
 
-// Initialize the Firebase app in the service worker by passing the firebaseConfig directly
-firebase.initializeApp(firebaseConfig);
+        // Retrieve firebase messaging
+        const messaging = firebase.messaging();
 
-// Retrieve firebase messaging
-const messaging = firebase.messaging();
+        messaging.onBackgroundMessage((payload) => {
+          console.log(
+            "[firebase-messaging-sw.js] Received background message ",
+            payload,
+          );
+          // Customize notification here
+          const notificationTitle = payload.notification.title;
+          const notificationOptions = {
+            body: payload.notification.body,
+            icon: payload.notification.image,
+          };
 
-messaging.onBackgroundMessage((payload) => {
-  console.log(
-    "[firebase-messaging-sw.js] Received background message ",
-    payload,
+          self.registration.showNotification(
+            notificationTitle,
+            notificationOptions,
+          );
+        });
+      })
+      .catch((error) => {
+        console.error("Error fetching Firebase config:", error);
+      }),
   );
-  // Customize notification here
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: payload.notification.image,
-  };
-
-  self.registration.showNotification(notificationTitle, notificationOptions);
 });

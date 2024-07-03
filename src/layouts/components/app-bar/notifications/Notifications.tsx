@@ -114,13 +114,10 @@ const NotificationDropdown = () => {
     async function requestPermission() {
       //requesting permission using Notification API
       const permission = await Notification.requestPermission();
-      console.log(permission, "Permission");
       if (permission === "granted") {
         const token = await getToken(messaging, {
           vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID,
         });
-        console.log(token, "Token");
-        console.log(userID, "userID");
 
         if (userID) {
           setFCM.mutate(
@@ -133,7 +130,6 @@ const NotificationDropdown = () => {
             },
             {
               onSuccess: () => {
-                console.log("FCMSUCCESS");
                 setFcmSuccess(true);
                 setFcmMessaging(messaging);
               },
@@ -227,7 +223,6 @@ const NotificationDropdown = () => {
         <ScrollWrapper>
           {notificationList ? (
             notificationList?.map((notification: any, index: number) => {
-              console.log(notification, "notificationItem");
               return (
                 <MenuItem
                   key={index}
