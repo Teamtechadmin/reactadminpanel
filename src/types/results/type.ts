@@ -22,5 +22,6 @@ export interface OtbLeaderBoardRow {
   autoBidLimit: number;
   _id: string;
   isRejected: boolean;
+  finalPrice?: number;
   id: string;
 }

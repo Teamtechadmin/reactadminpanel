@@ -13,7 +13,7 @@ export const usePrefillBill = (props: CalculateBillProps) => {
 
   useEffect(() => {
     if (data) {
-      setValue("totalAmount", data?.amount ?? 0);
+      setValue("totalAmount", data?.finalPrice ?? 0);
     }
   }, [setValue]);
 };

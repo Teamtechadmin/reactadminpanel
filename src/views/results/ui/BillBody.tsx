@@ -56,10 +56,11 @@ export function BillBody<T extends AuctionData | OtbLeaderBoardRow>(
   const updateResult = useUpdateResult();
   const toast = useCustomToast();
   const queryClient = useQueryClient();
+  const prefillData = { ...winnerData, finalPrice: data?.finalPrice };
 
   usePrefillBill({
     setValue,
-    data: winnerData,
+    data: prefillData,
   });
 
   const calc = useCalculateBill({
@@ -76,6 +77,7 @@ export function BillBody<T extends AuctionData | OtbLeaderBoardRow>(
           serviceFees: Number(calc?.serviceFee ?? 0),
           totalAmount: Number(calc?.totalDue ?? 0),
           ...(isOtb && { userId: data?.userId }),
+          ...(isOtb && { amount: values?.totalAmount ?? 0 }),
         },
       },
       {

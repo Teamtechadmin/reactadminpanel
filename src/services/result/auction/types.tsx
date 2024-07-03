@@ -44,6 +44,7 @@ export interface LeaderBoard {
   fullname: string;
   isRejected: boolean;
   type: string;
+  finalPrice?: number;
 }
 
 export interface UpdateResultProps {
