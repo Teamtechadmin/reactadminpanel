@@ -127,7 +127,7 @@ const useColumns = (props: Props) => {
         const isNoBid = status === "NOBID";
         const disableLog = isNoBid;
         const isGiveOffer = status === "NEGOTIATION";
-        const isViewOffer = negotiation_status?.[0] === "VIEW";
+        const isViewOffer = negotiation_status === "VIEW";
 
         return (
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>

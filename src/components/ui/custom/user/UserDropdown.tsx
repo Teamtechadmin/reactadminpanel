@@ -61,7 +61,7 @@ const UserDropdown = () => {
   function handleFCMClose() {
     setFCM.mutate({
       body: {
-        fcmToken: null,
+        fcmToken: "NULL",
         platform: "WEB",
       },
       id: auth.user._id,

@@ -24,8 +24,8 @@ export interface AuctionData {
   negotiation_amount: any[];
   negotiation_startTime: any[];
   negotiation_endTime: any[];
-  negotiation_status: any[];
-  procurement_status: any[];
+  negotiation_status: string;
+  procurement_status: string;
   gst: any[];
   serviceFees: any[];
   totalAmount: any[];
