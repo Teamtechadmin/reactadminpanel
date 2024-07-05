@@ -22,7 +22,7 @@ self.addEventListener("install", (event) => {
 
         // Retrieve firebase messaging
         const messaging = firebase.messaging();
-
+        console.log("FIREBASE INITIATED");
         messaging.onBackgroundMessage((payload) => {
           console.log(
             "[firebase-messaging-sw.js] Received background message ",

@@ -18,6 +18,7 @@ import MenuItem, { MenuItemProps } from "@mui/material/MenuItem";
 import Icon from "../../icon/index";
 import { useAuthStore } from "@/store/auth/store";
 import { defaultLogin } from "@/default/auth/login";
+import { useSetFCM } from "@/services/notification/post/post";
 
 // ** Styled Components
 const BadgeContentSpan = styled("span")(({ theme }) => ({
@@ -44,6 +45,7 @@ const UserDropdown = () => {
 
   // ** Hooks
   const router = useRouter();
+  const setFCM = useSetFCM();
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
     setAnchorEl(event.currentTarget);
@@ -56,8 +58,19 @@ const UserDropdown = () => {
     setAnchorEl(null);
   };
 
+  function handleFCMClose() {
+    setFCM.mutate({
+      body: {
+        fcmToken: null,
+        platform: "WEB",
+      },
+      id: auth.user._id,
+    });
+  }
+
   const handleLogout = () => {
     handleDropdownClose();
+    handleFCMClose();
     localStorage.removeItem("accessToken");
     localStorage.removeItem("userData");
     router.push("/login");

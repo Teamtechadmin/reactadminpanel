@@ -1,5 +1,5 @@
 export interface FCMBody {
-  fcmToken: string;
+  fcmToken: string | null;
   platform: "WEB";
 }
 

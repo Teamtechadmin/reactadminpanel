@@ -146,13 +146,15 @@ const NotificationDropdown = () => {
 
   if (fcmMessaging) {
     onMessage(fcmMessaging, (payload) => {
+      console.log(payload, "payloadCheck");
+
       const title = payload.notification?.title ?? "";
       const msg = payload.notification?.body ?? "";
       queryClient.invalidateQueries({
         queryKey: ["notifications"],
       });
       toast.info(`${title + msg}`);
-      console.log(`${title + msg}`);
+      console.log(`${title + msg}`, "MESSAGE");
     });
   }
 
