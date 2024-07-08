@@ -28,10 +28,11 @@ interface Props {
   handleLog: (item: LiveAuction) => void;
   handleStop: (id: string) => void;
   handleViewers: (item: LiveAuction) => void;
+  handleBid: (item: LiveAuction) => void;
 }
 
 export const useColumns = (props: Props) => {
-  const { handleLog, handleStop, handleViewers } = props;
+  const { handleLog, handleStop, handleViewers, handleBid } = props;
   const columns = [
     {
       flex: 0.0105,
@@ -157,7 +158,13 @@ export const useColumns = (props: Props) => {
                 title="Stop Auction"
               />
             )}
-            {showBid && <ButtonIcon icon="tabler:gavel" title="Bid" />}
+            {showBid && (
+              <ButtonIcon
+                onClick={() => handleBid(row)}
+                icon="tabler:gavel"
+                title="Bid"
+              />
+            )}
             {showLog && (
               <ButtonIcon
                 onClick={() => handleViewers(row)}
