@@ -24,6 +24,7 @@ interface DialogueProps {
   titleFont: number;
   titleWeight: number;
   hideActions?: boolean;
+  CustomHeaderItem?: ReactElement<any>;
 }
 
 const CustomDialogue = (auctionProps: DialogueProps) => {
@@ -39,6 +40,7 @@ const CustomDialogue = (auctionProps: DialogueProps) => {
     iconSize,
     titleWeight,
     hideActions,
+    CustomHeaderItem,
   } = auctionProps;
   return (
     <Dialog
@@ -71,6 +73,7 @@ const CustomDialogue = (auctionProps: DialogueProps) => {
             {dailogueTitle}
           </Typography>
         </Grid>
+        {CustomHeaderItem && CustomHeaderItem}
         {!hideActions && (
           <Grid display={"flex"} alignContent={"center"}>
             <IconButton sx={{ paddingY: 0, paddingX: 1 }} onClick={handleClose}>

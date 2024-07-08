@@ -7,10 +7,15 @@ import { LiveAuction } from "@/types/live/auctions";
 function LiveAuctionTab() {
   const [openLog, setOpenLog] = useState(false);
   const [openStop, setOpenStop] = useState(false);
+  const [openViews, setOpenViews] = useState(false);
   const [log, setLog] = useState<LiveAuction>();
 
   const handleLogModal = () => {
     setOpenLog(!openLog);
+  };
+
+  const handleViewersModal = () => {
+    setOpenViews(!openViews);
   };
 
   const handleLog = (logItem: LiveAuction) => {
@@ -22,9 +27,15 @@ function LiveAuctionTab() {
     setOpenStop(!openStop);
   };
 
+  const handleViewers = (item: LiveAuction) => {
+    setLog(item);
+    setOpenViews(!openViews);
+  };
+
   const columns = useColumns({
     handleLog,
     handleStop,
+    handleViewers,
   });
 
   return (
@@ -38,6 +49,8 @@ function LiveAuctionTab() {
         log={log}
         handleStop={handleStop}
         openStop={openStop}
+        openViews={openViews}
+        handleViewers={handleViewersModal}
       />
     </div>
   );

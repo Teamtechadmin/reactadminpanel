@@ -3,6 +3,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React from "react";
 import { LogModal } from "../modals/LogModal";
 import { StopAuctionConfirmation } from "../modals/StopAuctionConfirmation";
+import { ViewersLogModal } from "../modals/ViewersLogModal";
 
 interface Props<T> {
   type: "auction" | "otb";
@@ -13,6 +14,8 @@ interface Props<T> {
   handleStop: () => void;
   log: T;
   openStop: boolean;
+  openViews: boolean;
+  handleViewers: () => void;
 }
 
 export default function LiveFeed<T>(props: Props<T>) {
@@ -25,6 +28,8 @@ export default function LiveFeed<T>(props: Props<T>) {
     log,
     handleStop,
     openStop,
+    handleViewers,
+    openViews,
   } = props;
   return (
     <>
@@ -46,6 +51,12 @@ export default function LiveFeed<T>(props: Props<T>) {
       <StopAuctionConfirmation
         handleClose={handleStop}
         open={openStop}
+        type={type}
+      />
+      <ViewersLogModal
+        handleClose={handleViewers}
+        log={log}
+        openLog={openViews}
         type={type}
       />
     </>

@@ -27,10 +27,11 @@ const stopStatuses = ["UPCOMING", "LIVE"];
 interface Props {
   handleLog: (item: LiveAuction) => void;
   handleStop: (id: string) => void;
+  handleViewers: (item: LiveAuction) => void;
 }
 
 export const useColumns = (props: Props) => {
-  const { handleLog, handleStop } = props;
+  const { handleLog, handleStop, handleViewers } = props;
   const columns = [
     {
       flex: 0.0105,
@@ -157,7 +158,13 @@ export const useColumns = (props: Props) => {
               />
             )}
             {showBid && <ButtonIcon icon="tabler:gavel" title="Bid" />}
-            {showLog && <ButtonIcon icon="tabler:live-view" title="Viewers" />}
+            {showLog && (
+              <ButtonIcon
+                onClick={() => handleViewers(row)}
+                icon="tabler:live-view"
+                title="Viewers"
+              />
+            )}
           </Box>
         );
       },

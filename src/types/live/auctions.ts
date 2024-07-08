@@ -26,3 +26,10 @@ export interface LiveAuctionLog {
   currentBid: number;
   bidType: string;
 }
+
+export interface ViewersAuctionLog {
+  dealershipID: string;
+  dealershipName: string;
+  phone: string;
+  location: string;
+}
