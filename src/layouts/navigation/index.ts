@@ -24,6 +24,13 @@ const navigation = (): VerticalNavItemsType => {
       icon: "tabler:car",
     },
     {
+      title: "Live",
+      path: "/live",
+      action: "manage",
+      subject: "cars",
+      icon: "tabler:rss",
+    },
+    {
       title: "Auctions",
       path: "/auctions",
       action: "manage",
@@ -31,18 +38,18 @@ const navigation = (): VerticalNavItemsType => {
       icon: "tabler:gavel",
     },
     {
-      title: "Results",
-      path: "/results",
-      action: "manage",
-      subject: "results",
-      icon: "tabler:trophy",
-    },
-    {
       title: "OTB",
       path: "/otb",
       action: "manage",
       subject: "otb",
       icon: "tabler:credit-card-pay",
+    },
+    {
+      title: "Results",
+      path: "/results",
+      action: "manage",
+      subject: "results",
+      icon: "tabler:trophy",
     },
     {
       title: "Evaluators",
