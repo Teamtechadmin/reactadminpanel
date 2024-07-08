@@ -1,7 +1,11 @@
 import { ButtonIcon } from "@/components/ui/buttons/ButtonIcon";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
 import { ChipColorType } from "@/types/color/chipColor";
-import { LiveAuction, LiveAuctionStatus } from "@/types/live/auctions";
+import {
+  LiveAuction,
+  LiveAuctionStatus,
+  LiveTabTypes,
+} from "@/types/live/auctions";
 import { numberToINR } from "@/utils/convert-to-rs";
 import { formatDateAndTime } from "@/utils/format-date-and-time";
 import { Box, Chip, Typography } from "@mui/material";
@@ -28,11 +32,13 @@ interface Props {
   handleLog: (item: LiveAuction) => void;
   handleStop: (id: string) => void;
   handleViewers: (item: LiveAuction) => void;
-  handleBid: (item: LiveAuction) => void;
+  handleBid?: (item: LiveAuction) => void;
+  type?: LiveTabTypes;
 }
 
 export const useColumns = (props: Props) => {
-  const { handleLog, handleStop, handleViewers, handleBid } = props;
+  const { handleLog, handleStop, handleViewers, handleBid, type } = props;
+  const isAuction = type === "auction";
   const columns = [
     {
       flex: 0.0105,
@@ -141,7 +147,7 @@ export const useColumns = (props: Props) => {
         const { status } = row;
         const isStoppable = stopStatuses.includes(status);
         const showLog = status !== "UPCOMING";
-        const showBid = status === "LIVE";
+        const showBid = status === "LIVE" && isAuction;
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             {showLog && (
@@ -160,7 +166,7 @@ export const useColumns = (props: Props) => {
             )}
             {showBid && (
               <ButtonIcon
-                onClick={() => handleBid(row)}
+                onClick={() => handleBid && handleBid(row)}
                 icon="tabler:gavel"
                 title="Bid"
               />
