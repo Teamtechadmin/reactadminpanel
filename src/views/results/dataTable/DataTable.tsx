@@ -15,7 +15,12 @@ import { AuctionData } from "@/services/result/auction/types";
 import { BillDialogue } from "../modals/BillDialogue";
 import { BillHandleType } from "@/types/results/type";
 
-const DataTable = () => {
+interface Props {
+  searchText: string;
+}
+
+const DataTable = (props: Props) => {
+  const { searchText } = props;
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("sm"),
   );
@@ -34,6 +39,7 @@ const DataTable = () => {
   const { data } = useGetAuctionResults({
     ...params,
     status: "PROCUREMENT,UNSOLD,NOBID,NOQUOTE",
+    search: searchText,
   });
   const resultData = data?.data;
   const results = addKey(resultData as any, "id", "_id") ?? [];
