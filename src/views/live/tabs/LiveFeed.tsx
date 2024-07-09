@@ -1,4 +1,4 @@
-import { Card, CardHeader } from "@mui/material";
+import { Card, CardHeader, Grid } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import React from "react";
 import { LogModal } from "../modals/LogModal";
@@ -35,12 +35,14 @@ export default function LiveFeed<T>(props: Props<T>) {
     <>
       <Card>
         <CardHeader title={`Live ${type}`}></CardHeader>
-        <DataGrid
-          columns={columns}
-          rows={data}
-          disableColumnSelector
-          rowSelection={false}
-        />
+        <Grid padding={2}>
+          <DataGrid
+            columns={columns}
+            rows={data}
+            disableColumnSelector
+            rowSelection={false}
+          />
+        </Grid>
       </Card>
       <LogModal
         type={type}
