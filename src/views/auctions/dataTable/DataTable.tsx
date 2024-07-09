@@ -9,7 +9,12 @@ import AuctionLogBody from "../modals/AuctionLogBody";
 import LogModal from "../modals/AuctionLogModal";
 import { OfferModal } from "../modals/OfferModal";
 
-const DataTable = () => {
+interface Props {
+  searchText: string;
+}
+
+const DataTable = (props: Props) => {
+  const { searchText } = props;
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("sm"),
   );
@@ -29,6 +34,7 @@ const DataTable = () => {
   const auctions = useGetAuctionResults({
     ...params,
     status: "NEGOTIATION,DEAL_LOST",
+    search: searchText,
   });
   const auctionsCount: any = auctions?.data;
   const auctionData: any = auctions?.data?.data;

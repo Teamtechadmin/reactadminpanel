@@ -8,6 +8,7 @@ interface AuctionsParams {
   page: number;
   pageSize: number;
   status: string;
+  search?: string;
 }
 
 async function getAuctionResult(
@@ -17,6 +18,8 @@ async function getAuctionResult(
     status: params.status,
     page: params.page + 1,
     limit: params.pageSize,
+    searchField: "uniqueId",
+    search: params.search,
   };
 
   const response = await axiosInstance.get(GET_AUCTION_RESULT, {
