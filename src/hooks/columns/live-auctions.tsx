@@ -89,7 +89,6 @@ export const useColumns = (props: Props) => {
         );
       },
     },
-
     {
       flex: 0.015,
       field: "timeRemaining",
@@ -178,7 +177,7 @@ export const useColumns = (props: Props) => {
             {showLog && (
               <ButtonIcon
                 onClick={() => handleViewers(row)}
-                icon="tabler:live-view"
+                icon="tabler:scan-eye"
                 title="Viewers"
               />
             )}

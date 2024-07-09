@@ -1,10 +1,10 @@
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
-import { LiveAuctionLog } from "@/types/live/auctions";
+import { LiveOtbLog } from "@/types/live/auctions";
 import { numberToINR } from "@/utils/convert-to-rs";
 import { Typography } from "@mui/material";
 
 interface CellType {
-  row: LiveAuctionLog;
+  row: LiveOtbLog;
 }
 
 export const useColumns = () => {
@@ -51,20 +51,11 @@ export const useColumns = () => {
     },
     {
       flex: 0.0145,
-      field: "currentBid",
+      field: "quote",
       minWidth: 50,
-      headerName: "Current Bid",
+      headerName: "Quote Price",
       renderCell: ({ row }: CellType) => {
-        return <Typography noWrap>{numberToINR(row.currentBid)}</Typography>;
-      },
-    },
-    {
-      flex: 0.0125,
-      field: "bidType",
-      minWidth: 50,
-      headerName: "Bid Type",
-      renderCell: ({ row }: CellType) => {
-        return <Typography noWrap>{row?.bidType}</Typography>;
+        return <Typography noWrap>{numberToINR(row.quote)}</Typography>;
       },
     },
   ];

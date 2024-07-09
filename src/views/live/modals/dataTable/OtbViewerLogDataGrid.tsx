@@ -1,7 +1,21 @@
+import { viewersLogOtb } from "@/dummy/viewers-otb-log";
+import { useColumns } from "@/hooks/columns/viewers-auction-log";
+import { Grid } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 
 function OtbViewerLogDataGrid() {
-  return <div>OtbViewerLogDataGrid</div>;
+  const columns = useColumns();
+  return (
+    <Grid>
+      <DataGrid
+        columns={columns}
+        rows={viewersLogOtb}
+        disableColumnSelector
+        rowSelection={false}
+      />
+    </Grid>
+  );
 }
 
 export default OtbViewerLogDataGrid;

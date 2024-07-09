@@ -33,3 +33,13 @@ export interface ViewersAuctionLog {
   phone: string;
   location: string;
 }
+
+export interface LiveOtbLog {
+  id: number;
+  dealershipID: string;
+  dealershipName: string;
+  phone: string;
+  location: string;
+  remainingTime: number;
+  quote: number;
+}
