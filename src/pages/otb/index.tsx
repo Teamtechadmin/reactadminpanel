@@ -5,11 +5,12 @@ import { useForm } from "react-hook-form";
 import DataTable from "../../views/otb/dataTable/DataTable";
 
 const OtbPage = () => {
-  const { control } = useForm();
+  const { control, watch } = useForm();
+  const [search] = watch(["search"]);
   return (
     <Grid>
       <SearchHeaders control={control} />
-      <DataTable />
+      <DataTable searchText={search} />
     </Grid>
   );
 };

@@ -8,7 +8,12 @@ import { OtbLogProps } from "@/types/results/type";
 import LogModal from "@/views/auctions/modals/AuctionLogModal";
 import OtbLogBody from "../modals/OtbModalBody";
 
-const DataTable = () => {
+interface Props {
+  searchText: string;
+}
+
+const DataTable = (props: Props) => {
+  const { searchText } = props;
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("sm"),
   );
@@ -31,6 +36,7 @@ const DataTable = () => {
   const { data: otbData, isLoading } = useGetAuctionResults({
     ...params,
     status: "PENDING",
+    search: searchText,
   });
 
   function handleLog({ model, leaderBoard, winner, id }: OtbLogProps) {

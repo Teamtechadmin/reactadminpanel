@@ -18,8 +18,8 @@ async function getAuctionResult(
     status: params.status,
     page: params.page + 1,
     limit: params.pageSize,
-    searchField: "uniqueId",
-    search: params.search,
+    searchField: params.search !== "" ? "uniqueId" : null,
+    search: params.search !== "" ? params.search : null,
   };
 
   const response = await axiosInstance.get(GET_AUCTION_RESULT, {
