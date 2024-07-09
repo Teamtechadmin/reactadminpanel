@@ -21,6 +21,11 @@ const getValues = (type: LiveTabTypes) => {
       label: "Duration of Auction",
       value: "30 minutes",
     },
+    {
+      label: "Time Remaining",
+      value: "560000",
+      isCounter: true,
+    },
   ];
 
   const otbValues = [
@@ -36,6 +41,11 @@ const getValues = (type: LiveTabTypes) => {
       label: "Duration of OTB",
       value: "30 minutes",
     },
+    {
+      label: "Time Remaining",
+      value: "560000",
+      isCounter: true,
+    },
   ];
 
   return isAuction ? auctionValues : otbValues;
@@ -45,16 +55,22 @@ export const LogValues = ({ type }: { type: LiveTabTypes }) => {
   const values = getValues(type);
   return (
     <Grid container display={"grid"} gridTemplateColumns={"1fr 1fr"}>
-      {values.map((item, index) => {
-        return (
-          <InfoRow
-            index={index}
-            key={item.label}
-            label={item.label}
-            value={item.value}
-          />
-        );
-      })}
+      {values.map(
+        (
+          item: { label: string; value: string; isCounter?: boolean },
+          index,
+        ) => {
+          return (
+            <InfoRow
+              index={index}
+              key={item.label}
+              label={item.label}
+              value={item.value}
+              isCounter={Boolean(item.isCounter)}
+            />
+          );
+        },
+      )}
     </Grid>
   );
 };
