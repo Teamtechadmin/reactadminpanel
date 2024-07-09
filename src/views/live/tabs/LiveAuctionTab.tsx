@@ -50,6 +50,7 @@ function LiveAuctionTab() {
     handleStop,
     handleViewers,
     handleBid,
+    type: "auction",
   });
 
   return (

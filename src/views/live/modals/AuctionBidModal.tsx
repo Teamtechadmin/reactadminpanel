@@ -13,7 +13,7 @@ function AuctionBidModal(props: Props) {
   const dailogueTitle = log?.model;
   return (
     <CustomDialogue
-      ComponentContent={<AuctionModalBody />}
+      ComponentContent={<AuctionModalBody handleClose={handleClose} />}
       dailogueTitle={dailogueTitle}
       handleClose={handleClose}
       icon=""
