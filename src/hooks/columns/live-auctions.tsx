@@ -44,7 +44,7 @@ export const useColumns = (props: Props) => {
       flex: 0.0105,
       field: "id",
       minWidth: 100,
-      headerName: "Auction ID",
+      headerName: isAuction ? "Auction ID" : "OTB ID",
       headerClassName: "super-app-theme--header",
       renderCell: ({ row }: CellType) => {
         const { auctionID } = row;
@@ -73,7 +73,7 @@ export const useColumns = (props: Props) => {
       flex: 0.0145,
       field: "highestBid",
       minWidth: 50,
-      headerName: "Highest Bid",
+      headerName: isAuction ? "Highest Bid" : "OTB Price",
       renderCell: ({ row }: CellType) => {
         return <Typography noWrap>{numberToINR(row?.highestBid)}</Typography>;
       },
@@ -113,15 +113,19 @@ export const useColumns = (props: Props) => {
         );
       },
     },
-    {
-      flex: 0.0125,
-      field: "totalBidders",
-      minWidth: 50,
-      headerName: "Total Bidders",
-      renderCell: ({ row }: CellType) => {
-        return <Typography noWrap>{row?.totalBidders}</Typography>;
-      },
-    },
+    ...(isAuction
+      ? [
+          {
+            flex: 0.0125,
+            field: "totalBidders",
+            minWidth: 50,
+            headerName: "Total Bidders",
+            renderCell: ({ row }: CellType) => {
+              return <Typography noWrap>{row?.totalBidders}</Typography>;
+            },
+          },
+        ]
+      : []),
     {
       flex: 0.0145,
       field: "status",
