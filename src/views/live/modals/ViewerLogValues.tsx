@@ -7,18 +7,18 @@ const getValues = (type: LiveTabTypes) => {
   const auctionValues = [
     {
       label: "Fair Market Value",
-      value: "Rs 1250000",
+      value: "₹ 1250000",
     },
     {
       label: "Customer Expected Price",
-      value: "Rs 1250000",
+      value: "₹ 1250000",
     },
   ];
 
   const otbValues = [
     {
       label: "Customer Expected Price",
-      value: "Rs 1250000",
+      value: "₹ 1250000",
     },
   ];
 
