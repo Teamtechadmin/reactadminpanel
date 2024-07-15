@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import LiveFeed from "./LiveFeed";
 import AuctionBidModal from "../modals/AuctionBidModal";
 import { LiveAuctionItem } from "@/services/live/auctions/list/types";
-import { useGetLiveAuctions } from "@/services/live/auctions/list/get";
+import { useGetLiveData } from "@/hooks/live/useGetLiveData";
 
 function LiveAuctionTab() {
   const [openLog, setOpenLog] = useState(false);
@@ -56,18 +56,16 @@ function LiveAuctionTab() {
     type: "auction",
   });
 
-  const { data, isLoading } = useGetLiveAuctions({
-    enabled: true,
-    ...params,
-    status: "LIVE,SCHEDULED,COMPLETED,STOPPED",
+  const { data, isLoading } = useGetLiveData({
+    params,
+    tab: "auction",
   });
-  console.log(data, "dataCheck");
 
   return (
     <div>
       <LiveFeed
         columns={columns}
-        data={data ?? ([] as any)}
+        data={data?.data ?? ([] as any)}
         type="auction"
         handleClose={handleLogModal}
         openLog={openLog}
@@ -79,7 +77,7 @@ function LiveAuctionTab() {
         params={params}
         setParams={setParams}
         isFetching={isLoading}
-        rowCount={10}
+        rowCount={data?.count ?? 100}
       />
       <AuctionBidModal
         handleClose={handleBidModal}

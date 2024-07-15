@@ -24,13 +24,26 @@ async function getLiveAuctions(
     params: filterParams,
   });
 
-  return response.data;
+  return response;
 }
 
 export const useGetLiveAuctions = (params: AuctionsParams) => {
   return useQuery({
     queryKey: ["live-auctions", params],
     queryFn: () => getLiveAuctions(params),
+    staleTime: Infinity,
     enabled: Boolean(params.enabled),
+    select: (data) => {
+      const idData = data?.data?.data?.map((item) => {
+        return {
+          ...item,
+          id: item._id,
+        };
+      });
+      return {
+        data: idData,
+        count: data?.data?.count,
+      };
+    },
   });
 };
