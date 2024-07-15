@@ -1,6 +1,6 @@
 import { Card, CardHeader, Grid } from "@mui/material";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import React from "react";
+import React, { SetStateAction } from "react";
 import { LogModal } from "../modals/LogModal";
 import { StopAuctionConfirmation } from "../modals/StopAuctionConfirmation";
 import { ViewersLogModal } from "../modals/ViewersLogModal";
@@ -17,6 +17,10 @@ interface Props<T> {
   openStop: boolean;
   openViews: boolean;
   handleViewers: () => void;
+  params: { page: number; pageSize: number };
+  setParams: React.Dispatch<SetStateAction<{ page: number; pageSize: number }>>;
+  isFetching?: boolean;
+  rowCount?: number;
 }
 
 export default function LiveFeed<T>(props: Props<T>) {
@@ -31,6 +35,10 @@ export default function LiveFeed<T>(props: Props<T>) {
     openStop,
     handleViewers,
     openViews,
+    params,
+    setParams,
+    isFetching,
+    rowCount,
   } = props;
   const capitalisedType = capitaliseFirstLetter(type ?? "");
   return (
@@ -39,10 +47,19 @@ export default function LiveFeed<T>(props: Props<T>) {
         <CardHeader title={`Live ${capitalisedType}`}></CardHeader>
         <Grid padding={2}>
           <DataGrid
-            columns={columns}
-            rows={data}
+            autoHeight
+            pagination
+            rowHeight={55}
+            columnHeaderHeight={55}
+            disableRowSelectionOnClick
             disableColumnSelector
-            rowSelection={false}
+            columns={columns}
+            rows={data ?? []}
+            rowCount={rowCount ?? 10}
+            loading={isFetching}
+            paginationMode="server"
+            paginationModel={params}
+            onPaginationModelChange={setParams}
           />
         </Grid>
       </Card>

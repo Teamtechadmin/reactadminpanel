@@ -26,6 +26,7 @@ const tabComponents = {
 function LiveHome() {
   const [tabValue, setTabValue] = useState(tabs[0].value);
   const { control } = useForm();
+
   return (
     <div>
       <TabList tabOptions={tabs} value={tabValue} setValue={setTabValue} />

@@ -2,14 +2,16 @@ import { liveAuctions } from "@/dummy/live-autions";
 import { useColumns } from "@/hooks/columns/live-auctions";
 import React, { useState } from "react";
 import LiveFeed from "./LiveFeed";
-import { LiveAuction } from "@/types/live/auctions";
 
 function LiveOtbTab() {
   const [openLog, setOpenLog] = useState(false);
   const [openStop, setOpenStop] = useState(false);
   const [openViews, setOpenViews] = useState(false);
-
-  const [log, setLog] = useState<LiveAuction>();
+  const [log, setLog] = useState<any>();
+  const [params, setParams] = useState({
+    page: 0,
+    pageSize: 10,
+  });
 
   const handleLogModal = () => {
     setOpenLog(!openLog);
@@ -19,7 +21,7 @@ function LiveOtbTab() {
     setOpenViews(!openViews);
   };
 
-  const handleLog = (logItem: LiveAuction) => {
+  const handleLog = (logItem: any) => {
     setLog(logItem);
     handleLogModal();
   };
@@ -28,7 +30,7 @@ function LiveOtbTab() {
     setOpenStop(!openStop);
   };
 
-  const handleViewers = (item: LiveAuction) => {
+  const handleViewers = (item: any) => {
     setLog(item);
     setOpenViews(!openViews);
   };
@@ -53,6 +55,8 @@ function LiveOtbTab() {
         openStop={openStop}
         openViews={openViews}
         handleViewers={handleViewersModal}
+        params={params}
+        setParams={setParams}
       />
     </div>
   );

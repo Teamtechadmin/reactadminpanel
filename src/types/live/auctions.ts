@@ -1,16 +1,5 @@
-export interface LiveAuction {
-  auctionID: string;
-  carID: string;
-  model: string;
-  highestBid: string;
-  startTime: Date;
-  remainingTime: number;
-  totalBidders: number;
-  status: string;
-}
-
 export type LiveTabTypes = "auction" | "otb";
-export type LiveAuctionStatus = "COMPLETED" | "LIVE" | "STOPPED" | "UPCOMING";
+export type LiveAuctionStatus = "COMPLETED" | "LIVE" | "STOPPED" | "SCHEDULED";
 
 export type LiveStatusColor = {
   [key in LiveAuctionStatus]: string;

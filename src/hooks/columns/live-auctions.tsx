@@ -1,44 +1,46 @@
 import { ButtonIcon } from "@/components/ui/buttons/ButtonIcon";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
+import { LiveAuctionItem } from "@/services/live/auctions/list/types";
 import { ChipColorType } from "@/types/color/chipColor";
-import {
-  LiveAuction,
-  LiveAuctionStatus,
-  LiveTabTypes,
-} from "@/types/live/auctions";
+import { LiveAuctionStatus, LiveTabTypes } from "@/types/live/auctions";
+import { calculateRemainingTime } from "@/utils/calculate-remaining-time";
 import { numberToINR } from "@/utils/convert-to-rs";
 import { formatDateAndTime } from "@/utils/format-date-and-time";
+import { handleCarRedirect } from "@/utils/handle-redirection";
 import { Box, Chip, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 import Countdown from "react-countdown";
 
 interface CellType {
-  row: LiveAuction;
+  row: LiveAuctionItem;
 }
 
 const statusColor = {
-  LIVE: "success",
-  COMPLETED: "info",
+  COMPLETED: "success",
+  LIVE: "info",
   STOPPED: "error",
-  UPCOMING: "warning",
+  SCHEDULED: "warning",
 };
 
 const getStatusColor = (status: LiveAuctionStatus) => {
   return statusColor[status] as ChipColorType;
 };
 
-const stopStatuses = ["UPCOMING", "LIVE"];
+const stopStatuses = ["SCHEDULED", "LIVE"];
 
 interface Props {
-  handleLog: (item: LiveAuction) => void;
+  handleLog: (item: LiveAuctionItem) => void;
   handleStop: (id: string) => void;
-  handleViewers: (item: LiveAuction) => void;
-  handleBid?: (item: LiveAuction) => void;
+  handleViewers: (item: LiveAuctionItem) => void;
+  handleBid?: (item: LiveAuctionItem) => void;
   type?: LiveTabTypes;
 }
 
 export const useColumns = (props: Props) => {
   const { handleLog, handleStop, handleViewers, handleBid, type } = props;
   const isAuction = type === "auction";
+  const router = useRouter();
+
   const columns = [
     {
       flex: 0.0105,
@@ -47,8 +49,8 @@ export const useColumns = (props: Props) => {
       headerName: isAuction ? "Auction ID" : "OTB ID",
       headerClassName: "super-app-theme--header",
       renderCell: ({ row }: CellType) => {
-        const { auctionID } = row;
-        return <ClickableTypography name={auctionID} />;
+        const { auctionId } = row;
+        return <Typography>{auctionId}</Typography>;
       },
     },
     {
@@ -57,7 +59,12 @@ export const useColumns = (props: Props) => {
       minWidth: 50,
       headerName: "Car ID",
       renderCell: ({ row }: CellType) => {
-        return <ClickableTypography name={row?.carID}></ClickableTypography>;
+        return (
+          <ClickableTypography
+            name={String(row.uniqueId)}
+            onClick={() => handleCarRedirect(row.carId, router)}
+          ></ClickableTypography>
+        );
       },
     },
     {
@@ -66,7 +73,12 @@ export const useColumns = (props: Props) => {
       minWidth: 50,
       headerName: "Car Model",
       renderCell: ({ row }: CellType) => {
-        return <ClickableTypography name={row?.model}></ClickableTypography>;
+        return (
+          <ClickableTypography
+            name={row?.model}
+            onClick={() => handleCarRedirect(row.carId, router)}
+          ></ClickableTypography>
+        );
       },
     },
     {
@@ -85,7 +97,9 @@ export const useColumns = (props: Props) => {
       headerName: "Start Time",
       renderCell: ({ row }: CellType) => {
         return (
-          <Typography>{formatDateAndTime(new Date(row?.startTime))}</Typography>
+          <Typography>
+            {formatDateAndTime(new Date(row?.bidStartTime))}
+          </Typography>
         );
       },
     },
@@ -95,10 +109,14 @@ export const useColumns = (props: Props) => {
       minWidth: 120,
       headerName: "Time Remaining",
       renderCell: ({ row }: CellType) => {
+        const remaingTime = calculateRemainingTime(
+          row.bidStartTime,
+          row.bidEndTime,
+        );
         return (
           <Typography noWrap>
             <Countdown
-              date={Date.now() + Number(row.remainingTime)}
+              date={Date.now() + Number(remaingTime)}
               intervalDelay={1000}
               precision={0}
               renderer={({ hours, minutes, seconds }) => {
@@ -120,7 +138,7 @@ export const useColumns = (props: Props) => {
             minWidth: 50,
             headerName: "Total Bidders",
             renderCell: ({ row }: CellType) => {
-              return <Typography noWrap>{row?.totalBidders}</Typography>;
+              return <Typography noWrap>{row?.totalBidder ?? 0}</Typography>;
             },
           },
         ]
@@ -149,7 +167,7 @@ export const useColumns = (props: Props) => {
       renderCell: ({ row }: CellType) => {
         const { status } = row;
         const isStoppable = stopStatuses.includes(status);
-        const showLog = status !== "UPCOMING";
+        const showLog = status !== "SCHEDULED";
         const showBid = status === "LIVE" && isAuction;
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -162,7 +180,7 @@ export const useColumns = (props: Props) => {
             )}
             {isStoppable && (
               <ButtonIcon
-                onClick={() => handleStop(row.auctionID)}
+                onClick={() => handleStop(row.auctionId)}
                 icon="tabler:ban"
                 title="Stop Auction"
               />
