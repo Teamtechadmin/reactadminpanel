@@ -1,14 +1,16 @@
 import { Button, Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
-import Duster from "../../../../public/assets/duster.png";
 import Image from "next/image";
 import Countdown from "react-countdown";
 import { BidChips } from "./bagdge/BidChips";
 import BiddingField from "@/components/ui/inputfields/BiddingField";
 import useCustomToast from "@/utils/toast";
+import { numberToINR } from "@/utils/convert-to-rs";
+import { calculateRemainingTime } from "@/utils/calculate-remaining-time";
 
 interface Props {
-  handleClose: () => void;
+  handleAdminBid: (amount: number) => void;
+  log: any;
 }
 
 const bidRates = [
@@ -31,11 +33,10 @@ const bidRates = [
 ];
 
 export default function AuctionModalBody(props: Props) {
-  const { handleClose } = props;
-  const currentBid = 201000;
-  const stepRate = 2000;
-
-  const [value, setValue] = useState(201000);
+  const { log, handleAdminBid } = props;
+  const currentBid = log?.highestBid ?? 0;
+  const stepRate = 2000 ?? 0;
+  const [value, setValue] = useState(currentBid);
   const toast = useCustomToast();
 
   const handleBidChip = (amount: number) => {
@@ -43,8 +44,7 @@ export default function AuctionModalBody(props: Props) {
   };
   const handleBid = () => {
     if (stepRate + currentBid <= Number(value)) {
-      toast.success("Bid placed successfully");
-      handleClose();
+      handleAdminBid(value);
     } else {
       toast.error(
         "Bid Amount should not be less than sum of current bid and step rate",
@@ -54,7 +54,11 @@ export default function AuctionModalBody(props: Props) {
   return (
     <Grid display={"flex"} gap={4} padding={3}>
       <Grid>
-        <Image src={Duster} alt="Car" />
+        {log?.front?.url ? (
+          <Image src={log?.front?.url} width={411} height={319} alt="Car" />
+        ) : (
+          <Grid width={411} height={319}></Grid>
+        )}
       </Grid>
       <Grid width={"100%"} paddingX={2}>
         <Typography
@@ -64,24 +68,29 @@ export default function AuctionModalBody(props: Props) {
           padding={0.5}
           borderRadius={1}
         >
-          ID #1234567890
+          ID {log?.uniqueId}
         </Typography>
         <Grid display={"flex"} flexDirection={"column"} gap={2} paddingY={2}>
           <Grid display={"flex"} justifyContent={"space-between"}>
             <Typography>Current Bid:</Typography>
             <Typography fontWeight={600} color={"Highlight"}>
-              ₹201000
+              {numberToINR(currentBid)}
             </Typography>
           </Grid>
           <Grid display={"flex"} justifyContent={"space-between"}>
-            <Typography>Current Bid:</Typography>
-            <Typography>₹2000</Typography>
+            <Typography>Step Rate:</Typography>
+            <Typography>{numberToINR(stepRate)}</Typography>
           </Grid>
           <Grid display={"flex"} justifyContent={"space-between"}>
             <Typography>Time Remaining:</Typography>
             <Typography>
               <Countdown
-                date={Date.now() + Number(300000)}
+                date={
+                  Date.now() +
+                  Number(
+                    calculateRemainingTime(log?.bidStartTime, log?.bidEndTime),
+                  )
+                }
                 intervalDelay={1000}
                 precision={0}
                 renderer={({ hours, minutes, seconds }) => {

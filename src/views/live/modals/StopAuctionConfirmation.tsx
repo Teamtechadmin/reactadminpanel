@@ -5,11 +5,12 @@ import { Button, Grid, Typography } from "@mui/material";
 interface Props {
   open: boolean;
   handleClose: () => void;
+  handleStopProceed: () => void;
   type: LiveTabTypes;
 }
 
 export const StopAuctionConfirmation = (props: Props) => {
-  const { handleClose, open, type } = props;
+  const { handleClose, open, type, handleStopProceed } = props;
   return (
     <ConfirmModal
       dailogueTitle="Confirmation Needed"
@@ -29,7 +30,11 @@ export const StopAuctionConfirmation = (props: Props) => {
             <Button onClick={handleClose} variant="outlined" color="inherit">
               Cancel
             </Button>
-            <Button onClick={handleClose} variant="contained" color="error">
+            <Button
+              onClick={handleStopProceed}
+              variant="contained"
+              color="error"
+            >
               Proceed
             </Button>
           </Grid>

@@ -4,17 +4,26 @@ import LiveFeed from "./LiveFeed";
 import AuctionBidModal from "../modals/AuctionBidModal";
 import { LiveAuctionItem } from "@/services/live/auctions/list/types";
 import { useGetLiveData } from "@/hooks/live/useGetLiveData";
+import useUpdateCarById from "@/hooks/actions/cars/update-car";
+import useCustomToast from "@/utils/toast";
+import { useAuctionBid } from "@/services/live/auctions/bid/post";
+import { errorMessageParser } from "@/utils/error";
 
 function LiveAuctionTab() {
   const [openLog, setOpenLog] = useState(false);
   const [openStop, setOpenStop] = useState(false);
   const [openViews, setOpenViews] = useState(false);
   const [openBid, setOpenBid] = useState(false);
+  const [stopId, setStopId] = useState<string>("");
   const [log, setLog] = useState<LiveAuctionItem>();
   const [params, setParams] = useState({
     page: 0,
     pageSize: 10,
   });
+
+  const update = useUpdateCarById();
+  const bid = useAuctionBid();
+  const toast = useCustomToast();
 
   const handleLogModal = () => {
     setOpenLog(!openLog);
@@ -33,8 +42,26 @@ function LiveAuctionTab() {
     handleLogModal();
   };
 
-  const handleStop = () => {
+  const handleStopModal = () => {
     setOpenStop(!openStop);
+  };
+
+  const handleStop = (id: string) => {
+    handleStopModal();
+    setStopId(id);
+  };
+
+  const handleStopProceed = () => {
+    update({
+      body: {
+        status: "STOPPED",
+      },
+      id: stopId,
+      handleSuccess: () => {
+        handleStop("");
+        toast.success("Auction Stopped Successfully!!");
+      },
+    });
   };
 
   const handleViewers = (item: LiveAuctionItem) => {
@@ -45,7 +72,24 @@ function LiveAuctionTab() {
   const handleBid = (item: LiveAuctionItem) => {
     handleBidModal();
     setLog(item);
-    setOpenBid(!openBid);
+    console.log(item, "itemsCheck");
+    // setOpenBid(!openBid);
+  };
+
+  const handleAdminBid = (amount: number) => {
+    bid.mutate(
+      {
+        amount,
+        carId: log?.carId ?? "",
+      },
+      {
+        onSuccess: () => {
+          toast.success("Bid Placed Successfully");
+          handleBidModal();
+        },
+        onError: (err) => toast.error(errorMessageParser(err)),
+      },
+    );
   };
 
   const columns = useColumns({
@@ -70,18 +114,21 @@ function LiveAuctionTab() {
         handleClose={handleLogModal}
         openLog={openLog}
         log={log}
-        handleStop={handleStop}
+        handleStop={handleStopModal}
         openStop={openStop}
         openViews={openViews}
         handleViewers={handleViewersModal}
         params={params}
         setParams={setParams}
         isFetching={isLoading}
-        rowCount={data?.count ?? 100}
+        rowCount={data?.count ?? 10000}
+        handleStopProceed={handleStopProceed}
       />
       <AuctionBidModal
         handleClose={handleBidModal}
-        log={log}
+        handleBid={handleAdminBid}
+        data={data?.data ?? []}
+        logId={log?._id ?? ""}
         openBid={openBid}
       />
     </div>

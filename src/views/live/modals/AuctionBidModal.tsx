@@ -3,17 +3,22 @@ import React from "react";
 import AuctionModalBody from "./AuctionModalBody";
 
 interface Props {
-  log: any;
+  logId: string;
+  data: any;
   handleClose: () => void;
   openBid: boolean;
+  handleBid: (amount: number) => void;
 }
 
 function AuctionBidModal(props: Props) {
-  const { log, handleClose, openBid } = props;
+  const { logId, handleClose, openBid, data, handleBid } = props;
+  const log = data?.find((item: { id: string }) => item.id === logId);
   const dailogueTitle = log?.model;
   return (
     <CustomDialogue
-      ComponentContent={<AuctionModalBody handleClose={handleClose} />}
+      ComponentContent={
+        <AuctionModalBody log={log} handleAdminBid={handleBid} />
+      }
       dailogueTitle={dailogueTitle}
       handleClose={handleClose}
       icon=""

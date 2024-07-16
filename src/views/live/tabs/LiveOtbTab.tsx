@@ -53,6 +53,7 @@ function LiveOtbTab() {
         log={log}
         handleStop={handleStop}
         openStop={openStop}
+        handleStopProceed={handleStop}
         openViews={openViews}
         handleViewers={handleViewersModal}
         params={params}

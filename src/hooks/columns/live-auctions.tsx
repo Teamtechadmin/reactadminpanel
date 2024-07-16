@@ -180,7 +180,7 @@ export const useColumns = (props: Props) => {
             )}
             {isStoppable && (
               <ButtonIcon
-                onClick={() => handleStop(row.auctionId)}
+                onClick={() => handleStop(row.carId)}
                 icon="tabler:ban"
                 title="Stop Auction"
               />

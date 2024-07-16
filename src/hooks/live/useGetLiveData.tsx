@@ -7,6 +7,7 @@ interface Props {
   tab: string;
   params: { page: number; pageSize: number };
 }
+
 export const useGetLiveData = (props: Props) => {
   const { tab, params } = props;
   const isAuction = tab === "auction";
@@ -25,19 +26,17 @@ export const useGetLiveData = (props: Props) => {
   // Socket Implementation
   let socket;
   async function socketInitializer() {
-    socket = io("wss://test.meracars.com/", { transports: ["websocket"] });
-    socket.on("getLiveResult", (socketData: string) => {
-      const data = JSON.parse(socketData);
-      console.log(data, "dataCheck");
-      queryClient.invalidateQueries({
-        queryKey: ["live-auctions"],
-      });
-      // queryClient.setQueryData(["live-auctions"], () => {
-      //   return data;
-      // });
+    socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_URL ?? "", {
+      transports: ["websocket"],
+    });
+    socket.on("getLiveResult", () => {
+      try {
+        queryClient.invalidateQueries({ queryKey: ["live-auctions"] });
+      } catch (e) {
+        console.error("Invalid JSON string", e);
+      }
     });
   }
-
   return {
     data,
     isLoading,

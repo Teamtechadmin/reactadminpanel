@@ -31,7 +31,6 @@ export const useGetLiveAuctions = (params: AuctionsParams) => {
   return useQuery({
     queryKey: ["live-auctions", params],
     queryFn: () => getLiveAuctions(params),
-    staleTime: Infinity,
     enabled: Boolean(params.enabled),
     select: (data) => {
       const idData = data?.data?.data?.map((item) => {

@@ -17,6 +17,7 @@ interface Props<T> {
   openStop: boolean;
   openViews: boolean;
   handleViewers: () => void;
+  handleStopProceed: () => void;
   params: { page: number; pageSize: number };
   setParams: React.Dispatch<SetStateAction<{ page: number; pageSize: number }>>;
   isFetching?: boolean;
@@ -43,10 +44,10 @@ export default function LiveFeed<T>(props: Props<T>) {
     setParams,
     isFetching,
     rowCount,
+    handleStopProceed,
   } = props;
   const capitalisedType = capitaliseFirstLetter(type ?? "");
   const logData = getLog(log?.id, data);
-  console.log(logData, "logData");
   return (
     <>
       <Card>
@@ -79,6 +80,7 @@ export default function LiveFeed<T>(props: Props<T>) {
         handleClose={handleStop}
         open={openStop}
         type={type}
+        handleStopProceed={handleStopProceed}
       />
       <ViewersLogModal
         handleClose={handleViewers}
