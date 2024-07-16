@@ -73,7 +73,6 @@ function LiveAuctionTab() {
     handleBidModal();
     setLog(item);
     console.log(item, "itemsCheck");
-    // setOpenBid(!openBid);
   };
 
   const handleAdminBid = (amount: number) => {

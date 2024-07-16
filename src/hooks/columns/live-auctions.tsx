@@ -109,10 +109,10 @@ export const useColumns = (props: Props) => {
       minWidth: 120,
       headerName: "Time Remaining",
       renderCell: ({ row }: CellType) => {
-        const remaingTime = calculateRemainingTime(
-          row.bidStartTime,
-          row.bidEndTime,
-        );
+        const isStopped = row.status === "STOPPED";
+        const remaingTime = isStopped
+          ? 0
+          : calculateRemainingTime(row.bidStartTime, row.bidEndTime);
         return (
           <Typography noWrap>
             <Countdown
