@@ -1,7 +1,12 @@
 import IconifyIcon from "@/components/ui/icon";
 import { Grid, Typography } from "@mui/material";
 
-export const ViewersBadge = () => {
+interface Props {
+  watchCount: number;
+}
+
+export const ViewersBadge = (props: Props) => {
+  const { watchCount } = props;
   return (
     <Grid
       sx={{ backgroundColor: "#dfdfdf" }}
@@ -14,7 +19,7 @@ export const ViewersBadge = () => {
     >
       <IconifyIcon icon={"tabler:eye"} color="GrayText" />
       <Typography align="right" color={"GrayText"}>
-        People Watching (10)
+        People Watching ({watchCount ?? 0})
       </Typography>
     </Grid>
   );

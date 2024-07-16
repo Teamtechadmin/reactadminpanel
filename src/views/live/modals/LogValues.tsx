@@ -1,29 +1,35 @@
 import { InfoRow } from "@/components/ui/utility/InfoRow";
 import { LiveTabTypes } from "@/types/live/auctions";
+import { calculateTimeDifference } from "@/utils/calculate-duration";
+import { calculateRemainingTime } from "@/utils/calculate-remaining-time";
+import { numberToINR } from "@/utils/convert-to-rs";
+import { formatDateAndTime } from "@/utils/format-date-and-time";
 import { Grid } from "@mui/material";
 
-const getValues = (type: LiveTabTypes) => {
+const getValues = (type: LiveTabTypes, data: any) => {
+  console.log(data, "dataCheck");
   const isAuction = type === "auction";
   const auctionValues = [
     {
       label: "Fair Market Value",
-      value: "₹ 1250000",
+      value: numberToINR(data?.realValue ?? 0),
     },
     {
       label: "Customer Expected Price",
-      value: "₹ 1250000",
+      value: data?.customerPrice ? numberToINR(data?.customerPrice ?? 0) : "-",
     },
     {
       label: "Date of Auction",
-      value: "12-05-2024",
+      value: data?.bidStartTime ? formatDateAndTime(data?.bidStartTime) : "-",
     },
     {
       label: "Duration of Auction",
-      value: "30 minutes",
+      value:
+        calculateTimeDifference(data?.bidStartTime, data?.bidEndTime) + " Mins",
     },
     {
       label: "Time Remaining",
-      value: "560000",
+      value: calculateRemainingTime(data?.bidStartTime, data?.bidEndTime),
       isCounter: true,
     },
   ];
@@ -51,13 +57,19 @@ const getValues = (type: LiveTabTypes) => {
   return isAuction ? auctionValues : otbValues;
 };
 
-export const LogValues = ({ type }: { type: LiveTabTypes }) => {
-  const values = getValues(type);
+export const LogValues = ({
+  type,
+  data,
+}: {
+  type: LiveTabTypes;
+  data: any;
+}) => {
+  const values = getValues(type, data);
   return (
     <Grid container display={"grid"} gridTemplateColumns={"1fr 1fr"}>
       {values.map(
         (
-          item: { label: string; value: string; isCounter?: boolean },
+          item: { label: string; value: string | number; isCounter?: boolean },
           index,
         ) => {
           return (

@@ -13,7 +13,7 @@ interface Props<T> {
   openLog: boolean;
   handleClose: () => void;
   handleStop: () => void;
-  log: T;
+  log: any;
   openStop: boolean;
   openViews: boolean;
   handleViewers: () => void;
@@ -21,6 +21,10 @@ interface Props<T> {
   setParams: React.Dispatch<SetStateAction<{ page: number; pageSize: number }>>;
   isFetching?: boolean;
   rowCount?: number;
+}
+
+function getLog(id: string, data: any) {
+  return data?.find((item: { id: string }) => item.id === id);
 }
 
 export default function LiveFeed<T>(props: Props<T>) {
@@ -41,6 +45,8 @@ export default function LiveFeed<T>(props: Props<T>) {
     rowCount,
   } = props;
   const capitalisedType = capitaliseFirstLetter(type ?? "");
+  const logData = getLog(log?.id, data);
+  console.log(logData, "logData");
   return (
     <>
       <Card>
@@ -67,7 +73,7 @@ export default function LiveFeed<T>(props: Props<T>) {
         type={type}
         handleClose={handleClose}
         openLog={openLog}
-        log={log}
+        log={logData}
       />
       <StopAuctionConfirmation
         handleClose={handleStop}
@@ -76,7 +82,7 @@ export default function LiveFeed<T>(props: Props<T>) {
       />
       <ViewersLogModal
         handleClose={handleViewers}
-        log={log}
+        log={logData}
         openLog={openViews}
         type={type}
       />

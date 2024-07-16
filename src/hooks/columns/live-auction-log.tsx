@@ -16,18 +16,20 @@ export const useColumns = () => {
       headerName: "Dealership ID",
       headerClassName: "super-app-theme--header",
       renderCell: ({ row }: CellType) => {
-        const { dealershipID } = row;
-        return <ClickableTypography name={dealershipID} />;
+        const { uniqueId } = row;
+        return <ClickableTypography name={uniqueId} />;
       },
     },
     {
-      flex: 0.0105,
+      flex: 0.015,
       field: "dealershipName",
       minWidth: 50,
       headerName: "Dealership Name",
       renderCell: ({ row }: CellType) => {
         return (
-          <ClickableTypography name={row?.dealershipName}></ClickableTypography>
+          <ClickableTypography
+            name={row?.fullname ?? "-"}
+          ></ClickableTypography>
         );
       },
     },
@@ -37,7 +39,7 @@ export const useColumns = () => {
       minWidth: 50,
       headerName: "Phone",
       renderCell: ({ row }: CellType) => {
-        return <Typography>{row.phone}</Typography>;
+        return <Typography>{row.contactNo}</Typography>;
       },
     },
     {
@@ -46,7 +48,7 @@ export const useColumns = () => {
       minWidth: 50,
       headerName: "Location",
       renderCell: ({ row }: CellType) => {
-        return <Typography noWrap>{row.location}</Typography>;
+        return <Typography noWrap>{row.district ?? "-"}</Typography>;
       },
     },
     {
@@ -55,7 +57,7 @@ export const useColumns = () => {
       minWidth: 50,
       headerName: "Current Bid",
       renderCell: ({ row }: CellType) => {
-        return <Typography noWrap>{numberToINR(row.currentBid)}</Typography>;
+        return <Typography noWrap>{numberToINR(row.amount)}</Typography>;
       },
     },
     {
@@ -64,7 +66,7 @@ export const useColumns = () => {
       minWidth: 50,
       headerName: "Bid Type",
       renderCell: ({ row }: CellType) => {
-        return <Typography noWrap>{row?.bidType}</Typography>;
+        return <Typography noWrap>{row?.type}</Typography>;
       },
     },
   ];

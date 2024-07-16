@@ -1,17 +1,18 @@
 import { InfoRow } from "@/components/ui/utility/InfoRow";
 import { LiveTabTypes } from "@/types/live/auctions";
+import { numberToINR } from "@/utils/convert-to-rs";
 import { Grid } from "@mui/material";
 
-const getValues = (type: LiveTabTypes) => {
+const getValues = (type: LiveTabTypes, data: any) => {
   const isAuction = type === "auction";
   const auctionValues = [
     {
       label: "Fair Market Value",
-      value: "₹ 1250000",
+      value: numberToINR(data?.realValue ?? 0),
     },
     {
       label: "Customer Expected Price",
-      value: "₹ 1250000",
+      value: data?.customerPrice ? numberToINR(data?.customerPrice ?? 0) : "-",
     },
   ];
 
@@ -25,8 +26,15 @@ const getValues = (type: LiveTabTypes) => {
   return isAuction ? auctionValues : otbValues;
 };
 
-export const ViewerLogValues = ({ type }: { type: LiveTabTypes }) => {
-  const values = getValues(type);
+export const ViewerLogValues = ({
+  type,
+  data,
+}: {
+  type: LiveTabTypes;
+  data: any;
+}) => {
+  const values = getValues(type, data);
+
   return (
     <Grid container display={"grid"} gridTemplateColumns={"1fr 1fr"}>
       {values.map((item, index) => {

@@ -28,9 +28,13 @@ export const useGetLiveData = (props: Props) => {
     socket = io("wss://test.meracars.com/", { transports: ["websocket"] });
     socket.on("getLiveResult", (socketData: string) => {
       const data = JSON.parse(socketData);
-      queryClient.setQueryData(["live-auctions"], () => {
-        return data;
+      console.log(data, "dataCheck");
+      queryClient.invalidateQueries({
+        queryKey: ["live-auctions"],
       });
+      // queryClient.setQueryData(["live-auctions"], () => {
+      //   return data;
+      // });
     });
   }
 

@@ -10,7 +10,7 @@ function OtbViewerLogDataGrid() {
     <Grid>
       <DataGrid
         columns={columns}
-        rows={viewersLogOtb}
+        rows={viewersLogOtb as any}
         disableColumnSelector
         rowSelection={false}
       />

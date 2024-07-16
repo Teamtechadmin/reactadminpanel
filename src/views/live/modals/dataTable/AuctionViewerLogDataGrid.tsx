@@ -1,18 +1,25 @@
-import { viewersLogAuctions } from "@/dummy/viewers-auction-log";
 import { useColumns } from "@/hooks/columns/viewers-auction-log";
+import { addKey } from "@/utils/add-key";
 import { Grid } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 
-function AuctionViewerLogDataGrid() {
+interface Props {
+  data: any;
+}
+
+function AuctionViewerLogDataGrid(props: Props) {
+  const { data } = props;
   const columns = useColumns();
+  const watchList = addKey(data, "id", "_id");
   return (
     <Grid>
       <DataGrid
         columns={columns}
-        rows={viewersLogAuctions}
+        rows={(watchList as any) ?? []}
         disableColumnSelector
         rowSelection={false}
+        pageSizeOptions={[]}
       />
     </Grid>
   );

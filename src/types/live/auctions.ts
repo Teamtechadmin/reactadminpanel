@@ -6,21 +6,25 @@ export type LiveStatusColor = {
 };
 
 export interface LiveAuctionLog {
-  id: number;
-  dealershipID: string;
-  dealershipName: string;
-  phone: string;
-  location: string;
-  remainingTime: number;
-  currentBid: number;
-  bidType: string;
+  amount: number;
+  userId: string;
+  uniqueId: string;
+  isAutobid: boolean;
+  contactNo: number;
+  isRejected: boolean;
+  fullname: string;
+  district: string;
+  type: string;
+  _id: string;
+  id: string;
 }
 
 export interface ViewersAuctionLog {
-  dealershipID: string;
-  dealershipName: string;
-  phone: string;
-  location: string;
+  userId: string;
+  contactNo: number;
+  fullname: string;
+  district: string;
+  _id: string;
 }
 
 export interface LiveOtbLog {

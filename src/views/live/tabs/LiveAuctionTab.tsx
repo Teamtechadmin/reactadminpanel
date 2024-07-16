@@ -15,7 +15,7 @@ function LiveAuctionTab() {
     page: 0,
     pageSize: 10,
   });
-  console.log(params, "paramsCheck");
+
   const handleLogModal = () => {
     setOpenLog(!openLog);
   };

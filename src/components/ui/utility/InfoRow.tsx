@@ -8,7 +8,7 @@ export const InfoRow = ({
   isCounter,
 }: {
   label: string;
-  value: string;
+  value: string | number;
   index: number;
   isCounter?: boolean;
 }) => (
@@ -22,7 +22,7 @@ export const InfoRow = ({
     </Typography>
     {isCounter ? (
       <Countdown
-        date={Date.now() + Number(300000)}
+        date={Date.now() + Number(value)}
         intervalDelay={1000}
         precision={0}
         renderer={({ hours, minutes, seconds }) => {

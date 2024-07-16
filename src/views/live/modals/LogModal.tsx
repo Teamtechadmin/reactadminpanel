@@ -14,7 +14,7 @@ export const LogModal = (props: Props) => {
   const dailogueTitle = `${log?.model}` + " " + "(Live LOG)";
   return (
     <CustomDialogue
-      ComponentContent={<LogModalBody type={type} />}
+      ComponentContent={<LogModalBody type={type} data={log} />}
       dailogueTitle={dailogueTitle}
       handleClose={handleClose}
       icon=""

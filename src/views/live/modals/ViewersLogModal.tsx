@@ -13,10 +13,11 @@ interface Props {
 export const ViewersLogModal = (props: Props) => {
   const { handleClose, openLog, log, type } = props;
   const dailogueTitle = `${log?.model}`;
+  const watchLength = log?.viewerList?.length ?? 0;
   return (
     <CustomDialogue
-      ComponentContent={<ViewersLogModalBody type={type} />}
-      CustomHeaderItem={<ViewersBadge />}
+      ComponentContent={<ViewersLogModalBody type={type} data={log} />}
+      CustomHeaderItem={<ViewersBadge watchCount={watchLength ?? 0} />}
       dailogueTitle={dailogueTitle}
       handleClose={handleClose}
       icon=""
