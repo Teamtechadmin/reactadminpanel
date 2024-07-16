@@ -14,6 +14,7 @@ export const statusColor: any = {
   UNSOLD: "error",
   NOQUOTE: "error",
   NOBID: "error",
+  STOPPED: "error",
 };
 
 export function getStatusColor(status: StatusType) {
