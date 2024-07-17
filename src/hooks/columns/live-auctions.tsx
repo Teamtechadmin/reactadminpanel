@@ -172,6 +172,7 @@ export const useColumns = (props: Props) => {
         const { status } = row;
         const isStoppable = stopStatuses.includes(status);
         const showLog = status !== "SCHEDULED";
+        const showWatch = true;
         const showBid = status === "LIVE" && isAuction;
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -196,7 +197,7 @@ export const useColumns = (props: Props) => {
                 title="Bid"
               />
             )}
-            {showLog && (
+            {showWatch && (
               <ButtonIcon
                 onClick={() => handleViewers(row)}
                 icon="tabler:scan-eye"
