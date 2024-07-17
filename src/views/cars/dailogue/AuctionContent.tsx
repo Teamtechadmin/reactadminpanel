@@ -9,10 +9,12 @@ interface AuctionControlProps {
   errors: any;
   handleCancel: () => void;
   isAuction: boolean;
+  isLoading: boolean;
 }
 
 export function AuctionContent(auctionContentProps: AuctionControlProps) {
-  const { control, errors, handleCancel, isAuction } = auctionContentProps;
+  const { control, errors, handleCancel, isAuction, isLoading } =
+    auctionContentProps;
   return (
     <Grid padding={3} container display={"flex"} gap={2} width={"100%"}>
       <Grid width={"100%"}>
@@ -46,7 +48,7 @@ export function AuctionContent(auctionContentProps: AuctionControlProps) {
       </Grid>
       <Grid width={"100%"}>
         <DialogActions className="dialog-actions-dense">
-          <Button type="submit" variant="contained">
+          <Button disabled={isLoading} type="submit" variant="contained">
             Proceed
           </Button>
           <Button onClick={handleCancel} variant="contained" color="secondary">

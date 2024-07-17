@@ -27,7 +27,7 @@ const useUpdateCarById = () => {
     );
   }
 
-  return updateCar;
+  return { updateCar, isPending: update.isPending };
 };
 
 export default useUpdateCarById;

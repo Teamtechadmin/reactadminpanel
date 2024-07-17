@@ -51,7 +51,7 @@ const DataTable = (props: Props) => {
   const [bill, setBill] = useState<AuctionData | null>(null);
   const [billType, setBillType] = useState<BillHandleType>("give");
 
-  const update = useUpdateCarById();
+  const { updateCar: update } = useUpdateCarById();
   const toast = useCustomToast();
   const queryClient = useQueryClient();
 

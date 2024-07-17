@@ -22,7 +22,7 @@ function LiveAuctionTab() {
     pageSize: 10,
   });
 
-  const update = useUpdateCarById();
+  const { updateCar: update } = useUpdateCarById();
   const bid = useAuctionBid();
   const toast = useCustomToast();
 

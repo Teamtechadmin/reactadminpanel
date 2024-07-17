@@ -29,7 +29,7 @@ function AuctionDialogue(props: AuctionDialogueProps) {
   const { open, setOpen, id, modal, isList, isResult } = props;
   const isAuction = modal === "auction";
   const schema = useFormSchema();
-  const approveAuction = useUpdateCarById();
+  const { updateCar: approveAuction, isPending } = useUpdateCarById();
   const queryClient = useQueryClient();
   const toast = useCustomToast();
   const {
@@ -91,6 +91,7 @@ function AuctionDialogue(props: AuctionDialogueProps) {
             control={control}
             errors={errors as any}
             isAuction={isAuction}
+            isLoading={isPending}
           />
         </form>
       }
