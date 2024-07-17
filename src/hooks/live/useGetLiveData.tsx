@@ -12,7 +12,7 @@ export const useGetLiveData = (props: Props) => {
   const isAuction = tab === "auction";
   const [live, setLive] = useState<any>([]);
 
-  const { data, isLoading } = useGetLiveAuctions({
+  const { data, isLoading, isFetched } = useGetLiveAuctions({
     ...params,
     enabled: isAuction,
     status: "LIVE,SCHEDULED,COMPLETED,STOPPED",
@@ -23,10 +23,10 @@ export const useGetLiveData = (props: Props) => {
   }, []);
 
   useEffect(() => {
-    if (data) {
+    if (isFetched) {
       setLive(data?.data);
     }
-  }, [data]);
+  }, [isFetched]);
 
   // Socket Implementation
   let socket;

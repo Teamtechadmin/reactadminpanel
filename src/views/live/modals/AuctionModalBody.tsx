@@ -8,6 +8,7 @@ import useCustomToast from "@/utils/toast";
 import { numberToINR } from "@/utils/convert-to-rs";
 import { calculateRemainingTime } from "@/utils/calculate-remaining-time";
 import ButtonSpinner from "@/components/ui/spinner/button";
+import { calculateStepRate } from "@/functions/live/auction/calculate-step-rate";
 
 interface Props {
   handleAdminBid: (amount: number) => void;
@@ -36,14 +37,15 @@ const bidRates = [
 
 export default function AuctionModalBody(props: Props) {
   const { log, handleAdminBid, disableBid } = props;
-  const currentBid = log?.highestBid ?? 0;
-  const stepRate = 2000 ?? 0;
+  const currentBid = Number(log?.highestBid ?? 0);
+  const stepRate = calculateStepRate(currentBid);
   const [value, setValue] = useState(currentBid);
   const toast = useCustomToast();
 
   const handleBidChip = (amount: number) => {
     setValue(Number(value ?? 0) + Number(amount ?? 0));
   };
+
   const handleBid = () => {
     if (stepRate + currentBid <= Number(value)) {
       handleAdminBid(value);
@@ -53,6 +55,7 @@ export default function AuctionModalBody(props: Props) {
       );
     }
   };
+
   return (
     <Grid display={"flex"} gap={4} padding={3}>
       <Grid>

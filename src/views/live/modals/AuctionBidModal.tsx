@@ -13,7 +13,8 @@ interface Props {
 
 function AuctionBidModal(props: Props) {
   const { logId, handleClose, openBid, data, handleBid, disableBid } = props;
-  const log = data?.find((item: { id: string }) => item.id === logId);
+  const log =
+    data?.length && data?.find((item: { id: string }) => item.id === logId);
   const dailogueTitle = log?.model;
   return (
     <CustomDialogue

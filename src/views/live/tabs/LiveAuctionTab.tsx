@@ -137,7 +137,7 @@ function LiveAuctionTab() {
       <AuctionBidModal
         handleClose={handleBidModal}
         handleBid={handleAdminBid}
-        data={data?.data ?? []}
+        data={slicedDataWithId ?? []}
         logId={log?._id ?? ""}
         openBid={openBid}
         disableBid={bid.isPending}
