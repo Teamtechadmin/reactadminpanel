@@ -18,19 +18,20 @@ const tabs = [
   },
 ];
 
-const tabComponents = {
-  auction: <LiveAuctionTab />,
-  otb: <LiveOtbTab />,
-};
-
 function LiveHome() {
   const [tabValue, setTabValue] = useState(tabs[0].value);
-  const { control } = useForm();
+  const { control, watch } = useForm();
+  const [search] = watch(["search"]);
+
+  const tabComponents = {
+    auction: <LiveAuctionTab searchText={search} />,
+    otb: <LiveOtbTab />,
+  };
 
   return (
     <div>
       <TabList tabOptions={tabs} value={tabValue} setValue={setTabValue} />
-      <SearchHeaders control={control} />
+      <SearchHeaders control={control} customLabel="Search by Car ID" />
       <Grid mt={1}>{tabComponents[tabValue as LiveTabTypes]}</Grid>
     </div>
   );

@@ -9,15 +9,19 @@ interface AuctionsParams {
   pageSize: number;
   status: string;
   enabled: boolean;
+  uniqueId: string;
 }
 
 async function getLiveAuctions(
   params: AuctionsParams,
 ): Promise<AxiosResponse<LiveAuctionResponse>> {
   const filterParams = {
-    page: params.page + 1,
-    limit: params.pageSize,
+    ...(params.uniqueId === "" && {
+      page: params.page + 1,
+      limit: params.pageSize,
+    }),
     status: params.status,
+    uniqueId: params.uniqueId,
   };
 
   const response = await axiosInstance.get(GET_AUCTION_LIVE, {

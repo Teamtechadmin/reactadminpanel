@@ -5,17 +5,19 @@ import io from "socket.io-client";
 interface Props {
   tab: string;
   params: { page: number; pageSize: number };
+  searchText: string;
 }
 
 export const useGetLiveData = (props: Props) => {
-  const { tab, params } = props;
+  const { tab, params, searchText } = props;
   const isAuction = tab === "auction";
   const [live, setLive] = useState<any>([]);
 
-  const { data, isLoading, isFetched } = useGetLiveAuctions({
+  const { data, isLoading, isFetching, isFetched } = useGetLiveAuctions({
     ...params,
     enabled: isAuction,
     status: "LIVE,SCHEDULED,COMPLETED,STOPPED",
+    uniqueId: searchText,
   });
 
   useEffect(() => {
@@ -26,7 +28,7 @@ export const useGetLiveData = (props: Props) => {
     if (isFetched) {
       setLive(data?.data);
     }
-  }, [isFetched]);
+  }, [isFetching]);
 
   // Socket Implementation
   let socket;

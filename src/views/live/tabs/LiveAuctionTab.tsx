@@ -10,7 +10,12 @@ import { useAuctionBid } from "@/services/live/auctions/bid/post";
 import { errorMessageParser } from "@/utils/error";
 import { addKey } from "@/utils/add-key";
 
-function LiveAuctionTab() {
+interface Props {
+  searchText: string;
+}
+
+function LiveAuctionTab(props: Props) {
+  const { searchText } = props;
   const [openLog, setOpenLog] = useState(false);
   const [openStop, setOpenStop] = useState(false);
   const [openViews, setOpenViews] = useState(false);
@@ -102,6 +107,7 @@ function LiveAuctionTab() {
   const { data, isLoading } = useGetLiveData({
     params,
     tab: "auction",
+    searchText,
   });
   const liveAuctions = data?.data;
   const page = params.page + 1;
@@ -109,9 +115,16 @@ function LiveAuctionTab() {
   const from = (page - 1) * pageSize;
   const to = from + (pageSize - 1);
   const slicedData =
-    liveAuctions.length <= 10
+    liveAuctions?.length <= 10
       ? liveAuctions
-      : liveAuctions?.slice(from, to + 1);
+      : searchText !== ""
+        ? liveAuctions
+            ?.filter(
+              (item: { uniqueId: number }) =>
+                item.uniqueId === Number(searchText),
+            )
+            ?.slice(from, to + 1)
+        : liveAuctions?.slice(from, to + 1);
   const slicedDataWithId = addKey(slicedData, "id", "_id") ?? [];
 
   return (

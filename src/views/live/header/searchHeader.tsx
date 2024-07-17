@@ -6,6 +6,7 @@ import { Control } from "react-hook-form";
 
 interface SearchHeaderProps {
   control: Control<any>;
+  customLabel?: string;
 }
 
 const statusData = [
@@ -36,7 +37,7 @@ function renderItem(obj: { id: string; name: string }) {
 }
 
 const SearchHeaders = (props: SearchHeaderProps) => {
-  const { control } = props;
+  const { control, customLabel } = props;
   return (
     <Grid
       container
@@ -48,7 +49,7 @@ const SearchHeaders = (props: SearchHeaderProps) => {
         <TextFormField
           control={control}
           id="search"
-          label="Search"
+          label={customLabel ? customLabel : "Search"}
           placeholder="Input Search Text"
           fillWhite
         />
