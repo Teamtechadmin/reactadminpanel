@@ -1,6 +1,5 @@
 import { useGetLiveAuctions } from "@/services/live/auctions/list/get";
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import io from "socket.io-client";
 
 interface Props {
@@ -11,7 +10,7 @@ interface Props {
 export const useGetLiveData = (props: Props) => {
   const { tab, params } = props;
   const isAuction = tab === "auction";
-  const queryClient = useQueryClient();
+  const [live, setLive] = useState<any>([]);
 
   const { data, isLoading } = useGetLiveAuctions({
     ...params,
@@ -23,22 +22,29 @@ export const useGetLiveData = (props: Props) => {
     socketInitializer();
   }, []);
 
+  useEffect(() => {
+    if (data) {
+      setLive(data?.data);
+    }
+  }, [data]);
+
   // Socket Implementation
   let socket;
   async function socketInitializer() {
     socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_URL ?? "", {
       transports: ["websocket"],
     });
-    socket.on("getLiveResult", () => {
+    socket.on("getLiveResult", (socketData: string) => {
       try {
-        queryClient.invalidateQueries({ queryKey: ["live-auctions"] });
+        const data = JSON.parse(socketData);
+        setLive(data);
       } catch (e) {
         console.error("Invalid JSON string", e);
       }
     });
   }
   return {
-    data,
+    data: { data: live, count: data?.count },
     isLoading,
   };
 };

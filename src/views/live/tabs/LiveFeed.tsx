@@ -25,7 +25,7 @@ interface Props<T> {
 }
 
 function getLog(id: string, data: any) {
-  return data?.find((item: { id: string }) => item.id === id);
+  return data && data?.find((item: { id: string }) => item.id === id);
 }
 
 export default function LiveFeed<T>(props: Props<T>) {

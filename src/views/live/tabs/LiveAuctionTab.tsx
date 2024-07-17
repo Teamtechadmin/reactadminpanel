@@ -8,6 +8,7 @@ import useUpdateCarById from "@/hooks/actions/cars/update-car";
 import useCustomToast from "@/utils/toast";
 import { useAuctionBid } from "@/services/live/auctions/bid/post";
 import { errorMessageParser } from "@/utils/error";
+import { addKey } from "@/utils/add-key";
 
 function LiveAuctionTab() {
   const [openLog, setOpenLog] = useState(false);
@@ -102,12 +103,22 @@ function LiveAuctionTab() {
     params,
     tab: "auction",
   });
+  const liveAuctions = data?.data;
+  const page = params.page + 1;
+  const pageSize = params.pageSize;
+  const from = (page - 1) * pageSize;
+  const to = from + (pageSize - 1);
+  const slicedData =
+    liveAuctions.length <= 10
+      ? liveAuctions
+      : liveAuctions?.slice(from, to + 1);
+  const slicedDataWithId = addKey(slicedData, "id", "_id") ?? [];
 
   return (
     <div>
       <LiveFeed
         columns={columns}
-        data={data?.data ?? ([] as any)}
+        data={(slicedDataWithId ?? []) as any[]}
         type="auction"
         handleClose={handleLogModal}
         openLog={openLog}
