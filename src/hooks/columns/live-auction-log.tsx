@@ -1,13 +1,16 @@
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
 import { LiveAuctionLog } from "@/types/live/auctions";
 import { numberToINR } from "@/utils/convert-to-rs";
+import { handleRedirection } from "@/utils/handle-redirection";
 import { Typography } from "@mui/material";
+import { useRouter } from "next/router";
 
 interface CellType {
   row: LiveAuctionLog;
 }
 
 export const useColumns = () => {
+  const router = useRouter();
   const columns = [
     {
       flex: 0.0105,
@@ -16,8 +19,13 @@ export const useColumns = () => {
       headerName: "Dealership ID",
       headerClassName: "super-app-theme--header",
       renderCell: ({ row }: CellType) => {
-        const { uniqueId } = row;
-        return <ClickableTypography name={uniqueId} />;
+        const { uniqueId, userId } = row;
+        return (
+          <ClickableTypography
+            onClick={() => handleRedirection("dealers", userId, router)}
+            name={uniqueId}
+          />
+        );
       },
     },
     {
@@ -28,6 +36,7 @@ export const useColumns = () => {
       renderCell: ({ row }: CellType) => {
         return (
           <ClickableTypography
+            onClick={() => handleRedirection("dealers", row.userId, router)}
             name={row?.fullname ?? "-"}
           ></ClickableTypography>
         );
