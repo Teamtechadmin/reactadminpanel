@@ -9,6 +9,7 @@ import useCustomToast from "@/utils/toast";
 import { useAuctionBid } from "@/services/live/auctions/bid/post";
 import { errorMessageParser } from "@/utils/error";
 import { addKey } from "@/utils/add-key";
+import { getSlicedData } from "@/functions/live/auction/get-sliced-data";
 
 interface Props {
   searchText: string;
@@ -112,19 +113,12 @@ function LiveAuctionTab(props: Props) {
   const liveAuctions = data?.data;
   const page = params.page + 1;
   const pageSize = params.pageSize;
-  const from = (page - 1) * pageSize;
-  const to = from + (pageSize - 1);
-  const slicedData =
-    liveAuctions?.length <= 10
-      ? liveAuctions
-      : searchText !== ""
-        ? liveAuctions
-            ?.filter(
-              (item: { uniqueId: number }) =>
-                item.uniqueId === Number(searchText),
-            )
-            ?.slice(from, to + 1)
-        : liveAuctions?.slice(from, to + 1);
+  const slicedData = getSlicedData({
+    liveAuctions,
+    page,
+    pageSize,
+    searchText,
+  });
   const slicedDataWithId = addKey(slicedData, "id", "_id") ?? [];
 
   return (

@@ -16,10 +16,8 @@ async function getLiveAuctions(
   params: AuctionsParams,
 ): Promise<AxiosResponse<LiveAuctionResponse>> {
   const filterParams = {
-    ...(params.uniqueId === "" && {
-      page: params.page + 1,
-      limit: params.pageSize,
-    }),
+    page: params.page + 1,
+    limit: params.pageSize,
     status: params.status,
     uniqueId: params.uniqueId,
   };

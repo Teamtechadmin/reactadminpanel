@@ -39,6 +39,7 @@ export const useGetLiveData = (props: Props) => {
     socket.on("getLiveResult", (socketData: string) => {
       try {
         const data = JSON.parse(socketData);
+        console.log("hitting loop");
         setLive(data);
       } catch (e) {
         console.error("Invalid JSON string", e);
