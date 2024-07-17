@@ -110,9 +110,13 @@ export const useColumns = (props: Props) => {
       headerName: "Time Remaining",
       renderCell: ({ row }: CellType) => {
         const isStopped = row.status === "STOPPED";
+        const isScheduled = row.status === "SCHEDULED";
+        const startTime = Date.now() as any;
+        const endTime = isScheduled ? row?.bidStartTime : row?.bidEndTime;
+        // const
         const remaingTime = isStopped
           ? 0
-          : calculateRemainingTime(row.bidStartTime, row.bidEndTime);
+          : calculateRemainingTime(startTime, endTime);
         return (
           <Typography noWrap>
             <Countdown
