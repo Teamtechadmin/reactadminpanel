@@ -56,6 +56,9 @@ export default function AuctionModalBody(props: Props) {
     }
   };
 
+  const startTime = Date.now() as any;
+  const endTime = log?.bidEndTime;
+
   return (
     <Grid display={"flex"} gap={4} padding={3}>
       <Grid>
@@ -92,9 +95,7 @@ export default function AuctionModalBody(props: Props) {
               <Countdown
                 date={
                   Date.now() +
-                  Number(
-                    calculateRemainingTime(log?.bidStartTime, log?.bidEndTime),
-                  )
+                  Number(calculateRemainingTime(startTime, endTime))
                 }
                 intervalDelay={1000}
                 precision={0}

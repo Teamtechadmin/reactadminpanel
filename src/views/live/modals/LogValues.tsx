@@ -7,7 +7,13 @@ import { formatDateAndTime } from "@/utils/format-date-and-time";
 import { Grid } from "@mui/material";
 
 const getValues = (type: LiveTabTypes, data: any) => {
-  console.log(data, "dataCheck");
+  const isStopped = data?.status === "STOPPED";
+  const isScheduled = data?.status === "SCHEDULED";
+  const startTime = Date.now() as any;
+  const endTime = isScheduled ? data?.bidStartTime : data?.bidEndTime;
+  const remaingTime = isStopped
+    ? 0
+    : calculateRemainingTime(startTime, endTime);
   const isAuction = type === "auction";
   const auctionValues = [
     {
@@ -29,7 +35,7 @@ const getValues = (type: LiveTabTypes, data: any) => {
     },
     {
       label: "Time Remaining",
-      value: calculateRemainingTime(data?.bidStartTime, data?.bidEndTime),
+      value: remaingTime,
       isCounter: true,
     },
   ];
