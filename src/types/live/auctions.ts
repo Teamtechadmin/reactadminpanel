@@ -21,6 +21,7 @@ export interface LiveAuctionLog {
 
 export interface ViewersAuctionLog {
   userId: string;
+  uniqueId: string;
   contactNo: number;
   fullname: string;
   district: string;
