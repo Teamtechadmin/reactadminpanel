@@ -42,6 +42,8 @@ function AuctionDialogue(props: AuctionDialogueProps) {
     resolver: yupResolver<any>(schema),
   });
 
+  const queryKey = isList ? ["cars"] : isResult ? ["auction-result"] : ["car"];
+
   function onSubmit(val: ApproveCar) {
     const auctionBody = { ...val, status: "SCHEDULED" };
     const otbBody = {
@@ -54,15 +56,15 @@ function AuctionDialogue(props: AuctionDialogueProps) {
       body: isAuction ? auctionBody : otbBody,
       id,
       handleSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey,
+        });
         toast.success(
           isAuction
             ? "Auction Approved Successfully!!"
             : "Moved To Otb Successfully",
         );
         handleClose();
-        queryClient.invalidateQueries({
-          queryKey: [isList ? "cars" : isResult ? "auction-result" : "car"],
-        });
       },
     });
   }

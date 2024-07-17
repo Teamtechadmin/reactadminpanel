@@ -128,9 +128,8 @@ const DataTable = (props: Props) => {
           open={openApprove}
           setOpen={setOpenApprove}
           id={id}
-          isList
           modal={modal}
-          isResult
+          isResult={true}
         />
         <ConfirmModal
           open={openConfirm}
