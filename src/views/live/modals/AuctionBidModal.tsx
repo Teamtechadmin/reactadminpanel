@@ -8,16 +8,21 @@ interface Props {
   handleClose: () => void;
   openBid: boolean;
   handleBid: (amount: number) => void;
+  disableBid: boolean;
 }
 
 function AuctionBidModal(props: Props) {
-  const { logId, handleClose, openBid, data, handleBid } = props;
+  const { logId, handleClose, openBid, data, handleBid, disableBid } = props;
   const log = data?.find((item: { id: string }) => item.id === logId);
   const dailogueTitle = log?.model;
   return (
     <CustomDialogue
       ComponentContent={
-        <AuctionModalBody log={log} handleAdminBid={handleBid} />
+        <AuctionModalBody
+          log={log}
+          handleAdminBid={handleBid}
+          disableBid={disableBid}
+        />
       }
       dailogueTitle={dailogueTitle}
       handleClose={handleClose}

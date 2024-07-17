@@ -140,6 +140,7 @@ function LiveAuctionTab() {
         data={data?.data ?? []}
         logId={log?._id ?? ""}
         openBid={openBid}
+        disableBid={bid.isPending}
       />
     </div>
   );

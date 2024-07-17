@@ -7,10 +7,12 @@ import BiddingField from "@/components/ui/inputfields/BiddingField";
 import useCustomToast from "@/utils/toast";
 import { numberToINR } from "@/utils/convert-to-rs";
 import { calculateRemainingTime } from "@/utils/calculate-remaining-time";
+import ButtonSpinner from "@/components/ui/spinner/button";
 
 interface Props {
   handleAdminBid: (amount: number) => void;
   log: any;
+  disableBid: boolean;
 }
 
 const bidRates = [
@@ -33,7 +35,7 @@ const bidRates = [
 ];
 
 export default function AuctionModalBody(props: Props) {
-  const { log, handleAdminBid } = props;
+  const { log, handleAdminBid, disableBid } = props;
   const currentBid = log?.highestBid ?? 0;
   const stepRate = 2000 ?? 0;
   const [value, setValue] = useState(currentBid);
@@ -119,8 +121,13 @@ export default function AuctionModalBody(props: Props) {
               );
             })}
           </Grid>
-          <Button sx={{ mt: 0.5 }} onClick={handleBid} variant="contained">
-            Place Bid
+          <Button
+            disabled={disableBid}
+            sx={{ mt: 0.5 }}
+            onClick={handleBid}
+            variant="contained"
+          >
+            {disableBid ? <ButtonSpinner /> : "Place Bid"}
           </Button>
         </Grid>
       </Grid>
