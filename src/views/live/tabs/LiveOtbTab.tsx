@@ -58,6 +58,7 @@ function LiveOtbTab() {
         handleViewers={handleViewersModal}
         params={params}
         setParams={setParams}
+        disableStopProceed
       />
     </div>
   );

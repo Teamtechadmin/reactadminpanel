@@ -7,10 +7,12 @@ interface Props {
   handleClose: () => void;
   handleStopProceed: () => void;
   type: LiveTabTypes;
+  disableStopProceed: boolean;
 }
 
 export const StopAuctionConfirmation = (props: Props) => {
-  const { handleClose, open, type, handleStopProceed } = props;
+  const { handleClose, open, type, handleStopProceed, disableStopProceed } =
+    props;
   return (
     <ConfirmModal
       dailogueTitle="Confirmation Needed"
@@ -34,6 +36,7 @@ export const StopAuctionConfirmation = (props: Props) => {
               onClick={handleStopProceed}
               variant="contained"
               color="error"
+              disabled={disableStopProceed}
             >
               Proceed
             </Button>

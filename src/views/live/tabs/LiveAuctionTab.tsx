@@ -22,7 +22,7 @@ function LiveAuctionTab() {
     pageSize: 10,
   });
 
-  const { updateCar: update } = useUpdateCarById();
+  const { updateCar: update, isPending } = useUpdateCarById();
   const bid = useAuctionBid();
   const toast = useCustomToast();
 
@@ -132,6 +132,7 @@ function LiveAuctionTab() {
         isFetching={isLoading}
         rowCount={data?.count ?? 10000}
         handleStopProceed={handleStopProceed}
+        disableStopProceed={isPending}
       />
       <AuctionBidModal
         handleClose={handleBidModal}

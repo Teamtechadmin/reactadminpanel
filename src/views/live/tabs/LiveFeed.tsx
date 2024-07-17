@@ -20,6 +20,7 @@ interface Props<T> {
   handleStopProceed: () => void;
   params: { page: number; pageSize: number };
   setParams: React.Dispatch<SetStateAction<{ page: number; pageSize: number }>>;
+  disableStopProceed: boolean;
   isFetching?: boolean;
   rowCount?: number;
 }
@@ -45,6 +46,7 @@ export default function LiveFeed<T>(props: Props<T>) {
     isFetching,
     rowCount,
     handleStopProceed,
+    disableStopProceed,
   } = props;
   const capitalisedType = capitaliseFirstLetter(type ?? "");
   const logData = getLog(log?.id, data);
@@ -81,6 +83,7 @@ export default function LiveFeed<T>(props: Props<T>) {
         open={openStop}
         type={type}
         handleStopProceed={handleStopProceed}
+        disableStopProceed={disableStopProceed}
       />
       <ViewersLogModal
         handleClose={handleViewers}
