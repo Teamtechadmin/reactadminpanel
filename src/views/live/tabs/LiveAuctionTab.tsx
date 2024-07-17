@@ -1,5 +1,5 @@
 import { useColumns } from "@/hooks/columns/live-auctions";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LiveFeed from "./LiveFeed";
 import AuctionBidModal from "../modals/AuctionBidModal";
 import { LiveAuctionItem } from "@/services/live/auctions/list/types";
@@ -120,6 +120,15 @@ function LiveAuctionTab(props: Props) {
     searchText,
   });
   const slicedDataWithId = addKey(slicedData, "id", "_id") ?? [];
+
+  useEffect(() => {
+    if (searchText && searchText !== "") {
+      setParams({
+        page: 0,
+        pageSize: 10,
+      });
+    }
+  }, [searchText]);
 
   return (
     <div>
