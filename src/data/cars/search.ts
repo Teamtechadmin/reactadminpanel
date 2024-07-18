@@ -12,6 +12,10 @@ export const statusData = [
     id: "LIVE",
   },
   {
+    name: "OTB SCHEDULED",
+    id: "OTB_SCHEDULED",
+  },
+  {
     name: "OTB",
     id: "OTB",
   },
