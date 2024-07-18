@@ -50,7 +50,7 @@ export interface LeaderBoard {
 export interface UpdateResultProps {
   id: string;
   body: {
-    status: "accept" | "reject" | "offer" | "bill" | "otb_bill";
+    status: "accept" | "reject" | "offer" | "bill" | "otb_bill" | "procured";
     userId?: string | null;
     startTime?: string;
     endTime?: string;

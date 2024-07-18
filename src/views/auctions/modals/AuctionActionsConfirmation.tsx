@@ -13,15 +13,18 @@ export default function ActionsConfirmation(props: Props) {
   const { fullname, type, handleConfirm, handleClose } = props;
   const isChoose = type === "Choose";
   const isUnsold = type === "Unsold";
+  const isAccept = type === "Accept";
   const name = fullname ?? "User";
   return (
     <Grid padding={3}>
       <Typography>
         {isChoose
-          ? `${name} will be choosen as new winner. Are you sure you want to continue?`
+          ? ``
           : isUnsold
             ? `The car will be moved to UNSOLD if no bidders are interested. Are you sure to continue?`
-            : `${name} will be removed from negotiation. Are you sure you want to continue?`}
+            : isAccept
+              ? `${name} will be choosen as new winner and car will be moved to Procurement. Are you sure you want to continue?`
+              : `${name} will be removed from negotiation. Are you sure you want to continue?`}
       </Typography>
       <Grid display={"flex"} gap={1} mt={2} justifyContent={"end"}>
         <Button variant="contained" onClick={handleConfirm}>

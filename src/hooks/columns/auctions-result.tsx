@@ -2,8 +2,10 @@ import { AmountTypography } from "@/components/ui/containers/AmountTypography";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
 import { getWinner } from "@/functions/results/get-winner";
 import { LeaderBoard } from "@/services/result/auction/types";
+import { handleRedirection } from "@/utils/handle-redirection";
 import { ModalAction } from "@/views/auctions/modals/AuctionLogBody";
 import { Box, Button, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 
 interface AuctionResultColsProps {
   handleModal: (
@@ -20,6 +22,7 @@ export default function useColumns(props: AuctionResultColsProps) {
   const { handleModal, winner, leaderBoard } = props;
   const winnerData = getWinner(leaderBoard as LeaderBoard[], winner);
   const isWinnerRejected = winner && winnerData?.isRejected;
+  const router = useRouter();
   const columns = [
     {
       flex: 0.012,
@@ -28,9 +31,14 @@ export default function useColumns(props: AuctionResultColsProps) {
       headerName: "Dealer ID",
       headerClassName: "super-app-theme--header",
       renderCell: ({ row }: any) => {
-        const { userId } = row;
+        const { uniqueId, userId } = row;
 
-        return <ClickableTypography name={userId} />;
+        return (
+          <ClickableTypography
+            name={uniqueId}
+            onClick={() => handleRedirection("dealers", userId, router)}
+          />
+        );
       },
     },
     {
@@ -39,8 +47,13 @@ export default function useColumns(props: AuctionResultColsProps) {
       minWidth: 120,
       headerName: "Dealer Name",
       renderCell: ({ row }: any) => {
-        const { fullname } = row;
-        return <ClickableTypography name={fullname ?? "-"} />;
+        const { fullname, userId } = row;
+        return (
+          <ClickableTypography
+            name={fullname ?? "-"}
+            onClick={() => handleRedirection("dealers", userId, router)}
+          />
+        );
       },
     },
     {
@@ -64,7 +77,7 @@ export default function useColumns(props: AuctionResultColsProps) {
       },
     },
     {
-      flex: 0.025,
+      flex: 0.04,
       field: "action",
       minWidth: 100,
       headerName: "Actions",
@@ -72,6 +85,7 @@ export default function useColumns(props: AuctionResultColsProps) {
         const { isRejected, fullname, id, userId } = row;
         const isWinner = userId === winner;
         const disableChoose = !isWinnerRejected;
+        console.log(row, "rowCheck");
 
         return (
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
@@ -92,6 +106,14 @@ export default function useColumns(props: AuctionResultColsProps) {
                 color="primary"
               >
                 Choose
+              </Button>
+            )}
+            {isWinner && (
+              <Button
+                onClick={() => handleModal("Accept", fullname, id, userId)}
+                variant="contained"
+              >
+                Accept
               </Button>
             )}
           </Box>

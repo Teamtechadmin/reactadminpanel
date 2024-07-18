@@ -26,7 +26,7 @@ export type ActionData = {
   userId?: string;
 };
 
-export type ModalAction = "Choose" | "Reject" | "Unsold";
+export type ModalAction = "Choose" | "Reject" | "Unsold" | "Accept";
 
 export default function AuctionLogBody(props: LogBodyProps) {
   const [open, setOpen] = useState(false);
@@ -38,6 +38,7 @@ export default function AuctionLogBody(props: LogBodyProps) {
   });
   const isChoose = action.type === "Choose";
   const isUnsold = action.type === "Unsold";
+  const isAccept = action.type === "Accept";
   const toast = useCustomToast();
   const queryClient = useQueryClient();
   const { log, data, handleClose } = props;
@@ -53,7 +54,7 @@ export default function AuctionLogBody(props: LogBodyProps) {
     leaderBoard,
   });
   const update = useUpdateResult();
-  const unsold = useUpdateCar();
+  const updateCar = useUpdateCar();
 
   function handleModal(
     type: ModalAction,
@@ -86,7 +87,7 @@ export default function AuctionLogBody(props: LogBodyProps) {
   function handleConfirm() {
     handleConfirmModal();
     if (isUnsold) {
-      unsold.mutate(
+      updateCar.mutate(
         {
           id: carID,
           body: {
@@ -99,6 +100,21 @@ export default function AuctionLogBody(props: LogBodyProps) {
             handleClose();
           },
           onError: (err) => handleError(err),
+        },
+      );
+    } else if (isAccept) {
+      update.mutate(
+        {
+          id: carID,
+          body: {
+            status: "procured",
+          },
+        },
+        {
+          onSuccess: () => {
+            handleSuccess();
+            handleClose();
+          },
         },
       );
     } else {
@@ -131,7 +147,9 @@ export default function AuctionLogBody(props: LogBodyProps) {
         ? `User Accepted as Highest Bidder`
         : isUnsold
           ? "Car Marked as UNSOLD"
-          : `Offer Rejected`,
+          : isAccept
+            ? "User Accepted as winner and car moved to PROCURED"
+            : `Offer Rejected`,
     );
   }
 
@@ -152,7 +170,7 @@ export default function AuctionLogBody(props: LogBodyProps) {
             rows={(leaderData as any) ?? []}
             paginationMode="server"
             pageSizeOptions={[]}
-            loading={unsold.isPending || update.isPending}
+            loading={updateCar.isPending || update.isPending}
           />
         </Grid>
 
