@@ -41,6 +41,7 @@ const statusLabel: any = {
   UNSOLD: "UNSOLD",
   NOQUOTE: "NO QUOTE",
   NOBID: "NO BID",
+  OTB_SCHEDULED: "OTB SCHEDULED",
 };
 
 const disableBtnStatus = [
@@ -50,6 +51,7 @@ const disableBtnStatus = [
   "DEAL_LOST",
   "RCTRANSFER",
   "OTB",
+  "OTB_SCHEDULED",
   "NEGOTIATION",
   "UNSOLD",
 ];

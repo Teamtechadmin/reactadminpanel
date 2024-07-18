@@ -50,7 +50,7 @@ function AuctionDialogue(props: AuctionDialogueProps) {
       otbStartTime: val.bidStartTime,
       otbEndTime: val.bidEndTime,
       realValue: val.realValue,
-      status: "OTB",
+      status: "OTB_SCHEDULED",
     };
     approveAuction({
       body: isAuction ? auctionBody : otbBody,

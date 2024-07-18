@@ -15,6 +15,7 @@ export const statusColor: any = {
   NOQUOTE: "error",
   NOBID: "error",
   STOPPED: "error",
+  OTB_SCHEDULED: "warning",
 };
 
 export function getStatusColor(status: StatusType) {
