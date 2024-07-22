@@ -20,13 +20,20 @@ const statusColor = {
   LIVE: "info",
   STOPPED: "error",
   SCHEDULED: "warning",
+  OTB: "info",
+  OTB_SCHEDULED: "warning",
+};
+
+const otbStatus: any = {
+  OTB_SCHEDULED: "SCHEDULED",
+  OTB: "OTB LIVE",
 };
 
 const getStatusColor = (status: LiveAuctionStatus) => {
   return statusColor[status] as ChipColorType;
 };
 
-const stopStatuses = ["SCHEDULED", "LIVE"];
+const stopStatuses = ["SCHEDULED", "LIVE", "OTB_SCHEDULED", "OTB"];
 
 interface Props {
   handleLog: (item: LiveAuctionItem) => void;
@@ -87,7 +94,8 @@ export const useColumns = (props: Props) => {
       minWidth: 50,
       headerName: isAuction ? "Highest Bid" : "OTB Price",
       renderCell: ({ row }: CellType) => {
-        return <Typography noWrap>{numberToINR(row?.highestBid)}</Typography>;
+        const value = isAuction ? row?.highestBid : row?.realValue;
+        return <Typography noWrap>{numberToINR(value ?? 0)}</Typography>;
       },
     },
     {
@@ -109,11 +117,11 @@ export const useColumns = (props: Props) => {
       minWidth: 120,
       headerName: "Time Remaining",
       renderCell: ({ row }: CellType) => {
+        const scheduledLabel = isAuction ? "SCHEDULED" : "OTB_SCHEDULED";
         const isStopped = row.status === "STOPPED";
-        const isScheduled = row.status === "SCHEDULED";
+        const isScheduled = row.status === scheduledLabel;
         const startTime = Date.now() as any;
         const endTime = isScheduled ? row?.bidStartTime : row?.bidEndTime;
-        // const
         const remaingTime = isStopped
           ? 0
           : calculateRemainingTime(startTime, endTime);
@@ -156,7 +164,7 @@ export const useColumns = (props: Props) => {
         const { status } = row;
         return (
           <Chip
-            label={status}
+            label={isAuction ? status : otbStatus[status] ?? status}
             variant="outlined"
             color={getStatusColor(status as LiveAuctionStatus) ?? "info"}
           />
@@ -171,9 +179,11 @@ export const useColumns = (props: Props) => {
       renderCell: ({ row }: CellType) => {
         const { status } = row;
         const isStoppable = stopStatuses.includes(status);
-        const showLog = status !== "SCHEDULED";
+        const scheduledLabel = isAuction ? "SCHEDULED" : "OTB_SCHEDULED";
+        const liveLabel = isAuction ? "LIVE" : "OTB_LIVE";
+        const showLog = status !== scheduledLabel;
         const showWatch = true;
-        const showBid = status === "LIVE" && isAuction;
+        const showBid = status === liveLabel && isAuction;
         return (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             {showLog && (

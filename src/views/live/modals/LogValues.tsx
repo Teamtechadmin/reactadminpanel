@@ -43,19 +43,20 @@ const getValues = (type: LiveTabTypes, data: any) => {
   const otbValues = [
     {
       label: "Customer Expected Price",
-      value: "₹ 1250000",
+      value: data?.customerPrice ? numberToINR(data?.customerPrice ?? 0) : "-",
     },
     {
       label: "Date of OTB",
-      value: "12-05-2024",
+      value: data?.bidStartTime ? formatDateAndTime(data?.bidStartTime) : "-",
     },
     {
       label: "Duration of OTB",
-      value: "30 minutes",
+      value:
+        calculateTimeDifference(data?.bidStartTime, data?.bidEndTime) + " Mins",
     },
     {
       label: "Time Remaining",
-      value: "560000",
+      value: remaingTime,
       isCounter: true,
     },
   ];

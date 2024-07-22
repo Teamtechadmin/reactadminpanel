@@ -29,13 +29,17 @@ export interface ViewersAuctionLog {
 }
 
 export interface LiveOtbLog {
-  id: number;
-  dealershipID: string;
-  dealershipName: string;
-  phone: string;
-  location: string;
-  remainingTime: number;
-  quote: number;
+  amount: number;
+  userId: string;
+  uniqueId: string;
+  isAutobid: boolean;
+  contactNo: number;
+  fullname: string;
+  district: string;
+  isRejected: boolean;
+  type: string;
+  _id: string;
+  id: string;
 }
 
 export interface AuctionLiveFilterParams {

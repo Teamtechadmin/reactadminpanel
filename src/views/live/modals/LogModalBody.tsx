@@ -16,7 +16,7 @@ export default function LogModalBody(props: { type: LiveTabTypes; data: any }) {
   );
   const logDataGrids = {
     auction: <AuctionLogDataGrid log={leaderBoard} />,
-    otb: <OtbLogDataGrid />,
+    otb: <OtbLogDataGrid log={leaderBoard} />,
   };
   return (
     <Grid padding={2}>
