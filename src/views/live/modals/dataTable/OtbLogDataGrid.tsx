@@ -1,17 +1,22 @@
-import { liveLogOtb } from "@/dummy/live-otb-log";
 import { useColumns } from "@/hooks/columns/live-otb-log";
 import { Grid } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
-export default function OtbLogDataGrid() {
+interface Props {
+  log: any;
+}
+
+export default function OtbLogDataGrid(props: Props) {
+  const { log } = props;
   const columns = useColumns();
   return (
     <Grid>
       <DataGrid
         columns={columns}
-        rows={liveLogOtb}
+        rows={log ?? []}
         disableColumnSelector
         rowSelection={false}
+        pageSizeOptions={[]}
       />
     </Grid>
   );

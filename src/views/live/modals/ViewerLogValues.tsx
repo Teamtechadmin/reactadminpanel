@@ -19,7 +19,7 @@ const getValues = (type: LiveTabTypes, data: any) => {
   const otbValues = [
     {
       label: "Customer Expected Price",
-      value: "₹ 1250000",
+      value: data?.customerPrice ? numberToINR(data?.customerPrice ?? 0) : "-",
     },
   ];
 

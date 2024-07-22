@@ -1,4 +1,5 @@
 import { useGetLiveAuctions } from "@/services/live/auctions/list/get";
+import { useGetLiveOtb } from "@/services/live/otb/list/get";
 import { AuctionLiveFilterParams } from "@/types/live/auctions";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
@@ -12,14 +13,50 @@ interface Props {
 export const useGetLiveData = (props: Props) => {
   const { tab, params, filterParams } = props;
   const { searchText, status } = filterParams;
-  const isAuction = tab === "auction";
   const [live, setLive] = useState<any>([]);
-  const { data, isLoading, isFetching, isFetched } = useGetLiveAuctions({
+
+  const isAuction = tab === "auction";
+  const isOtb = tab === "otb";
+
+  const {
+    data: auctionData,
+    isLoading: isAuctionLoading,
+    isFetching: isAuctionFetching,
+    isFetched: isAuctionFetched,
+  } = useGetLiveAuctions({
     ...params,
     enabled: isAuction,
     status: status ?? "LIVE,SCHEDULED,COMPLETED,STOPPED",
     uniqueId: searchText,
   });
+
+  const {
+    data: otbData,
+    isFetching: isOtbFetching,
+    isFetched: isOtbFetched,
+    isLoading: isOtbLoading,
+  } = useGetLiveOtb({
+    ...params,
+    enabled: isOtb,
+    status: status ?? "OTB,OTB_SCHEDULED,STOPPED,COMPLETED",
+    uniqueId: searchText,
+  });
+
+  const { data, isFetching, isFetched, isLoading } = isAuction
+    ? {
+        data: auctionData,
+        isFetching: isAuctionFetching,
+        isFetched: isAuctionFetched,
+        isLoading: isAuctionLoading,
+      }
+    : {
+        data: otbData,
+        isFetching: isOtbFetching,
+        isFetched: isOtbFetched,
+        isLoading: isOtbLoading,
+      };
+
+  const socketKey = isAuction ? "getLiveResult" : "getLiveOTBResult";
 
   useEffect(() => {
     socketInitializer();
@@ -37,7 +74,7 @@ export const useGetLiveData = (props: Props) => {
     socket = io(process.env.NEXT_PUBLIC_WEBSOCKET_URL ?? "", {
       transports: ["websocket"],
     });
-    socket.on("getLiveResult", (socketData: string) => {
+    socket.on(socketKey, (socketData: string) => {
       try {
         const data = JSON.parse(socketData);
         console.log("hitting loop");

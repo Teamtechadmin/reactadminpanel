@@ -11,7 +11,7 @@ export default function ViewersLogModalBody(props: {
 }) {
   const viewLogDataGrids = {
     auction: <AuctionViewerLogDataGrid data={props?.data?.viewerList} />,
-    otb: <OtbViewerLogDataGrid />,
+    otb: <OtbViewerLogDataGrid data={props?.data?.viewerList} />,
   };
   return (
     <Grid padding={2}>

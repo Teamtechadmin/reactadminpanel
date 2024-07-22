@@ -26,7 +26,7 @@ function LiveHome() {
 
   const tabComponents = {
     auction: <LiveAuctionTab filterParams={filterParams} />,
-    otb: <LiveOtbTab />,
+    otb: <LiveOtbTab filterParams={filterParams} />,
   };
 
   return (
