@@ -1,6 +1,8 @@
 import { ButtonIcon } from "@/components/ui/buttons/ButtonIcon";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
+import { handleRedirection } from "@/utils/handle-redirection";
 import { Box, Chip, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 
 export type StatusType = "Deactivated" | "Active";
 
@@ -47,6 +49,7 @@ const useColumns = ({
   handleView: (id: string) => void;
   handleVerify: (id: string) => void;
 }) => {
+  const router = useRouter();
   const columns: any = [
     {
       flex: 0.012,
@@ -55,9 +58,15 @@ const useColumns = ({
       headerName: "Dealer ID",
       headerClassName: "super-app-theme--header",
       renderCell: ({ row }: any) => {
-        const { userId } = row;
-        console.log(row, "dealerData");
-        return <ClickableTypography name={userId} />;
+        const { userId, id } = row;
+        return (
+          <ClickableTypography
+            onClick={() => {
+              handleRedirection("dealers", id, router);
+            }}
+            name={userId}
+          />
+        );
       },
     },
     {
@@ -66,9 +75,16 @@ const useColumns = ({
       minWidth: 120,
       headerName: "Customer Name",
       renderCell: ({ row }: any) => {
-        const { fullname } = row;
+        const { fullname, id } = row;
 
-        return <ClickableTypography name={fullname} />;
+        return (
+          <ClickableTypography
+            onClick={() => {
+              handleRedirection("dealers", id, router);
+            }}
+            name={fullname}
+          />
+        );
       },
     },
     {

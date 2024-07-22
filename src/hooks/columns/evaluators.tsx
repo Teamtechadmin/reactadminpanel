@@ -2,6 +2,7 @@ import { ButtonIcon } from "@/components/ui/buttons/ButtonIcon";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
 import { Evaluator } from "@/services/evaluators/list/types";
 import { capitaliseFirstLetter } from "@/utils/capitalise-firstletter";
+import { handleRedirection } from "@/utils/handle-redirection";
 import { Box, Chip, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 
@@ -29,7 +30,7 @@ const useColumns = (props: ColProps) => {
   const { handleAction, handleEdit } = props;
   const router = useRouter();
   function handleView(id: string) {
-    router.push(`/evaluators/${id}`);
+    handleRedirection("evaluators", id, router);
   }
   const columns = [
     {

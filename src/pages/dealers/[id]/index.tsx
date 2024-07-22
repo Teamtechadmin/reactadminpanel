@@ -7,6 +7,7 @@ import { useGetUser } from "@/services/users/get";
 import { disableStatus } from "@/hooks/columns/customers";
 import ConfirmModal from "@/components/ui/modals/ConfirmModal";
 import DealerDocumentVerifyBody from "@/views/customers/modals/DealerDocumentVerifyBody";
+import FallbackSpinner from "@/components/ui/spinner/fallback";
 
 const tabs = [
   {
@@ -24,7 +25,7 @@ const CustomerView = () => {
   const router = useRouter();
   const id = router?.query?.id;
 
-  const { data: dealer } = useGetUser({
+  const { data: dealer, isLoading } = useGetUser({
     params: {
       id: String(id),
     },
@@ -42,7 +43,9 @@ const CustomerView = () => {
     handleVerifyModal();
   }
 
-  return (
+  return isLoading ? (
+    <FallbackSpinner />
+  ) : (
     <>
       <Grid>
         <Grid paddingY={4}>

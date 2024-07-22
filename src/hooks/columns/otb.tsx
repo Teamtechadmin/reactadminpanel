@@ -3,7 +3,9 @@ import { getWinner } from "@/functions/results/get-winner";
 import { LeaderBoard } from "@/services/result/auction/types";
 import { OtbLogProps } from "@/types/results/type";
 import { formatToAmount } from "@/utils/convert-to-rs";
+import { handleRedirection } from "@/utils/handle-redirection";
 import { Box, Button, Chip, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 
 type RowType = {
   id: string;
@@ -41,6 +43,7 @@ function getStatus(value: StatusType) {
 
 const useColumns = (props: OtbColumnProps) => {
   const { handleLog } = props;
+  const router = useRouter();
   const columns = [
     {
       flex: 0.012,
@@ -48,9 +51,16 @@ const useColumns = (props: OtbColumnProps) => {
       minWidth: 110,
       headerName: "Car ID",
       renderCell: ({ row }: CellType) => {
-        const { uniqueId } = row;
+        const { uniqueId, _id } = row;
 
-        return <ClickableTypography name={uniqueId} />;
+        return (
+          <ClickableTypography
+            name={uniqueId}
+            onClick={() => {
+              handleRedirection("cars", _id, router);
+            }}
+          />
+        );
       },
     },
     {
@@ -61,8 +71,15 @@ const useColumns = (props: OtbColumnProps) => {
       renderCell: ({ row }: CellType) => {
         const { leaderBoard, winner } = row;
         const dealer = getWinner(leaderBoard, winner);
-
-        return <ClickableTypography name={dealer?.userId ?? "-"} />;
+        const dealerId = dealer?.userId ?? "";
+        return (
+          <ClickableTypography
+            name={dealer?.uniqueId ?? "-"}
+            onClick={() => {
+              handleRedirection("dealers", dealerId, router);
+            }}
+          />
+        );
       },
     },
     {
@@ -71,9 +88,16 @@ const useColumns = (props: OtbColumnProps) => {
       minWidth: 120,
       headerName: "Car Name",
       renderCell: ({ row }: CellType) => {
-        const { model } = row;
+        const { model, _id } = row;
 
-        return <ClickableTypography name={model} />;
+        return (
+          <ClickableTypography
+            name={model}
+            onClick={() => {
+              handleRedirection("cars", _id, router);
+            }}
+          />
+        );
       },
     },
     {
@@ -84,8 +108,15 @@ const useColumns = (props: OtbColumnProps) => {
       renderCell: ({ row }: CellType) => {
         const { leaderBoard, winner } = row;
         const dealer = getWinner(leaderBoard, winner);
-
-        return <ClickableTypography name={dealer?.fullname ?? "-"} />;
+        const dealerId = dealer?.userId ?? "";
+        return (
+          <ClickableTypography
+            name={dealer?.fullname ?? "-"}
+            onClick={() => {
+              handleRedirection("dealers", dealerId, router);
+            }}
+          />
+        );
       },
     },
     {

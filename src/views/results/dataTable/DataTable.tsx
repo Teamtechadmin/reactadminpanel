@@ -36,7 +36,7 @@ const DataTable = (props: Props) => {
     pageSize: 10,
   });
 
-  const { data } = useGetAuctionResults({
+  const { data, isLoading } = useGetAuctionResults({
     ...params,
     status: "PROCUREMENT,UNSOLD,NOBID,NOQUOTE",
     search: searchText,
@@ -123,6 +123,7 @@ const DataTable = (props: Props) => {
           initialState={{
             pagination: { paginationModel: { page: 0, pageSize: 10 } },
           }}
+          loading={isLoading}
         />
         <AuctionDialogue
           open={openApprove}

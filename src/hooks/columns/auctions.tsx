@@ -1,7 +1,9 @@
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
 import { getWinner } from "@/functions/results/get-winner";
 import { AuctionData, LogProps } from "@/services/result/auction/types";
+import { handleRedirection } from "@/utils/handle-redirection";
 import { Box, Button, Chip, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 
 interface Props {
   handleLog: (props: LogProps) => void;
@@ -34,6 +36,7 @@ function getAuctionStat(auctionStat: AuctionStatus) {
 
 const useColumns = (props: Props) => {
   const { handleLog } = props;
+  const router = useRouter();
   const columns = [
     {
       flex: 0.012,
@@ -44,7 +47,15 @@ const useColumns = (props: Props) => {
       renderCell: ({ row }: CellType) => {
         const { winner, leaderBoard } = row;
         const dealer = getWinner(leaderBoard, winner);
-        return <ClickableTypography name={dealer?.userId ?? "-"} />;
+        const dealerId = dealer?.userId ?? "";
+        return (
+          <ClickableTypography
+            name={dealer?.uniqueId ?? "-"}
+            onClick={() => {
+              handleRedirection("dealers", dealerId, router);
+            }}
+          />
+        );
       },
     },
     {
@@ -53,9 +64,15 @@ const useColumns = (props: Props) => {
       minWidth: 120,
       headerName: "Car ID",
       renderCell: ({ row }: CellType) => {
-        const { uniqueId } = row;
-
-        return <ClickableTypography name={String(uniqueId) ?? "-"} />;
+        const { uniqueId, _id } = row;
+        return (
+          <ClickableTypography
+            name={String(uniqueId) ?? "-"}
+            onClick={() => {
+              handleRedirection("cars", _id, router);
+            }}
+          />
+        );
       },
     },
     {
@@ -66,7 +83,15 @@ const useColumns = (props: Props) => {
       renderCell: ({ row }: CellType) => {
         const { winner, leaderBoard } = row;
         const dealer = getWinner(leaderBoard, winner);
-        return <Typography noWrap>{dealer?.fullname}</Typography>;
+        const dealerId = dealer?.userId ?? "";
+        return (
+          <ClickableTypography
+            name={dealer?.fullname ?? ""}
+            onClick={() => {
+              handleRedirection("dealers", dealerId, router);
+            }}
+          ></ClickableTypography>
+        );
       },
     },
     {
@@ -86,8 +111,15 @@ const useColumns = (props: Props) => {
       minWidth: 250,
       headerName: "Car Model",
       renderCell: ({ row }: CellType) => {
-        const { model } = row;
-        return <Typography noWrap>{model}</Typography>;
+        const { model, _id } = row;
+        return (
+          <ClickableTypography
+            name={model}
+            onClick={() => {
+              handleRedirection("cars", _id, router);
+            }}
+          ></ClickableTypography>
+        );
       },
     },
     {

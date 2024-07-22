@@ -1,7 +1,9 @@
 import { AmountTypography } from "@/components/ui/containers/AmountTypography";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
 import { BillHandleType, OtbLeaderBoardRow } from "@/types/results/type";
+import { handleRedirection } from "@/utils/handle-redirection";
 import { Box, Button, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 
 interface OtbResultColsProps {
   handleBill: (data: OtbLeaderBoardRow, type: BillHandleType) => void;
@@ -9,6 +11,7 @@ interface OtbResultColsProps {
 
 export default function useColumns(props: OtbResultColsProps) {
   const { handleBill } = props;
+  const router = useRouter();
   const columns = [
     {
       flex: 0.012,
@@ -17,9 +20,16 @@ export default function useColumns(props: OtbResultColsProps) {
       headerName: "Dealer ID",
       headerClassName: "super-app-theme--header",
       renderCell: ({ row }: any) => {
-        const { userId } = row;
+        const { userId, uniqueId } = row;
 
-        return <ClickableTypography name={userId} />;
+        return (
+          <ClickableTypography
+            name={uniqueId}
+            onClick={() => {
+              handleRedirection("dealers", userId, router);
+            }}
+          />
+        );
       },
     },
     {
@@ -28,8 +38,15 @@ export default function useColumns(props: OtbResultColsProps) {
       minWidth: 120,
       headerName: "Dealer Name",
       renderCell: ({ row }: any) => {
-        const { fullname } = row;
-        return <ClickableTypography name={fullname ?? "-"} />;
+        const { fullname, userId } = row;
+        return (
+          <ClickableTypography
+            name={fullname ?? "-"}
+            onClick={() => {
+              handleRedirection("dealers", userId, router);
+            }}
+          />
+        );
       },
     },
     {

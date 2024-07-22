@@ -1,3 +1,4 @@
+import FallbackSpinner from "@/components/ui/spinner/fallback";
 import TabList from "@/components/ui/tabs/TabList";
 import { useUpdateEvaluator } from "@/services/evaluators/update/patch";
 import { useGetEvaluator } from "@/services/evaluators/view/get";
@@ -26,7 +27,7 @@ const EvaluatorPage = () => {
   const [value, setValue] = useState(tabs[0].value);
   const router = useRouter();
   const id = router.query.id;
-  const { data } = useGetEvaluator(id as string);
+  const { data, isLoading } = useGetEvaluator(id as string);
   const evaluator = data?.data?.data?.[0];
   const isBlocked = evaluator?.isBlocked;
   const update = useUpdateEvaluator();
@@ -59,7 +60,9 @@ const EvaluatorPage = () => {
     );
   }
 
-  return (
+  return isLoading ? (
+    <FallbackSpinner />
+  ) : (
     <>
       <Grid>
         <Grid paddingY={4}>
