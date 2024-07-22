@@ -10,13 +10,15 @@ import { useAuctionBid } from "@/services/live/auctions/bid/post";
 import { errorMessageParser } from "@/utils/error";
 import { addKey } from "@/utils/add-key";
 import { getSlicedData } from "@/functions/live/auction/get-sliced-data";
+import { AuctionLiveFilterParams } from "@/types/live/auctions";
 
 interface Props {
-  searchText: string;
+  filterParams: AuctionLiveFilterParams;
 }
 
 function LiveAuctionTab(props: Props) {
-  const { searchText } = props;
+  const { filterParams } = props;
+  const { searchText, status } = filterParams;
   const [openLog, setOpenLog] = useState(false);
   const [openStop, setOpenStop] = useState(false);
   const [openViews, setOpenViews] = useState(false);
@@ -108,27 +110,29 @@ function LiveAuctionTab(props: Props) {
   const { data, isLoading } = useGetLiveData({
     params,
     tab: "auction",
-    searchText,
+    filterParams,
   });
   const liveAuctions = data?.data;
   const page = params.page + 1;
   const pageSize = params.pageSize;
+  const hasSearch = searchText && searchText !== "";
+  const hasFilters = hasSearch || status;
   const slicedData = getSlicedData({
     liveAuctions,
     page,
     pageSize,
-    searchText,
+    filterParams,
   });
   const slicedDataWithId = addKey(slicedData, "id", "_id") ?? [];
 
   useEffect(() => {
-    if (searchText && searchText !== "") {
+    if (hasFilters) {
       setParams({
         page: 0,
         pageSize: 10,
       });
     }
-  }, [searchText]);
+  }, [hasFilters]);
 
   return (
     <div>

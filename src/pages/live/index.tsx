@@ -21,10 +21,11 @@ const tabs = [
 function LiveHome() {
   const [tabValue, setTabValue] = useState(tabs[0].value);
   const { control, watch } = useForm();
-  const [search] = watch(["search"]);
+  const [search, status] = watch(["search", "status"]);
+  const filterParams = { searchText: search, status };
 
   const tabComponents = {
-    auction: <LiveAuctionTab searchText={search} />,
+    auction: <LiveAuctionTab filterParams={filterParams} />,
     otb: <LiveOtbTab />,
   };
 

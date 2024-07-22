@@ -37,3 +37,8 @@ export interface LiveOtbLog {
   remainingTime: number;
   quote: number;
 }
+
+export interface AuctionLiveFilterParams {
+  searchText: string;
+  status: string;
+}

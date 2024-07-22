@@ -11,12 +11,16 @@ interface SearchHeaderProps {
 
 const statusData = [
   {
+    name: "All",
+    id: null,
+  },
+  {
     name: "Live",
     id: "LIVE",
   },
   {
-    name: "Upcoming",
-    id: "UPCOMING",
+    name: "Scheduled",
+    id: "SCHEDULED",
   },
   {
     name: "Completed",

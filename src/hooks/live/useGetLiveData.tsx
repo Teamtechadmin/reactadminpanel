@@ -1,22 +1,23 @@
 import { useGetLiveAuctions } from "@/services/live/auctions/list/get";
+import { AuctionLiveFilterParams } from "@/types/live/auctions";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 
 interface Props {
   tab: string;
   params: { page: number; pageSize: number };
-  searchText: string;
+  filterParams: AuctionLiveFilterParams;
 }
 
 export const useGetLiveData = (props: Props) => {
-  const { tab, params, searchText } = props;
+  const { tab, params, filterParams } = props;
+  const { searchText, status } = filterParams;
   const isAuction = tab === "auction";
   const [live, setLive] = useState<any>([]);
-
   const { data, isLoading, isFetching, isFetched } = useGetLiveAuctions({
     ...params,
     enabled: isAuction,
-    status: "LIVE,SCHEDULED,COMPLETED,STOPPED",
+    status: status ?? "LIVE,SCHEDULED,COMPLETED,STOPPED",
     uniqueId: searchText,
   });
 
