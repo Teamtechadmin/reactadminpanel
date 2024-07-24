@@ -4,6 +4,16 @@ export interface BillForm {
   totalAmount?: number;
   serviceRate?: number;
   gstRate?: number;
+  rcDeposit?: number;
+  parkingCharge?: number;
+  transportationCharge?: number;
+  additionalCharges?: AdditionalCharge[];
+}
+
+export interface AdditionalCharge {
+  name?: string;
+  tax?: number;
+  value?: number;
 }
 
 export type BillHandleType = "view" | "give";
