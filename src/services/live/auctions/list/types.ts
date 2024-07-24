@@ -14,6 +14,7 @@ interface Meta {
 export interface LiveAuctionItem {
   _id: string;
   auctionId: string;
+  OTBId: string;
   uniqueId: number;
   carId: string;
   model: string;

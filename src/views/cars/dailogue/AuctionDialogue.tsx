@@ -9,6 +9,7 @@ import useUpdateCarById from "@/hooks/actions/cars/update-car";
 import { useQueryClient } from "@tanstack/react-query";
 import useCustomToast from "@/utils/toast";
 import { CarAuctionOtbHandleTypes } from "@/types/cars/car";
+import { removeSecondsFromDateTime } from "@/utils/remove-seconds-from-date";
 
 interface AuctionDialogueProps {
   open: boolean;
@@ -45,10 +46,15 @@ function AuctionDialogue(props: AuctionDialogueProps) {
   const queryKey = isList ? ["cars"] : isResult ? ["auction-result"] : ["car"];
 
   function onSubmit(val: ApproveCar) {
-    const auctionBody = { ...val, status: "SCHEDULED" };
+    const auctionBody = {
+      bidEndTime: removeSecondsFromDateTime(val.bidEndTime),
+      bidStartTime: removeSecondsFromDateTime(val.bidStartTime),
+      realValue: val.realValue,
+      status: "SCHEDULED",
+    };
     const otbBody = {
-      otbStartTime: val.bidStartTime,
-      otbEndTime: val.bidEndTime,
+      otbStartTime: removeSecondsFromDateTime(val.bidStartTime),
+      otbEndTime: removeSecondsFromDateTime(val.bidEndTime),
       realValue: val.realValue,
       status: "OTB_SCHEDULED",
     };

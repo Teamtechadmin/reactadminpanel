@@ -38,7 +38,7 @@ export const useGetLiveData = (props: Props) => {
   } = useGetLiveOtb({
     ...params,
     enabled: isOtb,
-    status: status ?? "OTB,OTB_SCHEDULED,STOPPED,COMPLETED",
+    status: status ?? "OTB,OTB_SCHEDULED,OTB_STOPPED,OTB_COMPLETED",
     uniqueId: searchText,
   });
 

@@ -22,11 +22,15 @@ const statusColor = {
   SCHEDULED: "warning",
   OTB: "info",
   OTB_SCHEDULED: "warning",
+  OTB_COMPLETED: "success",
+  OTB_STOPPED: "error",
 };
 
 const otbStatus: any = {
   OTB_SCHEDULED: "SCHEDULED",
   OTB: "OTB LIVE",
+  OTB_COMPLETED: "COMPLETED",
+  OTB_STOPPED: "STOPPED",
 };
 
 const getStatusColor = (status: LiveAuctionStatus) => {
@@ -56,8 +60,8 @@ export const useColumns = (props: Props) => {
       headerName: isAuction ? "Auction ID" : "OTB ID",
       headerClassName: "super-app-theme--header",
       renderCell: ({ row }: CellType) => {
-        const { auctionId } = row;
-        return <Typography>{auctionId}</Typography>;
+        const { OTBId, auctionId } = row;
+        return <Typography>{isAuction ? auctionId : OTBId}</Typography>;
       },
     },
     {

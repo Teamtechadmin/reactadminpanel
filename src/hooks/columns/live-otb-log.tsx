@@ -62,7 +62,7 @@ export const useColumns = () => {
       minWidth: 50,
       headerName: "Location",
       renderCell: ({ row }: CellType) => {
-        return <Typography>{row.district}</Typography>;
+        return <Typography>{row.district ?? "-"}</Typography>;
       },
     },
     {

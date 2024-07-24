@@ -10,13 +10,15 @@ interface TabListProps {
   tabOptions: TabOptions[];
   value: string;
   setValue: React.Dispatch<SetStateAction<string>>;
+  handleTabChange?: () => void;
 }
 
 const TabList = (props: TabListProps) => {
-  const { tabOptions, value, setValue } = props;
+  const { tabOptions, value, setValue, handleTabChange } = props;
 
-  function handleChange(e: React.SyntheticEvent, newValue: string) {
+  function handleChange(_e: React.SyntheticEvent, newValue: string) {
     setValue(newValue);
+    handleTabChange && handleTabChange();
   }
 
   return (
