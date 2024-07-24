@@ -5,12 +5,13 @@ import { useGetLeads } from "@/services/leads/list/get";
 import { GetLeadParams, Lead, LeadStatus } from "@/services/leads/list/types";
 import { useLeadStore } from "@/store/leads/store";
 import { addKey } from "@/utils/add-key";
+import { handleRedirection } from "@/utils/handle-redirection";
 import SearchHeaders from "@/views/customers/searchHeader/SearchHeaders";
 import AddLeadDialogue from "@/views/leads/dailogue/AddLeadDialogue";
 import AssignEvaluatorDialogue from "@/views/leads/dailogue/AssignEvaluatorDialogue";
 import { Button, Card, Grid, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -33,7 +34,7 @@ function LeadsPage() {
   const { setLead } = useLeadStore();
   const handleView = (row: Lead) => {
     setLead(row);
-    router.push(`/leads/${row?._id}`);
+    handleRedirection("leads", row?._id, router);
   };
 
   const columns = useColumns({
