@@ -3,34 +3,13 @@ import React from "react";
 import TextFormField from "../../../components/ui/inputfields/TextFormField";
 import SelectFormField from "../../../components/ui/inputfields/SelectField";
 import { Control } from "react-hook-form";
+import { getStatusFilters } from "@/functions/live/get-status-filters";
 
 interface SearchHeaderProps {
+  tab: "auction" | "otb";
   control: Control<any>;
   customLabel?: string;
 }
-
-const statusData = [
-  {
-    name: "All",
-    id: null,
-  },
-  {
-    name: "Live",
-    id: "LIVE",
-  },
-  {
-    name: "Scheduled",
-    id: "SCHEDULED",
-  },
-  {
-    name: "Completed",
-    id: "COMPLETED",
-  },
-  {
-    name: "Stopped",
-    id: "STOPPED",
-  },
-];
 
 function renderItem(obj: { id: string; name: string }) {
   return (
@@ -41,7 +20,8 @@ function renderItem(obj: { id: string; name: string }) {
 }
 
 const SearchHeaders = (props: SearchHeaderProps) => {
-  const { control, customLabel } = props;
+  const { control, customLabel, tab } = props;
+  const statusData = getStatusFilters(tab);
   return (
     <Grid
       container

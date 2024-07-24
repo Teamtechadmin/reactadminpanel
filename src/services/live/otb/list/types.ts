@@ -13,6 +13,7 @@ interface Meta {
 
 export interface LiveOtbResponseData {
   _id: string;
+  OTBId: string;
   auctionId: string;
   uniqueId: number;
   carId: string;
