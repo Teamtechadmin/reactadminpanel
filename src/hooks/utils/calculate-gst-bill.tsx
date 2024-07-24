@@ -21,7 +21,15 @@ export const useCalculateBill = (props: CalculateBillProps) => {
     if (value) {
       setState(value);
     }
-  }, [values?.gstRate, values?.serviceRate, values?.totalAmount]);
+  }, [
+    values?.additionalCharges,
+    values?.gstRate,
+    values?.parkingCharge,
+    values?.rcDeposit,
+    values?.serviceRate,
+    values?.totalAmount,
+    values?.transportationCharge,
+  ]);
 
   return state;
 };

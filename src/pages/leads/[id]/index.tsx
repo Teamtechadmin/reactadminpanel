@@ -81,7 +81,6 @@ export default function LeadDetailedPage() {
     const matchedStatus = subStatus.find((status: string) =>
       leadStatuses.includes(status),
     );
-    console.log(matchedStatus, "matchStatus");
 
     const leadBody: any = {
       sellerName: val.sellerName,

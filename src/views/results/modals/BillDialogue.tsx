@@ -34,7 +34,7 @@ export function BillDialogue<T extends AuctionData | OtbLeaderBoardRow>(
       icon="tabler:bill"
       titleWeight={600}
       titleFont={20}
-      maxWidth="xs"
+      maxWidth="md"
     />
   );
 }

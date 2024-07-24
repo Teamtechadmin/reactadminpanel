@@ -1,3 +1,4 @@
+import { RC_DEPOSIT_AMT } from "@/functions/results/calculate-bill";
 import { LeaderBoard } from "@/services/result/auction/types";
 import { BillForm } from "@/types/results/type";
 import { useEffect } from "react";
@@ -14,6 +15,7 @@ export const usePrefillBill = (props: CalculateBillProps) => {
   useEffect(() => {
     if (data) {
       setValue("totalAmount", data?.finalPrice ?? 0);
+      setValue("rcDeposit", RC_DEPOSIT_AMT);
     }
   }, [setValue]);
 };

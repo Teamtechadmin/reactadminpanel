@@ -1,5 +1,3 @@
-import { AmountTypography } from "@/components/ui/containers/AmountTypography";
-import TextFormField from "@/components/ui/inputfields/TextFormField";
 import { getWinner } from "@/functions/results/get-winner";
 import { usePrefillBill } from "@/hooks/utils/bill";
 import { useCalculateBill } from "@/hooks/utils/calculate-gst-bill";
@@ -8,15 +6,11 @@ import { AuctionData } from "@/services/result/auction/types";
 import { BillForm, OtbLeaderBoardRow } from "@/types/results/type";
 import { errorMessageParser } from "@/utils/error";
 import useCustomToast from "@/utils/toast";
-import {
-  Button,
-  DialogActions,
-  Divider,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Button, DialogActions, Grid } from "@mui/material";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { BillFields } from "./BillFields";
+import { BillSummary } from "./BillSummary";
 
 interface BillBodyProps<T> {
   data: T;
@@ -30,6 +24,9 @@ const defaultValues = {
   totalAmount: 0,
   serviceRate: 0.5,
   gstRate: 18,
+  parkingCharge: 0,
+  transportationCharge: 0,
+  discount: 0,
 };
 
 export function BillBody<T extends AuctionData | OtbLeaderBoardRow>(
@@ -52,7 +49,32 @@ export function BillBody<T extends AuctionData | OtbLeaderBoardRow>(
   }
 
   const winnerData = getWinnerData();
-  const values = watch();
+  const [
+    additionalCharges,
+    gstRate,
+    parkingCharge,
+    rcDeposit,
+    serviceRate,
+    totalAmount,
+    transportationCharge,
+  ] = watch([
+    "additionalCharges",
+    "gstRate",
+    "parkingCharge",
+    "rcDeposit",
+    "serviceRate",
+    "totalAmount",
+    "transportationCharge",
+  ]);
+  const values = {
+    additionalCharges,
+    gstRate,
+    parkingCharge,
+    rcDeposit,
+    serviceRate,
+    totalAmount,
+    transportationCharge,
+  };
   const updateResult = useUpdateResult();
   const toast = useCustomToast();
   const queryClient = useQueryClient();
@@ -95,62 +117,17 @@ export function BillBody<T extends AuctionData | OtbLeaderBoardRow>(
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Grid padding={3} display={"flex"} flexDirection={"column"} gap={2}>
-        <Grid>
-          <TextFormField
-            control={control}
-            id="totalAmount"
-            label="Total Amount"
-            placeholder="Total Amount"
-            size="medium"
-            isDisabled={isView}
-            type="number"
-          />
-        </Grid>
-        <Grid>
-          <TextFormField
-            control={control}
-            id="serviceRate"
-            label="Service Rate"
-            placeholder="Service Rate"
-            size="medium"
-            type="number"
-            isDisabled={isView}
-            InputProps={{
-              endAdornment: <Grid mr={1}>%</Grid>,
-            }}
-          />
-        </Grid>
-        <Grid>
-          <TextFormField
-            control={control}
-            id="gstRate"
-            label="GST Rate"
-            placeholder="GST Rate"
-            size="medium"
-            type="number"
-            isDisabled={isView}
-            InputProps={{
-              endAdornment: <Grid mr={1}>%</Grid>,
-            }}
-          />
-        </Grid>
-        <Divider />
-        <Grid container display={"flex"} justifyContent={"space-between"}>
-          <Typography>Total Amount Due</Typography>
-          <AmountTypography text={String(calc?.totalDue ?? "0")} />
-        </Grid>
-        <Grid container display={"flex"} justifyContent={"space-between"}>
-          <Typography>Service Fee</Typography>
-          <AmountTypography text={String(calc?.serviceFee ?? "0")} />
-        </Grid>
-        <Grid container display={"flex"} justifyContent={"space-between"}>
-          <Typography>GST on Service Fee</Typography>
-          <AmountTypography text={String(calc?.gstFee ?? "0")} />
-        </Grid>
+      <Grid
+        container
+        padding={3}
+        display={"flex"}
+        justifyContent={"space-between"}
+      >
+        <BillFields control={control} isView={isView} />
+        <BillSummary calculations={calc} />
       </Grid>
       {!isView && (
-        <DialogActions>
+        <DialogActions sx={{ p: 3 }}>
           <Button type="submit" variant="contained">
             Submit
           </Button>
