@@ -73,6 +73,7 @@ export const getBillCalculations = (
     {
       label: "Total Amount",
       amount: calculations?.totalAmtDue,
+      isHighlight: true,
     },
   ];
 

@@ -34,8 +34,10 @@ export const BillSummary = (props: Props) => {
           label?: string;
           amount?: number;
           isPercentage?: boolean;
+          isHighlight?: boolean;
         }) => {
           const label = result.label !== "" ? result.label : "-";
+          const isHighlight = result.isHighlight;
           return (
             <Grid
               key={result?.label}
@@ -43,11 +45,25 @@ export const BillSummary = (props: Props) => {
               display={"flex"}
               justifyContent={"space-between"}
             >
-              <Typography>{label}</Typography>
+              <Typography
+                sx={{ paddingTop: isHighlight ? 1 : 0 }}
+                fontWeight={isHighlight ? 600 : 400}
+              >
+                {label}
+              </Typography>
               {result?.isPercentage ? (
-                <Typography>{result?.amount}%</Typography>
+                <Typography
+                  sx={{ paddingTop: isHighlight ? 1 : 0 }}
+                  fontWeight={isHighlight ? 600 : 400}
+                >
+                  {result?.amount}%
+                </Typography>
               ) : (
-                <AmountTypography text={String(result?.amount ?? "0")} />
+                <AmountTypography
+                  sx={{ paddingTop: isHighlight ? 1 : 0 }}
+                  isHighlight={isHighlight}
+                  text={String(result?.amount ?? "0")}
+                />
               )}
             </Grid>
           );
