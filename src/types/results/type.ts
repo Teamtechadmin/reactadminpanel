@@ -5,6 +5,7 @@ export interface BillForm {
   serviceRate?: number;
   gstRate?: number;
   rcDeposit?: number;
+  discount?: number;
   parkingCharge?: number;
   transportationCharge?: number;
   additionalCharges?: AdditionalCharge[];

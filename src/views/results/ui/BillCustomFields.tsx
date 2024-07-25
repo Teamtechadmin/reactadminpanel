@@ -30,6 +30,7 @@ export const BillCustomFields = (props: Props) => {
             id={`additionalCharges[${index}].value`}
             label="Value"
             size="medium"
+            type="number"
             InputProps={{
               startAdornment: <Grid mr={1}>₹</Grid>,
             }}
@@ -40,6 +41,7 @@ export const BillCustomFields = (props: Props) => {
             control={control}
             id={`additionalCharges[${index}].tax`}
             label="Tax"
+            type="number"
             size="medium"
             InputProps={{
               endAdornment: <Grid mr={1}>%</Grid>,
