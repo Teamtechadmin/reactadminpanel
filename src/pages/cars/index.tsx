@@ -5,7 +5,7 @@ import SearchHeaders from "@/views/cars/search/SearchHeader";
 import { useState } from "react";
 
 const defaultValues = {
-  searchBy: "regNum",
+  searchBy: "uniqueId",
   search: "",
 };
 
