@@ -4,10 +4,16 @@ import React from "react";
 import { LogValues } from "./LogValues";
 import { AuctionLogDataGrid } from "./dataTable/AuctionLogDataGrid";
 import OtbLogDataGrid from "./dataTable/OtbLogDataGrid";
-import { addKey } from "@/utils/add-key";
 
 export default function LogModalBody(props: { type: LiveTabTypes; data: any }) {
-  const leaderBoard = addKey(props?.data?.leaderBoard, "id", "_id");
+  const leaderBoard = props?.data?.leaderBoard?.map(
+    (item: any, index: number) => {
+      return {
+        ...item,
+        id: index,
+      };
+    },
+  );
   const logDataGrids = {
     auction: <AuctionLogDataGrid log={leaderBoard} />,
     otb: <OtbLogDataGrid />,
