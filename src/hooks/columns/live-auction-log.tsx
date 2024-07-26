@@ -29,7 +29,7 @@ export const useColumns = () => {
       },
     },
     {
-      flex: 0.015,
+      flex: 0.02,
       field: "dealershipName",
       minWidth: 50,
       headerName: "Dealership Name",
@@ -52,7 +52,7 @@ export const useColumns = () => {
       },
     },
     {
-      flex: 0.0145,
+      flex: 0.02,
       field: "location",
       minWidth: 50,
       headerName: "Location",
@@ -61,7 +61,7 @@ export const useColumns = () => {
       },
     },
     {
-      flex: 0.0145,
+      flex: 0.02,
       field: "currentBid",
       minWidth: 50,
       headerName: "Current Bid",
@@ -70,7 +70,20 @@ export const useColumns = () => {
       },
     },
     {
-      flex: 0.0125,
+      flex: 0.02,
+      field: "autoBid",
+      minWidth: 50,
+      headerName: "Auto Bid Limit",
+      renderCell: ({ row }: CellType) => {
+        return (
+          <Typography noWrap>
+            {row?.autoBidLimit ? numberToINR(row.autoBidLimit) : "-"}
+          </Typography>
+        );
+      },
+    },
+    {
+      flex: 0.02,
       field: "bidType",
       minWidth: 50,
       headerName: "Bid Type",

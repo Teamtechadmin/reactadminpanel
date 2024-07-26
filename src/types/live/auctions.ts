@@ -7,6 +7,7 @@ export type LiveStatusColor = {
 
 export interface LiveAuctionLog {
   amount: number;
+  autoBidLimit: number;
   userId: string;
   uniqueId: string;
   isAutobid: boolean;
