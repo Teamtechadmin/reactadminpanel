@@ -176,7 +176,7 @@ export default function AuctionLogBody(props: LogBodyProps) {
 
         <Grid marginTop={2}>
           <Button onClick={handleUnsold} variant="contained" color="error">
-            Mark Us UNSOLD
+            Mark As UNSOLD
           </Button>
         </Grid>
       </Grid>

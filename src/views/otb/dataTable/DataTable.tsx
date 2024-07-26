@@ -95,6 +95,7 @@ const DataTable = (props: Props) => {
             leaderData={selectedItem?.leaderBoard ?? []}
             winner={selectedItem?.winner}
             carID={selectedItem?.id}
+            handleOtbLog={handleOtbLog}
           />
         }
         icon="tabler:article"

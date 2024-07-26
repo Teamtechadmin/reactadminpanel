@@ -1,3 +1,4 @@
+import ConfirmModal from "@/components/ui/modals/ConfirmModal";
 import useColumns from "@/hooks/columns/otb-results";
 import { AuctionData, LeaderBoard } from "@/services/result/auction/types";
 import { BillHandleType, OtbLeaderBoardRow } from "@/types/results/type";
@@ -6,30 +7,60 @@ import { BillDialogue } from "@/views/results/modals/BillDialogue";
 import { Button, Grid } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
+import OtbConfirmModalBody from "./OtbConfirmModalBody";
+import useUpdateCarById from "@/hooks/actions/cars/update-car";
+import useCustomToast from "@/utils/toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface OtbLogProps {
   leaderData: LeaderBoard[];
   winner: string;
   carID: string;
+  handleOtbLog: () => void;
 }
 
 export default function OtbLogBody(props: OtbLogProps) {
-  const { leaderData, carID } = props;
+  const { leaderData, carID, handleOtbLog } = props;
   const [open, setOpen] = useState(false);
+  const [openUnsold, setOpenUnsold] = useState(false);
   const [data, setData] = useState<AuctionData | OtbLeaderBoardRow>();
   const [type, setType] = useState<BillHandleType>("give");
+  const { updateCar, isPending } = useUpdateCarById();
+  const toast = useCustomToast();
+  const queryClient = useQueryClient();
 
   function handleModal() {
     setOpen(!open);
   }
 
+  function handleUnsoldOpen() {
+    setOpenUnsold(!openUnsold);
+  }
+
   function handleUnsold() {
-    console.log("");
+    handleUnsoldOpen();
   }
 
   const columns = useColumns({
     handleBill,
   });
+
+  const handleUnsoldSubmit = () => {
+    updateCar({
+      body: {
+        status: "UNSOLD",
+      },
+      id: carID,
+      handleSuccess: () => {
+        toast.success("Car Marked as UNSOLD Successfully!");
+        handleUnsold();
+        queryClient.invalidateQueries({
+          queryKey: ["auction-result"],
+        });
+        handleOtbLog();
+      },
+    });
+  };
 
   function handleBill(billData: OtbLeaderBoardRow) {
     handleModal();
@@ -57,7 +88,7 @@ export default function OtbLogBody(props: OtbLogProps) {
 
         <Grid marginTop={2}>
           <Button onClick={handleUnsold} variant="contained" color="error">
-            Mark Us UNSOLD
+            Mark As UNSOLD
           </Button>
         </Grid>
       </Grid>
@@ -68,6 +99,21 @@ export default function OtbLogBody(props: OtbLogProps) {
         type={type}
         carID={carID}
         isOtb
+      />
+      <ConfirmModal
+        open={openUnsold}
+        ContentComponent={
+          <OtbConfirmModalBody
+            handleClose={handleUnsoldOpen}
+            handleSubmit={handleUnsoldSubmit}
+            isDisabled={isPending}
+          />
+        }
+        dailogueTitle="Are you sure to continue?"
+        icon="tabler:info-hexagon"
+        iconSize={"1.5rem"}
+        titleFont={20}
+        handleClose={handleUnsoldOpen}
       />
     </>
   );
