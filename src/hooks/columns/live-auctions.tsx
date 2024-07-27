@@ -123,7 +123,7 @@ export const useColumns = (props: Props) => {
       renderCell: ({ row }: CellType) => {
         const scheduledLabel = isAuction ? "SCHEDULED" : "OTB_SCHEDULED";
         const stoppedLabel = isAuction ? "STOPPED" : "OTB_STOPPED";
-        const isStopped = stoppedLabel;
+        const isStopped = row?.status === stoppedLabel;
         const isScheduled = row.status === scheduledLabel;
         const startTime = Date.now() as any;
         const endTime = isScheduled ? row?.bidStartTime : row?.bidEndTime;

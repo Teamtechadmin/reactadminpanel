@@ -20,6 +20,9 @@ function AuctionViewerLogDataGrid(props: Props) {
         disableColumnSelector
         rowSelection={false}
         pageSizeOptions={[]}
+        sx={{
+          height: 350,
+        }}
       />
     </Grid>
   );
