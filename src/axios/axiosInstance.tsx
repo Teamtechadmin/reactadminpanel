@@ -20,7 +20,7 @@ axiosInstance.interceptors.request.use(
       ...config.headers,
       Authorization: `Bearer ${token ? token : ""}`,
       "Cache-Control": "no-cache",
-      "Content-Type": "application/x-www-form-urlencoded",
+      "Content-Type": "application/json",
     };
 
     return config;

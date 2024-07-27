@@ -122,7 +122,8 @@ export const useColumns = (props: Props) => {
       headerName: "Time Remaining",
       renderCell: ({ row }: CellType) => {
         const scheduledLabel = isAuction ? "SCHEDULED" : "OTB_SCHEDULED";
-        const isStopped = row.status === "STOPPED";
+        const stoppedLabel = isAuction ? "STOPPED" : "OTB_STOPPED";
+        const isStopped = stoppedLabel;
         const isScheduled = row.status === scheduledLabel;
         const startTime = Date.now() as any;
         const endTime = isScheduled ? row?.bidStartTime : row?.bidEndTime;
