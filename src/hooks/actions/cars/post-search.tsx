@@ -24,16 +24,17 @@ const usePostSearchCars = (props: PostSearchCars) => {
   const deferredSearch = useDeferredValue<string>(search);
 
   useEffect(() => {
-    if (
-      (deferredSearch !== undefined && search) ||
-      (createdAt !== undefined && createdAt)
-    ) {
+    const isRegNumCheck = searchBy === "regNum";
+    const hasSearchValue = deferredSearch !== undefined && search;
+    const hasDateSearch = createdAt !== undefined && createdAt;
+    const searchRegNum = isRegNumCheck && hasSearchValue;
+    if (searchRegNum || hasDateSearch) {
       postSearch.mutate(
         {
           ...(searchBy === "regNum"
-            ? { lastFourDigits: deferredSearch || null }
-            : { uniqueId: Number(deferredSearch) || null }),
-          createdAt: localiseDate(createdAt),
+            ? { lastFourDigits: deferredSearch || undefined }
+            : { uniqueId: Number(deferredSearch) || undefined }),
+          ...(createdAt && { createdAt: localiseDate(createdAt) }),
         },
         {
           onSuccess: (res: { data: { data: CarData[]; count: number } }) => {
@@ -43,7 +44,7 @@ const usePostSearchCars = (props: PostSearchCars) => {
         },
       );
     }
-  }, [deferredSearch, createdAt]);
+  }, [deferredSearch, createdAt, searchBy, search]);
 };
 
 export default usePostSearchCars;

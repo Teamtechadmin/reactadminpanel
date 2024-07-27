@@ -10,6 +10,10 @@ const selectBy = [
     name: "Unique Id",
   },
   { id: "regNum", name: "Reg. No." },
+  { id: "make", name: "Brand" },
+  { id: "model", name: "Model" },
+  { id: "fuelType", name: "Fuel Type" },
+  { id: "transmission", name: "Transmission" },
 ];
 
 interface Props {
