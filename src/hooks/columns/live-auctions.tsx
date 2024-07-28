@@ -1,15 +1,14 @@
 import { ButtonIcon } from "@/components/ui/buttons/ButtonIcon";
 import { ClickableTypography } from "@/components/ui/containers/ClickableTypography";
+import CountdownTimer from "@/components/ui/utility/CountdownTimer";
 import { LiveAuctionItem } from "@/services/live/auctions/list/types";
 import { ChipColorType } from "@/types/color/chipColor";
 import { LiveAuctionStatus, LiveTabTypes } from "@/types/live/auctions";
-import { calculateRemainingTime } from "@/utils/calculate-remaining-time";
 import { numberToINR } from "@/utils/convert-to-rs";
 import { formatDateAndTime } from "@/utils/format-date-and-time";
 import { handleCarRedirect } from "@/utils/handle-redirection";
 import { Box, Chip, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import Countdown from "react-countdown";
 
 interface CellType {
   row: LiveAuctionItem;
@@ -121,30 +120,7 @@ export const useColumns = (props: Props) => {
       minWidth: 120,
       headerName: "Time Remaining",
       renderCell: ({ row }: CellType) => {
-        const scheduledLabel = isAuction ? "SCHEDULED" : "OTB_SCHEDULED";
-        const stoppedLabel = isAuction ? "STOPPED" : "OTB_STOPPED";
-        const isStopped = row?.status === stoppedLabel;
-        const isScheduled = row.status === scheduledLabel;
-        const startTime = Date.now() as any;
-        const endTime = isScheduled ? row?.bidStartTime : row?.bidEndTime;
-        const remaingTime = isStopped
-          ? 0
-          : calculateRemainingTime(startTime, endTime);
-        return (
-          <Typography noWrap>
-            <Countdown
-              date={Date.now() + Number(remaingTime)}
-              intervalDelay={1000}
-              precision={0}
-              renderer={({ hours, minutes, seconds }) => {
-                const pad = (n: number) => String(n).padStart(2, "0");
-                return (
-                  <div>{`${pad(hours)}:${pad(minutes)}:${pad(seconds)}`}</div>
-                );
-              }}
-            />
-          </Typography>
-        );
+        return <CountdownTimer isAuction={isAuction} row={row} />;
       },
     },
     ...(isAuction

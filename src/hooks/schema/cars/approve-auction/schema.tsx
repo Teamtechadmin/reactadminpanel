@@ -26,7 +26,13 @@ function useFormSchema() {
       .required("Fair Market Value is required")
       .nonNullable()
       .typeError("Fair Market Value is required"),
-    highestBid: yup.number().typeError("Should be any number value"),
+    highestBid: yup
+      .number()
+      .typeError("Should be any number value")
+      .max(
+        yup.ref("realValue"),
+        "Starting bid should be less than Fair Market Value",
+      ),
   });
 
   return schema;
