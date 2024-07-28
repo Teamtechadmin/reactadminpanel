@@ -24,6 +24,7 @@ const defaultValues = {
   bidStartTime: new Date(),
   bidEndTime: new Date(),
   realValue: 0,
+  highestBid: 0,
 };
 
 function AuctionDialogue(props: AuctionDialogueProps) {
@@ -50,6 +51,7 @@ function AuctionDialogue(props: AuctionDialogueProps) {
       bidEndTime: removeSecondsFromDateTime(val.bidEndTime),
       bidStartTime: removeSecondsFromDateTime(val.bidStartTime),
       realValue: val.realValue,
+      highestBid: Number(val.highestBid ?? 0),
       status: "SCHEDULED",
     };
     const otbBody = {

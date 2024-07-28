@@ -4,4 +4,5 @@ export interface ApproveCar {
   qcStatus?: string;
   status: string;
   realValue?: string;
+  highestBid?: number;
 }

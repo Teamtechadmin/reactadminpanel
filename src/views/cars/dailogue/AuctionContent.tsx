@@ -46,6 +46,21 @@ export function AuctionContent(auctionContentProps: AuctionControlProps) {
           }}
         />
       </Grid>
+      {isAuction && (
+        <Grid width={"100%"}>
+          <TextFormField
+            control={control}
+            id="highestBid"
+            error={errors?.highestBid}
+            label={"Starting Bid"}
+            size="medium"
+            type="number"
+            InputProps={{
+              startAdornment: <Grid mr={1}>₹</Grid>,
+            }}
+          />
+        </Grid>
+      )}
       <Grid width={"100%"}>
         <DialogActions className="dialog-actions-dense">
           <Button disabled={isLoading} type="submit" variant="contained">
