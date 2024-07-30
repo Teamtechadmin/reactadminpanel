@@ -22,7 +22,7 @@ export const usePrefillBill = (props: CalculateBillProps) => {
   useEffect(() => {
     if (data) {
       console.log(data, "dataCheck");
-      setValue("totalAmount", data?.finalPrice ?? 0);
+      setValue("totalAmount", data?.finalPrice ?? data?.amount ?? 0);
       setValue("rcDeposit", RC_DEPOSIT_AMT);
       setValue("parkingCharge", Number(data?.parkingCharges ?? 0));
       setValue("transportationCharge", Number(data?.transportation ?? 0));

@@ -6,11 +6,12 @@ import { BillForm } from "@/types/results/type";
 
 interface Props {
   isView: boolean;
+  isOtb: boolean;
   control: Control<BillForm>;
 }
 
 export const BillFields = (props: Props) => {
-  const { control, isView } = props;
+  const { control, isView, isOtb } = props;
   const { append, fields, remove } = useFieldArray({
     name: "additionalCharges",
     control,
@@ -24,7 +25,7 @@ export const BillFields = (props: Props) => {
           label="Bid Amount"
           placeholder="Bid Amount"
           size="medium"
-          isDisabled={isView}
+          isDisabled={isView || isOtb}
           type="number"
           InputProps={{
             startAdornment: <Grid mr={1}>₹</Grid>,

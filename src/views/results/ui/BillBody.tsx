@@ -112,7 +112,11 @@ export function BillBody<T extends AuctionData | OtbLeaderBoardRow>(
         display={"flex"}
         justifyContent={"space-between"}
       >
-        <BillFields control={control} isView={isView} />
+        <BillFields
+          control={control}
+          isView={isView}
+          isOtb={Boolean(isOtb) || Boolean(data?.OTBId)}
+        />
         <BillSummary calculations={calc as any} values={values} />
       </Grid>
       {!isView && (

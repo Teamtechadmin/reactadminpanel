@@ -35,4 +35,5 @@ export interface OtbLeaderBoardRow {
   isRejected: boolean;
   finalPrice?: number;
   id: string;
+  OTBId?: string;
 }
