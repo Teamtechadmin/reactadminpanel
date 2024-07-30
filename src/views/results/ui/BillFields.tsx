@@ -101,15 +101,22 @@ export const BillFields = (props: Props) => {
           }}
         />
       </Grid>
-      <BillCustomFields control={control} fields={fields} remove={remove} />
-      <Grid>
-        <Button
-          onClick={() => append({ name: "", value: 0, tax: 0 })}
-          variant="outlined"
-        >
-          + Add Custom Charge
-        </Button>
-      </Grid>
+      <BillCustomFields
+        isView={isView}
+        control={control}
+        fields={fields}
+        remove={remove}
+      />
+      {!isView && (
+        <Grid>
+          <Button
+            onClick={() => append({ name: "", value: 0, tax: 0 })}
+            variant="outlined"
+          >
+            + Add Custom Charge
+          </Button>
+        </Grid>
+      )}
     </Grid>
   );
 };

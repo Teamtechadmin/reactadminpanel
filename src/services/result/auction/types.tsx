@@ -33,6 +33,15 @@ export interface AuctionData {
   totalAmount: any[];
   finalPrice: any[];
   userId?: string;
+  customCharger: CustomCharge[];
+  discount?: number;
+  parkingCharges?: number;
+  parkingGst?: number;
+  rcDeposit?: number;
+  serviceGst?: number;
+  tcs?: number;
+  transportation?: number;
+  transportationGst?: number;
 }
 
 export interface LeaderBoard {

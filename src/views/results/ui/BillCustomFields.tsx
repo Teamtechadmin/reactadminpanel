@@ -8,10 +8,11 @@ interface Props {
   control: Control<BillForm>;
   fields: any;
   remove: UseFieldArrayRemove;
+  isView: boolean;
 }
 
 export const BillCustomFields = (props: Props) => {
-  const { control, fields, remove } = props;
+  const { control, fields, remove, isView } = props;
 
   return fields?.map((field: { id: string }, index: number) => {
     return (
@@ -22,6 +23,7 @@ export const BillCustomFields = (props: Props) => {
             id={`additionalCharges[${index}].name`}
             label="Charge Name"
             size="medium"
+            isDisabled={Boolean(isView)}
           />
         </Grid>
         <Grid>
@@ -31,6 +33,7 @@ export const BillCustomFields = (props: Props) => {
             label="Value"
             size="medium"
             type="number"
+            isDisabled={Boolean(isView)}
             InputProps={{
               startAdornment: <Grid mr={1}>₹</Grid>,
             }}
@@ -42,21 +45,24 @@ export const BillCustomFields = (props: Props) => {
             id={`additionalCharges[${index}].tax`}
             label="Tax"
             type="number"
+            isDisabled={Boolean(isView)}
             size="medium"
             InputProps={{
               endAdornment: <Grid mr={1}>%</Grid>,
             }}
           />
         </Grid>
-        <Grid display={"flex"} alignItems={"center"}>
-          <IconButton
-            onClick={() => {
-              remove(index);
-            }}
-          >
-            <IconifyIcon icon={"tabler:x"} color="red" fontSize={"1rem"} />
-          </IconButton>
-        </Grid>
+        {!isView && (
+          <Grid display={"flex"} alignItems={"center"}>
+            <IconButton
+              onClick={() => {
+                remove(index);
+              }}
+            >
+              <IconifyIcon icon={"tabler:x"} color="red" fontSize={"1rem"} />
+            </IconButton>
+          </Grid>
+        )}
       </Grid>
     );
   });
