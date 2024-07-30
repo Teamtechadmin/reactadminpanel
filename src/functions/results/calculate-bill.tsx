@@ -40,6 +40,7 @@ export const calculateBill = (values?: BillForm) => {
       return {
         value: CHARGE_VALUE?.toFixed(2),
         taxFee: TAX_FEE,
+        name: charge.name ?? "",
       };
     });
 
@@ -67,6 +68,7 @@ export const calculateBill = (values?: BillForm) => {
       transportationGst,
       additionalChargeFees,
       totalAmtDue,
+      rcDeposit: RC_DEPOSIT_AMT,
     };
   }
 };

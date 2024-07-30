@@ -49,6 +49,12 @@ export interface LeaderBoard {
   finalPrice?: number;
 }
 
+export interface CustomCharge {
+  name: string;
+  value: number;
+  gst: number;
+}
+
 export interface UpdateResultProps {
   id: string;
   body: {
@@ -60,6 +66,15 @@ export interface UpdateResultProps {
     serviceFees?: number;
     totalAmount?: number;
     amount?: number;
+    serviceGst?: number;
+    parkingCharges?: number;
+    parkingGst?: number;
+    transportation?: number;
+    transportationGst?: number;
+    discount?: number;
+    rcDeposit?: number;
+    tcs?: number;
+    customCharger?: CustomCharge[];
   };
 }
 
