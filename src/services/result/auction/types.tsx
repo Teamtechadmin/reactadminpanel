@@ -13,6 +13,8 @@ interface Meta {
 
 export interface AuctionData {
   _id: string;
+  auctionId?: string;
+  OTBId?: string;
   uniqueId: number;
   make: string;
   model: string;

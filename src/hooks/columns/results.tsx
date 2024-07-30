@@ -130,6 +130,20 @@ const useColumns = (props: Props) => {
     },
     {
       flex: 0.026,
+      field: "procuredThrough",
+      minWidth: 150,
+      headerName: "Procured Through",
+      renderCell: ({ row }: CellType) => {
+        const procuredType = row?.auctionId
+          ? "AUCTION"
+          : row?.OTBId
+            ? "OTB"
+            : "-";
+        return <Typography>{procuredType}</Typography>;
+      },
+    },
+    {
+      flex: 0.026,
       field: "status",
       minWidth: 250,
       headerName: "Status",
