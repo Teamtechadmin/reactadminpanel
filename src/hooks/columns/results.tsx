@@ -134,12 +134,13 @@ const useColumns = (props: Props) => {
       minWidth: 150,
       headerName: "Procured Through",
       renderCell: ({ row }: CellType) => {
-        const procuredType = row?.auctionId
-          ? "AUCTION"
-          : row?.OTBId
-            ? "OTB"
-            : "-";
-        return <Typography>{procuredType}</Typography>;
+        const { auctionId, OTBId, status } = row;
+        const procuredType = auctionId ? "Auction" : OTBId ? "OTB" : "-";
+        return (
+          <Typography>
+            {status === "PROCUREMENT" ? procuredType : "-"}
+          </Typography>
+        );
       },
     },
     {
