@@ -36,4 +36,5 @@ export interface OtbLeaderBoardRow {
   finalPrice?: number;
   id: string;
   OTBId?: string;
+  status?: string;
 }

@@ -115,7 +115,7 @@ export function BillBody<T extends AuctionData | OtbLeaderBoardRow>(
         <BillFields
           control={control}
           isView={isView}
-          isOtb={Boolean(isOtb) || Boolean(data?.OTBId)}
+          disableTotalAmt={data?.status === "PROCUREMENT"}
         />
         <BillSummary calculations={calc as any} values={values} />
       </Grid>
