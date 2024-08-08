@@ -113,7 +113,7 @@ const UserDropdown = () => {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={() => handleDropdownClose()}
-        sx={{ "& .MuiMenu-paper": { width: 230 } }}
+        sx={{ "& .MuiMenu-paper": { width: "max-content" } }}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "right",
