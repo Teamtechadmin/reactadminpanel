@@ -18,7 +18,7 @@ import MenuItem, { MenuItemProps } from "@mui/material/MenuItem";
 import Icon from "../../icon/index";
 import { useAuthStore } from "@/store/auth/store";
 import { defaultLogin } from "@/default/auth/login";
-import { useSetFCM } from "@/services/notification/post/post";
+import { useRemoveFcm } from "@/services/notification/post/post";
 
 // ** Styled Components
 const BadgeContentSpan = styled("span")(({ theme }) => ({
@@ -41,11 +41,11 @@ const UserDropdown = () => {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
   // ** Store
-  const { auth, setAuth } = useAuthStore();
+  const { auth, setAuth, fcm } = useAuthStore();
 
   // ** Hooks
   const router = useRouter();
-  const setFCM = useSetFCM();
+  const removeFcm = useRemoveFcm();
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
     setAnchorEl(event.currentTarget);
@@ -58,26 +58,34 @@ const UserDropdown = () => {
     setAnchorEl(null);
   };
 
-  function handleFCMClose() {
-    setFCM.mutate({
-      body: {
-        fcmToken: "NULL",
-        platform: "WEB",
+  function handleFCMRemove() {
+    removeFcm.mutate(
+      {
+        body: {
+          fcmToken: fcm,
+        },
+        id: auth.user._id,
       },
-      id: auth.user._id,
-    });
+      {
+        onSuccess: () => {
+          localStorage.removeItem("isFcmSend");
+        },
+        onSettled: () => {
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("userData");
+          router.push("/login");
+          setAuth({
+            loading: false,
+            user: defaultLogin.user,
+          });
+        },
+      },
+    );
   }
 
   const handleLogout = () => {
     handleDropdownClose();
-    handleFCMClose();
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("userData");
-    router.push("/login");
-    setAuth({
-      loading: false,
-      user: defaultLogin.user,
-    });
+    handleFCMRemove();
   };
 
   const userName = auth.user.fullname?.toUpperCase() ?? "User";

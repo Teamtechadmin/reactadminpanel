@@ -12,24 +12,6 @@ export type AppBarContentProps = {
 
 const AppBarContent = (props: AppBarContentProps) => {
   const { hidden, toggleNavVisibility } = props;
-  // const notifications = [
-  //   {
-  //     title: "Notification",
-  //     subtitle: "This is notification",
-  //   },
-  //   {
-  //     title: "Notification",
-  //     subtitle: "This is notification",
-  //   },
-  //   {
-  //     title: "Notification",
-  //     subtitle: "This is notification",
-  //   },
-  //   {
-  //     title: "Notification",
-  //     subtitle: "This is notification",
-  //   },
-  // ];
 
   return (
     <Box

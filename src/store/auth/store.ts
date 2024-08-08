@@ -6,6 +6,8 @@ import { defaultLogin } from "@/default/auth/login";
 interface StoreState {
   auth: AuthType;
   setAuth: (user: AuthType) => void;
+  fcm: string;
+  setFcm: (token: string) => void;
 }
 
 export const useAuthStore = create<StoreState>()(
@@ -16,6 +18,8 @@ export const useAuthStore = create<StoreState>()(
         user: defaultLogin.user,
       },
       setAuth: (auth: AuthType) => set(() => ({ auth })),
+      fcm: "",
+      setFcm: (fcm: string) => set(() => ({ fcm })),
     }),
     {
       name: "auth-store",

@@ -1,10 +1,4 @@
-import {
-  useState,
-  SyntheticEvent,
-  Fragment,
-  ReactNode,
-  useEffect,
-} from "react";
+import { useState, SyntheticEvent, Fragment, ReactNode } from "react";
 import Box from "@mui/material/Box";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
@@ -14,14 +8,8 @@ import MuiMenuItem, { MenuItemProps } from "@mui/material/MenuItem";
 import Typography, { TypographyProps } from "@mui/material/Typography";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Chip, Grid, Tooltip } from "@mui/material";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
-import { firebaseConfig } from "../../../../firebase/firebaseConfig";
-import { initializeApp } from "firebase/app";
-import { useSetFCM } from "@/services/notification/post/post";
 import { useAuthStore } from "@/store/auth/store";
 import { useGetNotifications } from "@/services/notification/get/get";
-import useCustomToast from "@/utils/toast";
-import { useQueryClient } from "@tanstack/react-query";
 
 // ** Styled Menu component
 const Menu = styled(MuiMenu)<MenuProps>(({ theme }) => ({
@@ -84,8 +72,6 @@ const NotificationDropdown = () => {
   const [anchorEl, setAnchorEl] = useState<(EventTarget & Element) | null>(
     null,
   );
-  const [fcmSuccess, setFcmSuccess] = useState(false);
-  const [fcmMessaging, setFcmMessaging] = useState<any>();
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
     setAnchorEl(event.currentTarget);
@@ -98,65 +84,11 @@ const NotificationDropdown = () => {
   const { auth } = useAuthStore();
   const userID = auth?.user?._id;
 
-  const setFCM = useSetFCM();
-  const queryClient = useQueryClient();
   const { data: notifications } = useGetNotifications({
     id: userID,
-    isFCMSuccess: fcmSuccess,
+    isFCMSuccess: true,
   });
   const notificationList = notifications?.data?.data ?? [];
-  const toast = useCustomToast();
-
-  useEffect(() => {
-    const app = initializeApp(firebaseConfig);
-    const messaging = getMessaging(app);
-
-    async function requestPermission() {
-      //requesting permission using Notification API
-      const permission = await Notification.requestPermission();
-      if (permission === "granted") {
-        const token = await getToken(messaging, {
-          vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID,
-        });
-
-        if (userID) {
-          setFCM.mutate(
-            {
-              body: {
-                fcmToken: token,
-                platform: "WEB",
-              },
-              id: userID,
-            },
-            {
-              onSuccess: () => {
-                setFcmSuccess(true);
-                setFcmMessaging(messaging);
-              },
-              onError: () => setFcmSuccess(false),
-            },
-          );
-        }
-      } else if (permission === "denied") {
-        alert("You denied for the notification");
-      }
-    }
-    requestPermission();
-  }, [userID]);
-
-  if (fcmMessaging) {
-    onMessage(fcmMessaging, (payload) => {
-      console.log(payload, "payloadCheck");
-
-      const title = payload.notification?.title ?? "";
-      const msg = payload.notification?.body ?? "";
-      queryClient.invalidateQueries({
-        queryKey: ["notifications"],
-      });
-      toast.info(`${title + msg}`);
-      console.log(`${title + msg}`, "MESSAGE");
-    });
-  }
 
   return (
     <Fragment>
