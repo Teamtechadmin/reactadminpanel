@@ -35,11 +35,18 @@ const DataTable = (props: Props) => {
     page: 0,
     pageSize: 10,
   });
+  const [sortModel, setSortModel] = useState<any>([
+    {
+      field: "status",
+      sort: null,
+    },
+  ]);
 
   const { data, isLoading } = useGetAuctionResults({
     ...params,
     status: "PROCUREMENT,UNSOLD,NOBID,NOQUOTE",
     search: searchText,
+    sort: sortModel?.[0]?.sort,
   });
   const resultData = data?.data;
   const results = addKey(resultData as any, "id", "_id") ?? [];
@@ -97,6 +104,11 @@ const DataTable = (props: Props) => {
   }
   const resultDataCount: any = data;
   const count = resultDataCount?.count;
+
+  function handleSortModel(props: any) {
+    setSortModel(props);
+  }
+
   return (
     <Card>
       <CardHeader
@@ -123,6 +135,12 @@ const DataTable = (props: Props) => {
           initialState={{
             pagination: { paginationModel: { page: 0, pageSize: 10 } },
           }}
+          sortingMode="server"
+          sortModel={sortModel}
+          sortingOrder={
+            ["procurement", "unsold", "noquote", "nobid", null] as any
+          }
+          onSortModelChange={handleSortModel}
           loading={isLoading}
         />
         <AuctionDialogue

@@ -9,6 +9,7 @@ interface AuctionsParams {
   pageSize: number;
   status: string;
   search?: string;
+  sort?: string;
 }
 
 async function getAuctionResult(
@@ -20,6 +21,7 @@ async function getAuctionResult(
     limit: params.pageSize,
     searchField: params.search !== "" ? "uniqueId" : null,
     search: params.search !== "" ? params.search : null,
+    sort: params?.sort ? params.sort?.toUpperCase() : null,
   };
 
   const response = await axiosInstance.get(GET_AUCTION_RESULT, {
