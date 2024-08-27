@@ -45,8 +45,16 @@ const kickout = () => {
 };
 
 axiosInstance.interceptors.response.use(undefined, async (error) => {
+  const originalReq = error.config;
   if (error?.response?.status === 401) {
-    kickout();
+    try {
+      const refreshUrl = baseURL + "auth/refreshToken";
+      axios.get(refreshUrl).then(() => {
+        axios.request({ ...originalReq, headers: {} });
+      });
+    } catch (error) {
+      kickout();
+    }
   }
 
   return Promise.reject(error);
