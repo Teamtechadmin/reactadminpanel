@@ -58,9 +58,8 @@ axiosInstance.interceptors.response.use(undefined, async (error) => {
         "Content-Type": "application/json",
       };
       const refreshUrl = baseURL + "auth/refreshToken";
-      axios.get(refreshUrl).then(() => {
-        axios.request({ ...originalReq, headers });
-      });
+      await axios.post(refreshUrl, {}, { headers, withCredentials: true });
+      return axiosInstance(originalReq);
     } catch (error) {
       kickout();
     }
