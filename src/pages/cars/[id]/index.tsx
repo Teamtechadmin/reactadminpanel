@@ -19,7 +19,6 @@ import { useGetCarDocs } from "@/services/cars/documents/get";
 import AuctionDialogue from "@/views/cars/dailogue/AuctionDialogue";
 import CarViewBottomActions from "@/views/cars/actions/CarViewBottomActions";
 import CarViewTopActions from "@/views/cars/actions/CarViewTopActions";
-import useCarActions from "@/hooks/actions/cars/car-actions";
 import { readImage } from "@/utils/get-image-as-base64";
 import headerLogo from "../../../../public/assets/pdfLogo.png";
 
@@ -36,11 +35,6 @@ const CarsView = () => {
   const carDocs = carDocsData?.data.data;
   const { data: carReports } = useGetCarReport(id as string);
   const carReportsData = carReports?.data.data;
-  const { approveQC, rejectQC } = useCarActions();
-
-  function handleApprove() {
-    setOpenApprove(!openApprove);
-  }
 
   const tabComponents = {
     car_details: <CarDetails details={carData} />,
@@ -83,7 +77,6 @@ const CarsView = () => {
   if (isFetched) {
     const showNext = tabs[tabs.length - 1].value !== value;
     const isPending = carData?.status === "PENDING_EVALUATION";
-    const isVerified = carData?.qcStatus === "VERIFIED";
 
     return (
       <>
@@ -97,14 +90,7 @@ const CarsView = () => {
             />
           </Grid>
           <Grid mt={1}>{tabComponents[value as CarTabTypes]}</Grid>
-          <CarViewBottomActions
-            handleApprove={handleApprove}
-            handleNext={handleNext}
-            handleApproveQC={() => approveQC(id)}
-            handleRejectQC={() => rejectQC(id)}
-            isVerified={isVerified}
-            showNext={showNext}
-          />
+          <CarViewBottomActions handleNext={handleNext} showNext={showNext} />
         </Grid>
         <AuctionDialogue
           open={openApprove}
