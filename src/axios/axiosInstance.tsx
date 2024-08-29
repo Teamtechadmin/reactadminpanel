@@ -1,3 +1,4 @@
+import { removeFcm } from "@/services/notification/post/post";
 import axios from "axios";
 
 // Set config defaults when creating the instance
@@ -33,8 +34,23 @@ axiosInstance.interceptors.request.use(
   },
 );
 
-const kickout = () => {
-  localStorage.clear();
+const kickout = async () => {
+  if (typeof window !== "undefined") {
+    try {
+      const user = localStorage.getItem("userData") ?? "";
+      const authStore = localStorage.getItem("auth-store") ?? "";
+      await removeFcm({
+        id: JSON.parse(user)?._id,
+        body: {
+          fcmToken: JSON.parse(authStore)?.state?.fcm,
+        },
+      }).then(() => {
+        localStorage.clear();
+      });
+    } catch (error) {
+      localStorage.clear();
+    }
+  }
 
   if (
     window.location.pathname !== "/" &&
@@ -48,18 +64,17 @@ axiosInstance.interceptors.response.use(undefined, async (error) => {
   const originalReq = error.config;
   if (error?.response?.status === 401) {
     try {
-      let token;
-      if (typeof window !== "undefined") {
-        token = localStorage.getItem("accessToken");
-      }
       const headers = {
-        Authorization: `Bearer ${token ? token : ""}`,
         "Cache-Control": "no-cache",
         "Content-Type": "application/json",
       };
-      const refreshUrl = baseURL + "auth/refreshToken";
-      await axios.post(refreshUrl, {}, { headers, withCredentials: true });
-      return axiosInstance(originalReq);
+      const refreshUrl = baseURL + "auth/refreshTokenssss";
+      await axios
+        .post(refreshUrl, {}, { headers, withCredentials: true })
+        .then((res) => {
+          localStorage.setItem("accessToken", res.data.meta.access);
+        });
+      return await axiosInstance(originalReq);
     } catch (error) {
       kickout();
     }
