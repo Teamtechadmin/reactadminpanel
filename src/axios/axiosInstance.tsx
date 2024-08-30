@@ -68,7 +68,7 @@ axiosInstance.interceptors.response.use(undefined, async (error) => {
         "Cache-Control": "no-cache",
         "Content-Type": "application/json",
       };
-      const refreshUrl = baseURL + "auth/refreshTokenssss";
+      const refreshUrl = baseURL + "auth/refreshToken";
       await axios
         .post(refreshUrl, {}, { headers, withCredentials: true })
         .then((res) => {
