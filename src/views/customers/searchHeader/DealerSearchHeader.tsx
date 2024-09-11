@@ -4,29 +4,7 @@ import { Grid } from "@mui/material";
 import { DealerCustomSearch } from "./DealerCustomSearch";
 import { DealerContext, DealerContextType } from "@/pages/dealers";
 import { useContext } from "react";
-
-const dealerStatus = [
-  {
-    id: null,
-    name: "Status",
-  },
-  {
-    id: "not_submitted",
-    name: "Not Submitted",
-  },
-  {
-    id: "submitted",
-    name: "Submitted",
-  },
-  {
-    id: "verified",
-    name: "Verified",
-  },
-  {
-    id: "rejected",
-    name: "Rejected",
-  },
-];
+import { dealerStatus } from "@/data/dealers/search_types";
 
 export const DealerSearchHeader = () => {
   const propParams = useContext<DealerContextType>(DealerContext);
@@ -51,7 +29,7 @@ export const DealerSearchHeader = () => {
           renderMenuItems={renderItem}
           data={dealerStatus}
           label="Status"
-          labelSize="small"
+          labelSize="normal"
           fillWhite
           size="medium"
         />

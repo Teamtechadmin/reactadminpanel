@@ -10,6 +10,7 @@ interface DealerParams {
   sortKey?: "createdAt" | "name";
   sortValue?: 1 | -1;
   contactNo?: number;
+  isDocumentsVerified?: string;
 }
 
 export const getDealers = async (
@@ -18,6 +19,7 @@ export const getDealers = async (
   const filterParams = {
     page: params?.page + 1,
     limit: params?.pageSize,
+    isDocumentsVerified: params?.isDocumentsVerified,
   };
   return await axiosInstance.get(GET_DEALERS, {
     params: filterParams,

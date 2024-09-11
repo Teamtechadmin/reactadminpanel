@@ -20,6 +20,11 @@ export const getDealerSearch = (searchBy: null | string) => {
         type: "text",
         label: "Name",
       };
+    case "contactNo":
+      return {
+        type: "text",
+        label: "Contact Number",
+      };
     default:
       return {
         type: "hide",

@@ -14,6 +14,7 @@ interface Props {
 const searchOptions = [
   { label: "Search By", value: null },
   { label: "Name", value: "name" },
+  { label: "Contact No.", value: "contactNo" },
   { label: "Location", value: "location" },
   { label: "Security Deposit", value: "security_deposit" },
 ];

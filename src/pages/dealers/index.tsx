@@ -21,13 +21,15 @@ export default function Dealers() {
     page: 0,
     pageSize: 10,
   });
-  const { data, isLoading } = useGetDealers({
-    params,
-  });
-  const { control, watch, setValue } = useForm();
 
+  const { control, watch, setValue } = useForm();
+  const [status] = watch(["status"]);
+  const { data, isLoading } = useGetDealers({
+    params: { ...params, isDocumentsVerified: status },
+  });
   const dealerContext =
     { params, setParams, data, isLoading, control, watch, setValue } || null;
+
   return (
     <DealerContext.Provider value={dealerContext}>
       <Grid>
