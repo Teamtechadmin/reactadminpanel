@@ -5,6 +5,7 @@ import { DealerTabs } from "@/views/customers/tabs/DealerTabs";
 import { Grid } from "@mui/material";
 import { AxiosResponse } from "axios";
 import { createContext, SetStateAction, useState } from "react";
+import { useForm } from "react-hook-form";
 
 export type DealerContextType = {
   params: { page: number; pageSize: number };
@@ -23,7 +24,10 @@ export default function Dealers() {
   const { data, isLoading } = useGetDealers({
     params,
   });
-  const dealerContext = { params, setParams, data, isLoading } || null;
+  const { control, watch, setValue } = useForm();
+
+  const dealerContext =
+    { params, setParams, data, isLoading, control, watch, setValue } || null;
   return (
     <DealerContext.Provider value={dealerContext}>
       <Grid>
