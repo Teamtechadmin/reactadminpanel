@@ -3,15 +3,14 @@ import { Button, Grid, Typography } from "@mui/material";
 interface Props {
   heading: string;
   subHeading: string;
-  btnText: string;
-  handleBtnClick: () => void;
+  btnText?: string;
+  handleBtnClick?: () => void;
 }
 
 export const DealerCardContent = (props: Props) => {
   const { heading, subHeading, btnText, handleBtnClick } = props;
   return (
     <Grid
-      padding={3}
       display={"flex"}
       justifyContent={"space-between"}
       alignItems={"center"}
@@ -30,9 +29,11 @@ export const DealerCardContent = (props: Props) => {
         </Typography>
       </Grid>
 
-      <Button onClick={handleBtnClick} variant="contained">
-        {btnText}
-      </Button>
+      {btnText && (
+        <Button onClick={handleBtnClick} variant="contained">
+          {btnText}
+        </Button>
+      )}
     </Grid>
   );
 };

@@ -1,4 +1,4 @@
-import { Card } from "@mui/material";
+import { Card, CardContent } from "@mui/material";
 import { DealerCardContent } from "../../cards/content/DealerCardContent";
 
 export const ContactInfo = () => {
@@ -7,13 +7,15 @@ export const ContactInfo = () => {
   }
   return (
     <Card>
-      <DealerCardContent
-        heading="Contact Info"
-        subHeading="If you want to add additional contact details
+      <CardContent>
+        <DealerCardContent
+          heading="Contact Info"
+          subHeading="If you want to add additional contact details
 for this dealer click the button here"
-        btnText="Add Contact"
-        handleBtnClick={handleContactInfo}
-      />
+          btnText="Add Contact"
+          handleBtnClick={handleContactInfo}
+        />
+      </CardContent>
     </Card>
   );
 };
