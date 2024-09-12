@@ -1,6 +1,7 @@
 import { Dealer } from "@/types/customers/get";
 import { numberToINR } from "@/utils/convert-to-rs";
 import {
+  Button,
   Grid,
   Paper,
   Table,
@@ -13,6 +14,8 @@ import {
 import { AdditionalDealerInfo } from "./new/AdditionalDealerInfo";
 import { InternalNotes } from "./new/InternalNotes";
 import { SecurityDeposit } from "./new/SecurityDeposit";
+import { PreferredCars } from "./new/PreferredCars";
+import { AccountInfo } from "./new/AccountInfo";
 
 function getCustomerData(data: Dealer) {
   return [
@@ -59,9 +62,18 @@ const CustomerDetails = ({ data }: { data: Dealer }) => {
   const customerData = getCustomerData(data);
   return (
     <>
-      <Typography fontWeight={600} fontSize={18} paddingBottom={2}>
-        Customer Details
-      </Typography>
+      <Grid
+        display={"flex"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        paddingBottom={2}
+      >
+        <Typography fontWeight={600} fontSize={18} textAlign={"center"}>
+          Customer Details
+        </Typography>
+        <Button variant="contained">Edit</Button>
+      </Grid>
+
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
           <TableBody>
@@ -82,6 +94,8 @@ const CustomerDetails = ({ data }: { data: Dealer }) => {
         <AdditionalDealerInfo />
         <InternalNotes />
         <SecurityDeposit />
+        <PreferredCars />
+        <AccountInfo />
       </Grid>
     </>
   );
