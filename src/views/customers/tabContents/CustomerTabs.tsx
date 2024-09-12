@@ -12,7 +12,7 @@ interface CustomerTabsProps {
 const CustomerTabs = (props: CustomerTabsProps) => {
   const { value, data } = props;
   const CustomerTabs = {
-    customer_details: <CustomerDetails data={data} />,
+    dealer_details: <CustomerDetails data={data} />,
     documents: <CustomerDocuments data={data} />,
   };
 
