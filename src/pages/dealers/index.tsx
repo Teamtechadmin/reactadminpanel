@@ -23,9 +23,14 @@ export default function Dealers() {
   });
 
   const { control, watch, setValue } = useForm();
-  const [status] = watch(["status"]);
+  const [searchBy, search] = watch(["searchBy", "search"]);
   const { data, isLoading } = useGetDealers({
-    params: { ...params, isDocumentsVerified: status },
+    params: {
+      ...params,
+      ...(search && { [searchBy]: search }),
+      page: params.page + 1,
+      limit: params.pageSize,
+    },
   });
   const dealerContext =
     { params, setParams, data, isLoading, control, watch, setValue } || null;

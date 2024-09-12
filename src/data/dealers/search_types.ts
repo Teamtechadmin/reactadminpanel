@@ -1,22 +1,22 @@
 export const dealerStatus = [
   {
-    id: null,
-    name: "Status",
+    value: null,
+    label: "Status",
   },
   {
-    id: "not_submitted",
-    name: "Not Submitted",
+    value: "NOTSUBMITTED",
+    label: "Not Submitted",
   },
   {
-    id: "submitted",
-    name: "Submitted",
+    value: "SUBMITTED",
+    label: "Submitted",
   },
   {
-    id: "verified",
-    name: "Verified",
+    value: "VERIFIED",
+    label: "Verified",
   },
   {
-    id: "rejected",
-    name: "Rejected",
+    value: "REJECTED",
+    label: "Rejected",
   },
 ];

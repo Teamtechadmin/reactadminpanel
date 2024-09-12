@@ -1,10 +1,7 @@
-import SelectFormField from "@/components/ui/inputfields/SelectField";
-import { renderItem } from "@/components/ui/utility/MenuItem";
 import { Grid } from "@mui/material";
 import { DealerCustomSearch } from "./DealerCustomSearch";
 import { DealerContext, DealerContextType } from "@/pages/dealers";
 import { useContext } from "react";
-import { dealerStatus } from "@/data/dealers/search_types";
 
 export const DealerSearchHeader = () => {
   const propParams = useContext<DealerContextType>(DealerContext);
@@ -22,18 +19,6 @@ export const DealerSearchHeader = () => {
         searchBy={searchBy}
         setValue={setValue}
       />
-      <Grid item xl={2} md={2} xs={4}>
-        <SelectFormField
-          control={control}
-          id="status"
-          renderMenuItems={renderItem}
-          data={dealerStatus}
-          label="Status"
-          labelSize="normal"
-          fillWhite
-          size="medium"
-        />
-      </Grid>
     </Grid>
   );
 };

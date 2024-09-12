@@ -5,21 +5,23 @@ import { AxiosResponse } from "axios";
 import { DealerDataObj } from "./types";
 
 interface DealerParams {
-  pageSize: number;
+  limit: number;
   page: number;
+  pageSize: number;
   sortKey?: "createdAt" | "name";
   sortValue?: 1 | -1;
   contactNo?: number;
   isDocumentsVerified?: string;
+  isDeposited: boolean;
 }
 
 export const getDealers = async (
   params: DealerParams,
 ): Promise<AxiosResponse<DealerDataObj>> => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { pageSize, ...rest } = params;
   const filterParams = {
-    page: params?.page + 1,
-    limit: params?.pageSize,
-    isDocumentsVerified: params?.isDocumentsVerified,
+    ...rest,
   };
   return await axiosInstance.get(GET_DEALERS, {
     params: filterParams,

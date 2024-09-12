@@ -1,10 +1,10 @@
 export const deposit = [
   {
-    value: "yes",
+    value: true,
     label: "Paid",
   },
   {
-    value: "no",
+    value: false,
     label: "Not Paid",
   },
 ];

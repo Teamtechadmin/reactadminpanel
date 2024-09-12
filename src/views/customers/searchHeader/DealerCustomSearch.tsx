@@ -13,10 +13,12 @@ interface Props {
 
 const searchOptions = [
   { label: "Search By", value: null },
-  { label: "Name", value: "name" },
+  { label: "User ID", value: "userId" },
+  { label: "Name", value: "businessName" },
   { label: "Contact No.", value: "contactNo" },
-  { label: "Location", value: "location" },
-  { label: "Security Deposit", value: "security_deposit" },
+  { label: "Location", value: "district" },
+  { label: "Security Deposit", value: "isDeposited" },
+  { label: "Document Status", value: "isDocumentsVerified" },
 ];
 
 export const DealerCustomSearch = (props: Props) => {
