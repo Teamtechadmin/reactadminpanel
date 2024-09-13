@@ -18,6 +18,10 @@ const tabs = [
     label: "Documents",
     value: "documents",
   },
+  {
+    label: "Activity",
+    value: "activity",
+  },
 ];
 
 const CustomerView = () => {
