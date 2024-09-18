@@ -22,6 +22,10 @@ const tabs = [
     label: "Activity",
     value: "activity",
   },
+  {
+    label: "Performance",
+    value: "performance",
+  },
 ];
 
 const CustomerView = () => {

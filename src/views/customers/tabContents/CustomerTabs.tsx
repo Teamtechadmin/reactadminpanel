@@ -4,6 +4,7 @@ import { CustomerTabTypes } from "../../../types/customers/tabType";
 import { Dealer } from "@/types/customers/get";
 import DealerDocuments from "./new/DealerDocuments";
 import { DealerActivity } from "./new/DealerActivity";
+import DealerPerformance from "./new/DealerPerformance";
 
 interface CustomerTabsProps {
   value: string;
@@ -16,6 +17,7 @@ const CustomerTabs = (props: CustomerTabsProps) => {
     dealer_details: <CustomerDetails data={data} />,
     documents: <DealerDocuments data={data} />,
     activity: <DealerActivity data={data} />,
+    performance: <DealerPerformance data={data} />,
   };
 
   return CustomerTabs[value as CustomerTabTypes] as React.JSX.Element;
