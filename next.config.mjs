@@ -2,7 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["bucketkeracars.s3.ap-south-1.amazonaws.com"],
+    domains: [
+      "bucketkeracars.s3.ap-south-1.amazonaws.com",
+      "dev-meracars-bucket.s3.ap-south-1.amazonaws.com",
+    ],
   },
 };
 

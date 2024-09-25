@@ -43,7 +43,8 @@ export default function AuctionLogBody(props: LogBodyProps) {
   const queryClient = useQueryClient();
   const { log, data, handleClose } = props;
   const { id: carID } = log;
-  const selectedCar = data?.find((item: { id: string }) => item.id === carID);
+  const selectedCar =
+    data && data?.find((item: { id: string }) => item.id === carID);
   const { winner } = selectedCar || {};
   const leaderBoard = selectedCar?.leaderBoard;
 

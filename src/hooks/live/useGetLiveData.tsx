@@ -4,6 +4,11 @@ import { AuctionLiveFilterParams } from "@/types/live/auctions";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 
+interface LiveCar {
+  _id: string;
+  front: { url: string };
+}
+
 interface Props {
   tab: string;
   params: { page: number; pageSize: number };
@@ -57,6 +62,7 @@ export const useGetLiveData = (props: Props) => {
       };
 
   const socketKey = isAuction ? "getLiveResult" : "getLiveOTBResult";
+  const socketIndivitualKey = "getAdminResult";
 
   useEffect(() => {
     socketInitializer();
@@ -77,13 +83,30 @@ export const useGetLiveData = (props: Props) => {
     socket.on(socketKey, (socketData: string) => {
       try {
         const data = JSON.parse(socketData);
-        console.log("hitting loop");
         setLive(data);
       } catch (e) {
         console.error("Invalid JSON string", e);
       }
     });
+
+    socket.on(socketIndivitualKey, (socketData: string) => {
+      try {
+        const data = JSON.parse(socketData);
+        const updatedDataObj = data?.[0];
+        setLive((liveData: LiveCar[]) => {
+          const update = liveData?.map((liveCar: LiveCar) => {
+            return liveCar._id === updatedDataObj._id
+              ? { front: liveCar.front, ...updatedDataObj }
+              : liveCar;
+          });
+          return update;
+        });
+      } catch (e) {
+        console.error("Invalid JSON string", e);
+      }
+    });
   }
+
   return {
     data: { data: live, count: data?.count },
     isLoading,
