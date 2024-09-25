@@ -13,6 +13,7 @@ interface RowType {
   _id: string;
   id: string;
   fullname: string;
+  businessName: string;
   district: string;
   isDocumentsVerified: DocStatus;
   contactNo: string;
@@ -35,7 +36,7 @@ function getDocumentColor(documentStatus: DocStatus) {
 
 export const disableStatus = ["VERIFIED", "NOTSUBMITTED"];
 
-const useColumns = ({ handleView }: { handleView: (id: string) => void }) => {
+const useColumns = () => {
   const router = useRouter();
   const columns: any = [
     {
@@ -62,14 +63,14 @@ const useColumns = ({ handleView }: { handleView: (id: string) => void }) => {
       minWidth: 120,
       headerName: "Dealership Name",
       renderCell: ({ row }: { row: RowType }) => {
-        const { fullname, id } = row;
-
+        const { id, businessName } = row;
+        console.log(row, "rowCheck");
         return (
           <ClickableTypography
             onClick={() => {
               handleRedirection("dealers", id, router);
             }}
-            name={fullname}
+            name={businessName ?? "-"}
           />
         );
       },
@@ -152,7 +153,7 @@ const useColumns = ({ handleView }: { handleView: (id: string) => void }) => {
             <ButtonIcon
               icon="tabler:eye"
               title="View"
-              onClick={() => handleView(id)}
+              onClick={() => router.push(`/dealers/${id}`)}
             />
           </Box>
         );
